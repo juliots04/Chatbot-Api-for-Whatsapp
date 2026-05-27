@@ -1,0 +1,212 @@
+{
+  "sitio": "Fastura - Colombia",
+  "url": "https://buho.la/co/fastura?currency=3",
+  "ultima_actualizacion": "2026-04-01T16:28:51.685Z",
+  "descripcion_general": "Fastura Colombia es el sistema de facturación electrónica de Digital Buho para el mercado colombiano. Permite cuentas multiempresa o para resellers, similar a Fastura Perú pero adaptado para la facturación electrónica ante la DIAN en Colombia. Empieza tu propio negocio de facturación electrónica en Colombia.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Facturación Electrónica Colombia",
+      "descripcion": "Sistema de facturación electrónica adaptado para las regulaciones de la DIAN en Colombia."
+    },
+    {
+      "titulo": "Cuentas Multiempresa",
+      "descripcion": "Permite gestionar múltiples empresas desde una sola cuenta, ideal para contadores y resellers."
+    },
+    {
+      "titulo": "Para Resellers",
+      "descripcion": "Modelo de negocio enfocado en resellers que quieren ofrecer facturación electrónica en Colombia."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Facturación electrónica con conexión a DIAN",
+    "Gestión multiempresa",
+    "Para resellers de facturación electrónica",
+    "Sistema basado en Fastura adaptado al mercado colombiano"
+  ],
+  "planes": [
+    {
+      "nombre": "Fastura Reseller - R5",
+      "precio": "$ 119.000,00 COP",
+      "ciclo": "Mensual",
+      "costo_instalacion": "",
+      "caracteristicas": [
+        "5 Empresas",
+        "5000 Comprobantes: Factura electrónica, Nota de crédito, Nota de débito, Documentos POS, Documento soporte y Nómina",
+        "Acceso a panel administrador reseller",
+        "Todos nuestros módulos para tus clientes: Ventas, Finanzas, Contabilidad, Reportes y más",
+        "Soporte exclusivo por WhatsApp"
+      ],
+      "segmento": "Planes Reseller",
+      "url_pedido": "https://buho.la/cart.php?a=add&pid=148",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "$ 1.190.000,00 COP",
+          "descuento": "Ahorras el 17%",
+          "precio_original": "$ 1.428.000,00 COP"
+        }
+      ]
+    },
+    {
+      "nombre": "Fastura Reseller - R10",
+      "precio": "$ 199.000,00 COP",
+      "ciclo": "Mensual",
+      "costo_instalacion": "",
+      "caracteristicas": [
+        "10 Empresas",
+        "10000 Comprobantes: Factura electrónica, Nota de crédito, Nota de débito, Documentos POS, Documento soporte y Nómina",
+        "Acceso a panel administrador reseller",
+        "Todos nuestros módulos para tus clientes: Ventas, Finanzas, Contabilidad, Reportes y más",
+        "Soporte exclusivo por WhatsApp"
+      ],
+      "segmento": "Planes Reseller",
+      "url_pedido": "https://buho.la/cart.php?a=add&pid=149",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "$ 1.990.000,00 COP",
+          "descuento": "Ahorras el 17%",
+          "precio_original": "$ 2.388.000,00 COP"
+        }
+      ]
+    },
+    {
+      "nombre": "Fastura Reseller - R20",
+      "precio": "$ 319.000,00 COP",
+      "ciclo": "Mensual",
+      "costo_instalacion": "",
+      "caracteristicas": [
+        "20 Empresas",
+        "20000 Comprobantes: Factura electrónica, Nota de crédito, Nota de débito, Documentos POS, Documento soporte y Nómina",
+        "Acceso a panel administrador reseller",
+        "Todos nuestros módulos para tus clientes: Ventas, Finanzas, Contabilidad, Reportes y más",
+        "Soporte exclusivo por WhatsApp"
+      ],
+      "segmento": "Planes Reseller",
+      "url_pedido": "https://buho.la/cart.php?a=add&pid=150",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "$ 3.190.000,00 COP",
+          "descuento": "Ahorras el 17%",
+          "precio_original": "$ 3.828.000,00 COP"
+        }
+      ]
+    },
+    {
+      "nombre": "Fastura - API RA500",
+      "precio": "$ 99.000,00 COP",
+      "ciclo": "Mensual",
+      "costo_instalacion": "",
+      "caracteristicas": [
+        "Acceso al administrador de documentos y conexión por API",
+        "Factura electrónica",
+        "Nota de crédito",
+        "Nota de débito",
+        "Documentos POS",
+        "Documento soporte",
+        "Nómina"
+      ],
+      "segmento": "API y Código Fuente",
+      "url_pedido": "https://buho.la/cart.php?a=add&pid=170",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "$ 990,00 COP",
+          "descuento": "Ahorras el 100%",
+          "precio_original": "$ 1.188.000,00 COP"
+        }
+      ]
+    },
+    {
+      "nombre": "Fastura - API RA1000",
+      "precio": "$ 149.000,00 COP",
+      "ciclo": "Mensual",
+      "costo_instalacion": "",
+      "caracteristicas": [
+        "Acceso al administrador de documentos y conexión por API",
+        "Factura electrónica",
+        "Nota de crédito",
+        "Nota de débito",
+        "Documentos POS",
+        "Documento soporte",
+        "Nómina"
+      ],
+      "segmento": "API y Código Fuente",
+      "url_pedido": "https://buho.la/cart.php?a=add&pid=171",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "$ 1.490.000,00 COP",
+          "descuento": "Ahorras el 17%",
+          "precio_original": "$ 1.788.000,00 COP"
+        }
+      ]
+    },
+    {
+      "nombre": "Fastura - API RA4000",
+      "precio": "$ 299.000,00 COP",
+      "ciclo": "Mensual",
+      "costo_instalacion": "",
+      "caracteristicas": [
+        "Acceso al administrador de documentos y conexión por API",
+        "Factura electrónica",
+        "Nota de crédito",
+        "Nota de débito",
+        "Documentos POS",
+        "Documento soporte",
+        "Nómina"
+      ],
+      "segmento": "API y Código Fuente",
+      "url_pedido": "https://buho.la/cart.php?a=add&pid=172",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "$ 2.990.000,00 COP",
+          "descuento": "Ahorras el 17%",
+          "precio_original": "$ 3.588.000,00 COP"
+        }
+      ]
+    },
+    {
+      "nombre": "Fastura - Código Fuente",
+      "precio": "$ 4.000.000,00 COP",
+      "ciclo": "Anual",
+      "costo_instalacion": "",
+      "caracteristicas": [
+        "1 año Acceso al repositorio",
+        "1 año Soporte por WhatsApp (Para 1 dominio)",
+        "Instalación en tu propio servidor (GRATIS 1 Instalación)",
+        "API Para integración con sistemas externos.",
+        "Documentación Y guias para tus clientes."
+      ],
+      "segmento": "API y Código Fuente",
+      "url_pedido": "https://buho.la/cart.php?a=add&pid=173"
+    }
+  ],
+  "pagos": {
+    "titular": "DIGITAL BUHO S.A.S.",
+    "nit": "901846280",
+    "cuenta_ahorros_bancolombia": "253-000159-76",
+    "instruccion": "El comprobante de pago se envía por WhatsApp."
+  },
+  "canales_documentacion": {
+    "correo_documentos": "colombia@buho.la",
+    "nota": "La documentación de validación se envía por correo; el comprobante de pago por WhatsApp."
+  },
+  "productos_relacionados": [
+    {
+      "nombre": "Certificado Digital - DIAN Colombia",
+      "url": "https://buho.la/store/certificados-dian"
+    },
+    {
+      "nombre": "Fastura - Perú (versión peruana)",
+      "url": "https://buho.la/store/fastura"
+    }
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/co/fastura?currency=3",
+    "empresa": "Digital Buho SAC"
+  }
+}

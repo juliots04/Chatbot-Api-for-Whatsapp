@@ -1,0 +1,107 @@
+{
+  "sitio": "Validación OSE / Firmas PSE - Perú",
+  "url": "https://buho.la/store/validacion",
+  "ultima_actualizacion": "2026-03-26T19:48:42.186Z",
+  "descripcion_general": "Servicio de Validación OSE y Firmas PSE para facturación electrónica en Perú. Simplifica el proceso de facturación electrónica eliminando la necesidad de certificados digitales y complejos procesos técnicos. Disponible para usuarios de Factura Fácil.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Validación OSE",
+      "descripcion": "Validación de comprobantes electrónicos a través de un Operador de Servicios Electrónicos (OSE), sin necesidad de enviar directamente a SUNAT."
+    },
+    {
+      "titulo": "Firma PSE",
+      "descripcion": "Firmado de documentos vía Proveedor de Servicios Electrónicos (PSE), eliminando la necesidad de certificado digital propio."
+    },
+    {
+      "titulo": "Sin Certificado Digital",
+      "descripcion": "La Validación OSE incluye firmado de documentos vía PSE, no requiere certificado digital del cliente."
+    },
+    {
+      "titulo": "Simplicidad",
+      "descripcion": "Elimina la necesidad de certificados digitales y complejos procesos técnicos para la facturación electrónica."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Validación de comprobantes electrónicos vía OSE",
+    "Firmado de documentos vía PSE (incluido en validación OSE)",
+    "No requiere certificado digital propio",
+    "Integrado con Factura Fácil",
+    "1,000 comprobantes al mes por cuenta por paquete",
+    "Tarifa plana por comprobantes adicionales"
+  ],
+  "planes": [
+    {
+      "nombre": "Validación OSE: Factura Fácil - 1K Comprobantes",
+      "codigo": "OSE-FF-1K",
+      "precio": "S/26.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "Validación de 1,000 Comprobantes al mes por cuenta",
+        "No Requiere Certificado Digital",
+        "Firmado de documentos vía PSE incluido"
+      ],
+      "nota": "En caso de superar el monto de comprobantes al mes, se enviará una orden con el excedente. Tarifa plana: S/26.90/mes por cada 1,000 comprobantes adicionales.",
+      "url_pedido": "https://buho.la/store/validacion/ose-ff-1k",
+      "detalles_compra": {
+        "ciclo_mensual": {
+          "precio_total": "S/26.90 PEN"
+        },
+        "ciclo_trimestral": {
+          "precio_total": "S/80.70 PEN"
+        },
+        "ciclo_semianual": {
+          "precio_total": "S/161.40 PEN"
+        },
+        "ciclo_anual": {
+          "precio_total": "S/269.00 PEN",
+          "ahorro": "Equivale a 10 meses (ahorras 2 meses)"
+        }
+      },
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/26.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/269.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/322.80 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Firma PSE: Factura Fácil - 1K Comprobantes",
+      "codigo": "PSE-FF-1K",
+      "precio": "S/9.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "Firma de 1,000 Comprobantes al mes por cuenta"
+      ],
+      "url_pedido": "https://buho.la/store/validacion/pse-ff-1k",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/9.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/99.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/118.80 PEN"
+        }
+      ]
+    }
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/validacion",
+    "empresa": "Digital Buho SAC"
+  }
+}

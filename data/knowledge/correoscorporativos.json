@@ -1,0 +1,290 @@
+{
+  "sitio": "Correos Corporativos: Google Workspace",
+  "url": "https://buho.la/store/google-workspace",
+  "ultima_actualizacion": "2026-03-26T19:42:57.062Z",
+  "descripcion_general": "Obtenga correos corporativos para su empresa con Google Workspace. Genere una mayor confianza a sus clientes. Soporte 100% para la configuración de sus correos corporativos. Digital Buho ofrece planes administrados y autoadministrados con diferentes niveles de almacenamiento y funcionalidades.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Correo Electrónico Empresarial",
+      "descripcion": "Correo electrónico personalizado y seguro del tipo tu_nombre@tu-empresa.com con todas las herramientas de Google."
+    },
+    {
+      "titulo": "Asistente IA Gemini",
+      "descripcion": "Asistente de IA de Gemini integrado en Gmail para ayudar con redacción, resúmenes y más. Disponible en todos los planes."
+    },
+    {
+      "titulo": "Videoconferencias Google Meet",
+      "descripcion": "Videoconferencias con capacidad desde 100 hasta 1,000 participantes según el plan."
+    },
+    {
+      "titulo": "Google Vids",
+      "descripcion": "Creador y editor de videos potenciados por IA de Google Vids incluido en todos los planes."
+    },
+    {
+      "titulo": "Planes Administrados y Autoadministrados",
+      "descripcion": "Opciones de plan 'Administrado Buho' (sin acceso a admin.google.com) y autoadministrado (con acceso completo al panel de administración)."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Correo electrónico empresarial personalizado (tu_nombre@tu-empresa.com)",
+    "Asistente de IA Gemini en Gmail",
+    "Chat con IA en la app de Gemini",
+    "Google Meet para videoconferencias",
+    "Google Drive para almacenamiento en la nube",
+    "Google Docs, Sheets, Slides para productividad",
+    "Google Vids para creación y edición de videos con IA",
+    "Personalización con logo de empresa (planes autoadministrados)",
+    "Acceso al panel admin.google.com (planes autoadministrados)",
+    "Servicio de migración gratuito desde otras plataformas",
+    "Soporte 100% para configuración",
+    "Acceso desde Gmail.com"
+  ],
+  "planes": [
+    {
+      "nombre": "Google Workspace Starter 30GB Administrado",
+      "codigo": "G30A",
+      "precio": "S/25.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "almacenamiento": "30 GB",
+      "tipo": "Administrado Buho",
+      "incluye": [
+        "30 GB de almacenamiento",
+        "Correo electrónico empresarial personalizado",
+        "Asistente de IA de Gemini en Gmail",
+        "Chat con la IA en la app de Gemini",
+        "Videoconferencias con capacidad para 100 participantes",
+        "Creador y editor de videos potenciados por IA de Google Vids"
+      ],
+      "no_incluye": [
+        "Acceso al administrador de Google (admin.google.com)",
+        "Personalización con logo"
+      ],
+      "nota": "Administrado Buho: el usuario solo tiene acceso a su correo corporativo y a todas las aplicaciones de Google sin acceder al panel admin.google.com",
+      "url_pedido": "https://buho.la/store/google-workspace/g30a",
+      "detalles_compra": {
+        "ciclo_mensual": {
+          "precio_total": "S/25.90 PEN",
+          "subtotal": "S/21.95 PEN",
+          "igv_18": "S/3.95 PEN"
+        },
+        "ciclo_anual": {
+          "precio_total": "S/259.00 PEN",
+          "ahorro": "17% sobre precio mensual acumulado"
+        },
+        "costo_instalacion": "Ninguno"
+      },
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/25.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/259.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/310.80 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Google Workspace Starter 30GB",
+      "codigo": "G30",
+      "precio": "S/29.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "almacenamiento": "30 GB",
+      "tipo": "Autoadministrado",
+      "incluye": [
+        "30 GB de almacenamiento",
+        "Correo electrónico empresarial personalizado",
+        "Asistente de IA de Gemini en Gmail",
+        "Chat con la IA en la app de Gemini",
+        "Videoconferencias con capacidad para 100 participantes",
+        "Creador y editor de videos potenciados por IA de Google Vids",
+        "Personalización con logo",
+        "Acceso al administrador de Google (admin.google.com)",
+        "Administrado por el usuario + Apoyo de Buho"
+      ],
+      "url_pedido": "https://buho.la/store/google-workspace/g30",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/29.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/299.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/358.80 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Google Workspace Standard 2TB Administrado",
+      "codigo": "G2TA",
+      "precio": "S/75.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "costo_instalacion": "S/99.00",
+      "almacenamiento": "2 TB",
+      "tipo": "Administrado Buho",
+      "incluye": [
+        "2 TB de almacenamiento",
+        "Correo electrónico empresarial personalizado con diseños personalizados y combinación de correo",
+        "Asistente de IA de Gemini en Gmail, Documentos, Meet y más",
+        "Chat con la IA en la app de Gemini y crea tu equipo de expertos basados en IA",
+        "Videoconferencias con grabación y cancelación de ruido, capacidad para 150 participantes",
+        "Páginas de reservas de citas",
+        "Creador y editor de videos potenciados por IA de Google Vids"
+      ],
+      "no_incluye": [
+        "Acceso al administrador de Google (admin.google.com)",
+        "Personalización con logo"
+      ],
+      "nota": "Precio se prorratea a la fecha del 01 de enero de cada año",
+      "url_pedido": "https://buho.la/store/google-workspace/g2ta",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/75.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/759.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/910.80 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Google Workspace Standard 2TB",
+      "codigo": "G2T",
+      "precio": "S/79.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "almacenamiento": "2 TB",
+      "tipo": "Autoadministrado",
+      "incluye": [
+        "2 TB de almacenamiento",
+        "Correo electrónico empresarial personalizado con diseños personalizados y combinación de correo",
+        "Asistente de IA de Gemini en Gmail, Documentos, Meet y más",
+        "Chat con la IA en la app de Gemini y crea tu equipo de expertos basados en IA",
+        "Videoconferencias con grabación y cancelación de ruido, capacidad para 150 participantes",
+        "Páginas de reservas de citas",
+        "Creador y editor de videos potenciados por IA de Google Vids",
+        "Personalización con logo",
+        "Acceso al administrador de Google (admin.google.com)",
+        "Administrado por el usuario + Apoyo de Buho"
+      ],
+      "url_pedido": "https://buho.la/store/google-workspace/g2tb",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/79.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/799.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/958.80 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Google Workspace Plus 5TB",
+      "codigo": "G5T",
+      "precio": "S/139.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "almacenamiento": "5 TB",
+      "tipo": "Autoadministrado",
+      "incluye": [
+        "5 TB de almacenamiento",
+        "Correo electrónico empresarial personalizado y detección electrónica",
+        "Videoconferencias con seguimiento de la asistencia, capacidad para 500 participantes",
+        "Vault para retener, archivar y buscar datos",
+        "LDAP seguro",
+        "Administración avanzada de extremos",
+        "Controles de seguridad y administración mejorados",
+        "Personalización con logo",
+        "Acceso al administrador de Google (admin.google.com)",
+        "Administrado por el usuario + Apoyo de Buho"
+      ],
+      "url_pedido": "https://buho.la/store/google-workspace/g5t",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/139.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/1390.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/1668.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Google Workspace Enterprise Plus 5TB",
+      "codigo": "GE5T",
+      "precio": "S/199.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "almacenamiento": "5 TB",
+      "tipo": "Autoadministrado",
+      "incluye": [
+        "5 TB de almacenamiento",
+        "Correo electrónico empresarial personalizado con encriptación S/MIME",
+        "Videoconferencias con transmisión en vivo dentro del dominio, capacidad para 1,000 participantes",
+        "Prevención de pérdida de datos (DLP)",
+        "Acceso adaptado al contexto",
+        "Regiones de datos empresariales",
+        "Cloud Identity Premium",
+        "Administración empresarial de extremos",
+        "Clasificación por IA para Google Drive",
+        "Assured Controls y complemento de clasificación por IA disponible",
+        "Personalización con logo",
+        "Acceso al administrador de Google (admin.google.com)",
+        "Administrado por el usuario + Apoyo de Buho"
+      ],
+      "url_pedido": "https://buho.la/store/google-workspace/ge5t",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/199.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/1990.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/2388.00 PEN"
+        }
+      ]
+    }
+  ],
+  "notas_generales": [
+    "Incluye servicio gratis de migración desde otras plataformas al momento de la compra",
+    "Acceso desde Gmail.com (para las cuentas de Google Workspace)",
+    "2 meses gratis en suscripción anual",
+    "Precios incluyen IGV",
+    "El precio es por cada usuario que tendrá (cuenta de correo)"
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/google-workspace",
+    "empresa": "Digital Buho SAC"
+  }
+}

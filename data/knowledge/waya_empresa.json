@@ -1,0 +1,136 @@
+{
+  "sitio": "Waya - 1 Empresa",
+  "url": "https://buho.la/store/waya-empresa",
+  "ultima_actualizacion": "2026-03-26T19:44:48.475Z",
+  "descripcion_general": "Waya es la API de WhatsApp de Digital Buho. Conecta tu línea de WhatsApp en 1 minuto y empieza a utilizar el API para enviar mensajes desde cualquier sistema. Permite envío masivo de mensajes, integración con APIs y multidispositivo.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Configuración Instantánea",
+      "descripcion": "Fácil configuración: Solo escanea el QR de WhatsApp y ya puedes enviar tu campaña."
+    },
+    {
+      "titulo": "Mensajes Masivos",
+      "descripcion": "Puedes enviar hasta 2,000 mensajes de una sola vez para campañas de marketing o notificaciones."
+    },
+    {
+      "titulo": "Multidispositivo",
+      "descripcion": "Puedes añadir varios números de WhatsApp para gestionar múltiples líneas."
+    },
+    {
+      "titulo": "Integración API",
+      "descripcion": "Manda WhatsApp desde cualquier sistema que tengas mediante la API REST."
+    },
+    {
+      "titulo": "Campañas Rápidas",
+      "descripcion": "Tu campaña lista en 5 minutos: Añade tu WhatsApp, sube tus clientes y envía tu campaña."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Conexión rápida escaneando QR de WhatsApp",
+    "Envío masivo de hasta 2,000 mensajes a la vez",
+    "Multidispositivo con varios números de WhatsApp",
+    "Envíos individuales a clientes",
+    "Integración API REST para enviar desde cualquier sistema",
+    "Campañas de marketing por WhatsApp",
+    "Plataforma web para gestión de contactos y campañas"
+  ],
+  "planes": [
+    {
+      "nombre": "W1 Gratis",
+      "codigo": "W1",
+      "precio": "Gratis",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "Fácil configuración con QR",
+        "Mensajes masivos (hasta 2,000)",
+        "Multidispositivo",
+        "Envíos individuales",
+        "Integración API",
+        "Campaña lista en 5 minutos"
+      ],
+      "url_pedido": "https://buho.la/store/waya-empresa/w1",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "Gratis",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    },
+    {
+      "nombre": "W3",
+      "codigo": "W3",
+      "precio": "S/19.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "Fácil configuración con QR",
+        "Mensajes masivos (hasta 2,000)",
+        "Multidispositivo",
+        "Envíos individuales",
+        "Integración API",
+        "Campaña lista en 5 minutos"
+      ],
+      "url_pedido": "https://buho.la/store/qr-empresa/w3",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/19.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/199.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/238.80 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "W5",
+      "codigo": "W5",
+      "precio": "S/49.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "Fácil configuración con QR",
+        "Mensajes masivos (hasta 2,000)",
+        "Multidispositivo",
+        "Envíos individuales",
+        "Integración API",
+        "Campaña lista en 5 minutos"
+      ],
+      "url_pedido": "https://buho.la/store/qr-empresa/w5",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/49.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/499.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/598.80 PEN"
+        }
+      ]
+    }
+  ],
+  "incluido_en_cada_plan": [
+    "Fácil configuración: Solo escanea el QR de WhatsApp",
+    "Mensajes masivos: hasta 2,000 mensajes de una sola vez",
+    "Multidispositivo: varios números de WhatsApp",
+    "Envíos simples: mensajes individuales a clientes",
+    "Integración API: WhatsApp desde cualquier sistema",
+    "Campaña lista en 5 minutos"
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/waya-empresa",
+    "empresa": "Digital Buho SAC"
+  }
+}

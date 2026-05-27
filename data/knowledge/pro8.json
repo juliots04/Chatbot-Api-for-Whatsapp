@@ -1,0 +1,149 @@
+{
+  "sitio": "Pro8",
+  "url": "https://facturaloperu.com/pro8/",
+  "ultima_actualizacion": "2026-03-26T20:04:49.494Z",
+  "descripcion_general": "Planes Pro8 oficiales de FacturaloPerú (sitio comercial principal).",
+  "fuente": "facturaloperu.com",
+  "planes": [
+    {
+      "nombre": "Plan Essential",
+      "descripcion": "Plan extraído desde facturaloperu.com/pro8",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "1 Mes",
+          "precio": "S/375 PEN",
+          "descuento": "25%",
+          "precio_original": "",
+          "incluye": [
+            "6 meses de acceso total al código fuente",
+            "Descuento especial en cotizaciones",
+            "6 meses de soporte esencial por tickets (Para 1 instalación)",
+            "6 meses de acceso al APK APP 3.1 actualizado",
+            "6 meses de acceso al Plugin 2.0 de Woocommerce",
+            "Empresas ilimitadas",
+            "Instalación en tu propio servidor (GRATIS 1 Instalación)"
+          ]
+        },
+        {
+          "ciclo": "3 Meses",
+          "precio": "S/750 PEN",
+          "descuento": "25%",
+          "precio_original": "",
+          "incluye": [
+            "6 meses de acceso total al código fuente",
+            "Descuento especial en cotizaciones",
+            "6 meses de soporte esencial por tickets (Para 1 instalación)",
+            "6 meses de acceso al APK APP 3.1 actualizado",
+            "6 meses de acceso al Plugin 2.0 de Woocommerce",
+            "Empresas ilimitadas",
+            "Instalación en tu propio servidor (GRATIS 1 Instalación)"
+          ]
+        },
+        {
+          "ciclo": "6 Meses",
+          "precio": "S/875 PEN",
+          "descuento": "30%",
+          "precio_original": "S/1250 PEN",
+          "incluye": [
+            "6 meses de acceso total al código fuente",
+            "Descuento especial en cotizaciones",
+            "6 meses de soporte esencial por tickets (Para 1 instalación)",
+            "6 meses de acceso al APK APP 3.1 actualizado",
+            "6 meses de acceso al Plugin 2.0 de Woocommerce",
+            "Empresas ilimitadas",
+            "Instalación en tu propio servidor (GRATIS 1 Instalación)"
+          ]
+        },
+        {
+          "ciclo": "12 Meses",
+          "precio": "S/1299 PEN",
+          "descuento": "35%",
+          "precio_original": "S/2000 PEN",
+          "incluye": [
+            "6 meses de acceso total al código fuente",
+            "Descuento especial en cotizaciones",
+            "6 meses de soporte esencial por tickets (Para 1 instalación)",
+            "6 meses de acceso al APK APP 3.1 actualizado",
+            "6 meses de acceso al Plugin 2.0 de Woocommerce",
+            "Empresas ilimitadas",
+            "Instalación en tu propio servidor (GRATIS 1 Instalación)"
+          ]
+        }
+      ],
+      "precio": "S/375"
+    },
+    {
+      "nombre": "Plan Priority",
+      "descripcion": "Plan extraído desde facturaloperu.com/pro8",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "1 Mes",
+          "precio": "S/750 PEN",
+          "descuento": "30%",
+          "precio_original": "",
+          "incluye": [
+            "6 meses de acceso total al código fuente",
+            "Descuento especial en cotizaciones",
+            "6 meses de soporte PRIORITARIO por WhatsApp (Para 1 dominio)",
+            "6 meses de acceso al APK APP 3.1 actualizado",
+            "6 meses de acceso al Plugin 2.0 de Woocommerce",
+            "Empresas ilimitadas",
+            "Instalación en tu propio servidor (GRATIS 1 Instalación)"
+          ]
+        },
+        {
+          "ciclo": "3 Meses",
+          "precio": "S/1500 PEN",
+          "descuento": "30%",
+          "precio_original": "",
+          "incluye": [
+            "6 meses de acceso total al código fuente",
+            "Descuento especial en cotizaciones",
+            "6 meses de soporte PRIORITARIO por WhatsApp (Para 1 dominio)",
+            "6 meses de acceso al APK APP 3.1 actualizado",
+            "6 meses de acceso al Plugin 2.0 de Woocommerce",
+            "Empresas ilimitadas",
+            "Instalación en tu propio servidor (GRATIS 1 Instalación)"
+          ]
+        },
+        {
+          "ciclo": "6 Meses",
+          "precio": "S/1625 PEN",
+          "descuento": "35%",
+          "precio_original": "S/2500 PEN",
+          "incluye": [
+            "6 meses de acceso total al código fuente",
+            "Descuento especial en cotizaciones",
+            "6 meses de soporte PRIORITARIO por WhatsApp (Para 1 dominio)",
+            "6 meses de acceso al APK APP 3.1 actualizado",
+            "6 meses de acceso al Plugin 2.0 de Woocommerce",
+            "Empresas ilimitadas",
+            "Instalación en tu propio servidor (GRATIS 1 Instalación)"
+          ]
+        },
+        {
+          "ciclo": "12 Meses",
+          "precio": "S/2399 PEN",
+          "descuento": "40%",
+          "precio_original": "S/4000 PEN",
+          "incluye": [
+            "6 meses de acceso total al código fuente",
+            "Descuento especial en cotizaciones",
+            "6 meses de soporte PRIORITARIO por WhatsApp (Para 1 dominio)",
+            "6 meses de acceso al APK APP 3.1 actualizado",
+            "6 meses de acceso al Plugin 2.0 de Woocommerce",
+            "Empresas ilimitadas",
+            "Instalación en tu propio servidor (GRATIS 1 Instalación)"
+          ]
+        }
+      ],
+      "precio": "S/750"
+    }
+  ],
+  "nota_precios": "Los precios pueden diferir de Buho Store según campaña y canal comercial.",
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://facturaloperu.com/pro8",
+    "empresa": "Digital Buho"
+  }
+}

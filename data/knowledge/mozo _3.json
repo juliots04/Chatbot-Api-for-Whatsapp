@@ -1,0 +1,272 @@
+{
+  "sitio": "Mozo.pe",
+  "url": "https://mozo.pe/",
+  "ultima_actualizacion": "2026-03-26T19:50:19.030Z",
+  "descripcion_general": "Mozo.pe es un sistema de gestión para restaurantes, minimarkets o cualquier punto de venta directa al público, sin depender del internet. Forma parte del ecosistema Pro8 de Digital Buho. Mozo 4 es la versión más reciente (2026) y evoluciona sobre la base funcional de Mozo 3.",
+  "comparativa_versiones": {
+    "mozo_3": {
+      "estado": "Versión estable anterior",
+      "enfoque": "Base funcional completa para operación de restaurante y punto de venta",
+      "diferencia_clave": "Comparte prácticamente la misma lógica operativa que Mozo 4"
+    },
+    "mozo_4": {
+      "estado": "Última versión (2026)",
+      "enfoque": "Misma base de Mozo 3 con mejoras incrementales y evolución del producto",
+      "diferencia_clave": "No cambia el concepto del sistema; es la versión más nueva y actualizada"
+    },
+    "resumen_comercial": "Mozo 3 y Mozo 4 son sistemas equivalentes en su base operativa; Mozo 4 se recomienda por ser la versión más reciente.",
+    "diferencias_verificables": [
+      "Mozo 4 se presenta públicamente como 'NUEVA Versión 4.0 (2026)' en mozo.pe.",
+      "La documentación oficial Pro6, Pro7 y ProX mantiene el mismo flujo base del sistema: mesas, pedidos/comandas, cocina y POS.",
+      "La mayor diferencia funcional documentada de forma oficial no es '3 vs 4', sino modalidad de despliegue: versión web (Mozo.pe) vs versión compilada instalable.",
+      "La versión compilada habilita personalización total, usuarios mozo con PIN y menos limitaciones operativas frente a la web."
+    ],
+    "aclaracion_importante": "En fuentes públicas consultadas no se encontró una ficha técnica oficial etiquetada explícitamente como 'Mozo 3' con changelog detallado frente a 'Mozo 4'."
+  },
+  "historial_evolucion": {
+    "base_historica": [
+      {
+        "periodo": "Pro6 (2025)",
+        "hechos": [
+          "Ya existía el flujo restaurante con Mozo.pe para abrir caja, POS, mesas y comandas.",
+          "Se documenta envío de pedidos a cocina/bar y seguimiento por estados."
+        ]
+      },
+      {
+        "periodo": "Pro7",
+        "hechos": [
+          "Se formaliza la guía moderna de Mozo.pe con integración Pro8 y ProX.",
+          "Se documentan perfiles múltiples de mozo, búsqueda avanzada y flujo operativo simplificado."
+        ]
+      },
+      {
+        "periodo": "ProX / 2026",
+        "hechos": [
+          "Mozo.pe se comunica comercialmente como Versión 4.0 (2026).",
+          "Se mantiene continuidad funcional del núcleo operativo y se amplía documentación de acceso/instalación."
+        ]
+      }
+    ],
+    "lectura_comercial": "La transición percibida entre Mozo 3 y Mozo 4 es principalmente de madurez y actualización de plataforma, no un cambio total del producto."
+  },
+  "comparativa_modalidades_oficial": {
+    "mozo_web": {
+      "nombre": "Mozo.pe (Versión web)",
+      "costo": "Gratuito",
+      "instalacion": "No requiere instalación",
+      "limitaciones": [
+        "Requiere configuración de URL",
+        "No personalizable",
+        "Funciones avanzadas limitadas",
+        "No habilita tipo de usuario Mozo en el alcance documentado"
+      ],
+      "ideal_para": [
+        "Pruebas rápidas",
+        "Negocios pequeños",
+        "Inicio sin inversión"
+      ]
+    },
+    "mozo_compilado": {
+      "nombre": "Mozo Compilado (instalable)",
+      "costo": "Suscripción anual + hosting",
+      "instalacion": "Instalación por cliente en servidor propio",
+      "ventajas": [
+        "Personalización total (branding)",
+        "Control completo del entorno",
+        "Usuarios Mozo con acceso por PIN",
+        "Mayor cobertura de funcionalidades"
+      ],
+      "ideal_para": [
+        "Operación profesional",
+        "Restaurantes con mayor volumen",
+        "Negocios que requieren personalización"
+      ]
+    }
+  },
+  "caracteristicas_clave": [
+    {
+      "titulo": "Gestión de Restaurantes",
+      "descripcion": "Sistema especializado para gestionar restaurantes con control de mesas, pedidos de cocina y atención al cliente."
+    },
+    {
+      "titulo": "Modo Offline",
+      "descripcion": "Optimizado para funcionar sin internet. Permite continuar operando normalmente incluso sin conexión."
+    },
+    {
+      "titulo": "Multiplataforma",
+      "descripcion": "Accesible y adaptable a cualquier dispositivo, cualquier tamaño y cualquier sistema operativo."
+    },
+    {
+      "titulo": "Punto de Venta Directa",
+      "descripcion": "Ideal para minimarkets, bodegas y cualquier negocio con venta directa al público."
+    },
+    {
+      "titulo": "Integración con Pro8",
+      "descripcion": "Se integra con el sistema de facturación electrónica Pro8 para generar comprobantes válidos ante SUNAT."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Punto de Venta (POS) ágil con buscador y categorías",
+    "Gestión de Mesas y pedidos en tiempo real",
+    "Módulo de Comandas Inteligentes (envío automático a áreas de preparación como Cocina o Barra)",
+    "División de cuentas",
+    "Funcionamiento Off-line (sin internet) para emisión de notas de venta",
+    "Integración con Pro8 para Facturación Electrónica",
+    "Multi-dispositivo (acceso desde PC, tablets o móviles)",
+    "Sistema de diferentes accesos y roles (Administrador, Cajero, Mozo, Cocina)"
+  ],
+  "version_actual": "Mozo v4 2026 (en desarrollo)",
+  "integraciones": [
+    "Pro8 (Sistema de facturación)",
+    "SUNAT (Comprobantes electrónicos)",
+    "Impresoras térmicas de tickets"
+  ],
+  "planes": [
+    {
+      "nombre": "Mozo.pe",
+      "precio": "Gratis",
+      "descripcion": "Accede a tu restaurante desde cualquier dispositivo a MOZO.PE",
+      "incluye": [
+        "10 restaurantes x dominio",
+        "Requiere tener el sistema de facturación Pro8 actualizado"
+      ],
+      "no_incluye": [
+        "Acceso al código compilado",
+        "Creación de issues",
+        "Instálalo en tu propio hosting",
+        "Úsalo con el dominio que quieras"
+      ],
+      "url_pedido": "https://wa.me/51944999965?text=Hola,%20quiero%20empezar%20a%20usar%20Mozo",
+      "ciclos_facturacion_extraidos": [
+        {
+          "ciclo": "Mensual",
+          "precio": "Gratis",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Mozo Compilado",
+      "precio": "S/499",
+      "descripcion": "Instálalo donde quieras y accede con tu propio dominio personalizado",
+      "incluye": [
+        "Restaurantes ilimitados",
+        "Requiere tener el sistema de facturación Pro8 actualizado",
+        "Acceso al código compilado",
+        "Creación de issues y soporte 1 año",
+        "Instálalo en tu propio hosting",
+        "Úsalo con el dominio que quieras"
+      ],
+      "no_incluye": [],
+      "url_pedido": "https://wa.me/51944999965?text=Hola,%20quiero%20empezar%20a%20usar%20Mozo"
+    },
+    {
+      "nombre": "Mozo Código Fuente",
+      "precio": "S/8990",
+      "descripcion": "Acceso completo al código fuente para desarrollo y personalización total",
+      "incluye": [
+        "Restaurantes ilimitados",
+        "Requiere tener el sistema de facturación Pro8 actualizado",
+        "Código fuente completo y editable",
+        "Soporte técnico y documentación",
+        "Personalización completa",
+        "Licencia de desarrollo comercial"
+      ],
+      "no_incluye": [],
+      "url_pedido": "https://wa.me/51944999965?text=Hola,%20quiero%20obtener%20el%20c%C3%B3digo%20fuente%20completo%20de%20Mozo"
+    }
+  ],
+  "demo": {
+    "url": "https://mozo.pe/#demoya",
+    "descripcion": "Entorno de prueba interactivo del sistema Mozo.pe con varios roles operativos para experimentar la plataforma completa.",
+    "accesos": [
+      {
+        "rol": "Administrador",
+        "usuario": "burger@gmail.com"
+      },
+      {
+        "rol": "Cajero",
+        "usuario": "caja@gmail.com"
+      },
+      {
+        "rol": "Mozo",
+        "usuario": "Seleccionar cualquier usuario mozo",
+        "pin": "1234"
+      },
+      {
+        "rol": "Cocina",
+        "usuario": "1768417420202@gmail.com"
+      },
+      {
+        "rol": "Ingreso General",
+        "usuario": "1768417332111@gmail.com",
+        "pin": "1234"
+      }
+    ]
+  },
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://mozo.pe",
+    "empresa": "Digital Buho"
+  },
+  "documentacion": {
+    "paginas": [
+      {
+        "url": "https://manual.pro8.uio.la/mozo/introduccion",
+        "titulo": "Mozo.pe - Gestión de pedidos rápida y eficiente para restaurantes ⚡",
+        "resumen": "Mozo.pe es una aplicación especializada para la toma y gestión de pedidos en restaurantes, diseñada para optimizar el flujo de trabajo desde la mesa hasta la cocina. Totalmente integrada con el sistema de Facturación Pro 8, permite agilizar el servicio mientras mantiene un control completo de las comandas y la facturación electrónica.",
+        "secciones": [
+          "Introducción​",
+          "Descripción General​",
+          "Características Principales​",
+          "Flujo de Trabajo​",
+          "Casos de Uso Ideales​",
+          "Proceso de Toma de Pedidos Simplificado​",
+          "Sistema de Cocina​",
+          "Integración con Pro 8​",
+          "Acceso y Configuración​",
+          "Soporte y Recursos Adicionales​"
+        ],
+        "puntos_clave": [
+          "Sistema de Facturación Pro 8",
+          "Mozo v4IntroducciónConfiguración PreviaMozo en cPanelIniciar Sesión en MozoMesasDatos Adicionales",
+          "Introducción",
+          "Configuración Previa",
+          "Mozo en cPanel",
+          "Iniciar Sesión en Mozo",
+          "Datos Adicionales",
+          "Catálogo de Productos Organizado: Visualización de productos por categorías con opciones de búsqueda rápida.",
+          "Toma de Pedidos Optimizada: Interfaz intuitiva para agregar productos, modificaciones y notas especiales.",
+          "Perfiles Múltiples: Posibilidad de configurar varios perfiles de mozo para diferentes áreas o turnos.",
+          "Búsqueda Avanzada: Localización de productos por texto o código de barras.",
+          "Gestión de Cocina: Panel especial para visualizar órdenes recibidas, en preparación y listas para entrega.",
+          "Emisión de Comprobantes: Generación instantánea de boletas, facturas o notas de venta.",
+          "Compatibilidad Total: Funciona perfectamente con el sistema Pro 8.",
+          "Toma de Pedidos: Los mozos registran los pedidos de los clientes desde cualquier dispositivo.",
+          "Preparación en Cocina: El personal de cocina recibe las órdenes y actualiza su estado conforme avanzan.",
+          "Servicio y Facturación: Entrega de pedidos completos y emisión de comprobantes electrónicos.",
+          "Restaurantes de servicio a mesa: Optimiza la comunicación entre salón y cocina.",
+          "Cafeterías y bares: Agiliza la toma de pedidos y control de comandas.",
+          "Food trucks y negocios móviles: Permite gestionar pedidos desde dispositivos portátiles.",
+          "Cadenas de restaurantes: Mantiene la consistencia en el servicio entre diferentes locales.",
+          "Servicios de catering: Facilita la gestión de pedidos para eventos especiales.",
+          "Inicio de sesión: Accede a la aplicación con tus credenciales",
+          "Selección de productos: Navega por categorías o utiliza el buscador para encontrar productos",
+          "Personalización: Agrega detalles o modificaciones según solicitud del cliente"
+        ],
+        "extraido_en": "2026-03-26T19:50:19.029Z"
+      }
+    ]
+  },
+  "resumen_documentacion": [
+    "Sistema de Facturación Pro 8",
+    "Mozo v4IntroducciónConfiguración PreviaMozo en cPanelIniciar Sesión en MozoMesasDatos Adicionales",
+    "Introducción",
+    "Configuración Previa",
+    "Mozo en cPanel",
+    "Iniciar Sesión en Mozo",
+    "Datos Adicionales",
+    "Catálogo de Productos Organizado: Visualización de productos por categorías con opciones de búsqueda rápida."
+  ]
+}

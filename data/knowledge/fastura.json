@@ -1,0 +1,148 @@
+{
+  "sitio": "Fastura - Perú",
+  "url": "https://buho.la/store/fastura",
+  "ultima_actualizacion": "2026-03-26T19:48:17.813Z",
+  "descripcion_general": "Fastura es un sistema de facturación electrónica para resellers y cuentas multiempresa. Permite empezar tu propio negocio de facturación electrónica en Perú. Ofrece cuentas con comprobantes ilimitados y diferentes capacidades de empresas según el plan.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Facturación Electrónica Multiempresa",
+      "descripcion": "Sistema diseñado para manejar múltiples empresas desde una sola cuenta, ideal para resellers de facturación."
+    },
+    {
+      "titulo": "Comprobantes Ilimitados",
+      "descripcion": "Todos los planes incluyen emisión de comprobantes electrónicos ilimitados sin restricciones."
+    },
+    {
+      "titulo": "Para Resellers",
+      "descripcion": "Modelo de negocio enfocado en resellers que pueden revender el servicio de facturación a sus propios clientes."
+    },
+    {
+      "titulo": "Conexión SUNAT",
+      "descripcion": "Conexión directa con SUNAT para la validación y envío de comprobantes electrónicos."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Facturación electrónica con conexión directa a SUNAT",
+    "Emisión de comprobantes ilimitados (facturas, boletas, notas de crédito/débito)",
+    "Gestión multiempresa desde una sola cuenta",
+    "Panel de administración de empresas",
+    "Ideal para iniciar negocio de facturación electrónica como reseller",
+    "Escalable según necesidades del reseller"
+  ],
+  "planes": [
+    {
+      "nombre": "Fastura Reseller - R5",
+      "codigo": "R5",
+      "precio": "S/129.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "5 Cuentas de empresa",
+        "Ilimitados Comprobantes"
+      ],
+      "url_pedido": "https://buho.la/store/fastura/fastura-reseller-r5",
+      "detalles_compra": {
+        "ciclo_mensual": {
+          "precio_total": "S/129.00 PEN"
+        },
+        "ciclo_trimestral": {
+          "precio_total": "S/387.00 PEN"
+        },
+        "ciclo_anual": {
+          "precio_total": "S/1,290.00 PEN",
+          "ahorro": "Equivale a 10 meses (ahorras 2 meses)"
+        },
+        "costo_instalacion": "Ninguno"
+      },
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/129.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Trimestral",
+          "precio": "S/387.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/1290.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/1548.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Fastura Reseller - R10",
+      "codigo": "R10",
+      "precio": "S/199.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "10 Cuentas de empresa",
+        "Ilimitados Comprobantes"
+      ],
+      "url_pedido": "https://buho.la/store/fastura/fastura-reseller-r10",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/199.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/1990.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/2388.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Fastura Reseller - R20",
+      "codigo": "R20",
+      "precio": "S/250.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "20 Cuentas de empresa",
+        "Ilimitados Comprobantes"
+      ],
+      "url_pedido": "https://buho.la/store/fastura/fastura-reseller-r20",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/250.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Trimestral",
+          "precio": "S/750.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Semi-Anual",
+          "precio": "S/1500.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/2500.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/3000.00 PEN"
+        }
+      ]
+    }
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/fastura",
+    "empresa": "Digital Buho SAC"
+  }
+}

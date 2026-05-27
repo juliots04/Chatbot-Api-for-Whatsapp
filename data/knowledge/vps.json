@@ -1,0 +1,325 @@
+{
+  "sitio": "Servidores Cloud VPS",
+  "url": "https://buho.la/store/vps",
+  "ultima_actualizacion": "2026-03-26T19:41:46.679Z",
+  "descripcion_general": "Servidores Cloud VPS de Digital Buho. La estabilidad que una empresa necesita. Total independencia en los recursos y sistemas operativos. Ideal para empresas que requieran estabilidad. Disponible en línea ECO (stock limitado, precios más bajos) y línea PRO (activación inmediata).",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Total Independencia",
+      "descripcion": "Independencia completa en recursos y sistemas operativos para tu servidor."
+    },
+    {
+      "titulo": "Disco NVMe",
+      "descripcion": "Almacenamiento en disco NVMe de alta velocidad en todos los planes."
+    },
+    {
+      "titulo": "IP Dedicada",
+      "descripcion": "1 IP dedicada incluida en cada plan VPS."
+    },
+    {
+      "titulo": "Acceso Root/SSH",
+      "descripcion": "Acceso root y SSH completo para gestionar tu servidor."
+    },
+    {
+      "titulo": "Dos Líneas: ECO y PRO",
+      "descripcion": "Línea ECO con stock limitado a precios reducidos, y línea PRO con activación inmediata y más recursos."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Servidores Cloud VPS con recursos dedicados",
+    "Disco NVMe de alta velocidad",
+    "20 TB de ancho de banda",
+    "1 IP Dedicada por servidor",
+    "Acceso root y SSH completo",
+    "Descuento en plan anual disponible",
+    "Línea ECO: stock limitado, precios competitivos",
+    "Línea PRO: activación inmediata, más disco"
+  ],
+  "planes": [
+    {
+      "nombre": "VPS Cloud ECO - E4",
+      "codigo": "E4",
+      "linea": "ECO",
+      "precio": "S/49.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Stock Limitado",
+      "specs": {
+        "vcpu": "2 Núcleos",
+        "ram": "4 GB",
+        "disco": "40 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/e4",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/49.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/490.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/588.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "VPS Cloud ECO - E8",
+      "codigo": "E8",
+      "linea": "ECO",
+      "precio": "S/79.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Stock Limitado",
+      "specs": {
+        "vcpu": "4 Núcleos",
+        "ram": "8 GB",
+        "disco": "80 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/e8",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/79.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/790.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/948.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "VPS Cloud ECO - E16",
+      "codigo": "E16",
+      "linea": "ECO",
+      "precio": "S/129.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Stock Limitado",
+      "specs": {
+        "vcpu": "8 Núcleos",
+        "ram": "16 GB",
+        "disco": "160 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/e16",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/129.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/1290.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/1548.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "VPS Cloud ECO - E32",
+      "codigo": "E32",
+      "linea": "ECO",
+      "precio": "S/269.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Stock Limitado",
+      "specs": {
+        "vcpu": "16 Núcleos",
+        "ram": "32 GB",
+        "disco": "320 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/e32",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/269.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/2690.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/3228.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "VPS Cloud PRO - S4",
+      "codigo": "S4",
+      "linea": "PRO",
+      "precio": "S/79.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Activación inmediata",
+      "specs": {
+        "vcpu": "2 Núcleos",
+        "ram": "4 GB",
+        "disco": "80 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/s4",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/79.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/790.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/948.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "VPS Cloud PRO - S8",
+      "codigo": "S8",
+      "linea": "PRO",
+      "precio": "S/129.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Activación inmediata",
+      "specs": {
+        "vcpu": "4 Núcleos",
+        "ram": "8 GB",
+        "disco": "160 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/s8",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/129.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/1290.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/1548.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "VPS Cloud PRO - S16",
+      "codigo": "S16",
+      "linea": "PRO",
+      "precio": "S/269.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Activación inmediata",
+      "specs": {
+        "vcpu": "8 Núcleos",
+        "ram": "16 GB",
+        "disco": "320 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/s16",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/269.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/2690.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/3228.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "VPS Cloud PRO - S24",
+      "codigo": "S24",
+      "linea": "PRO",
+      "precio": "S/399.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Activación inmediata",
+      "specs": {
+        "vcpu": "12 Núcleos",
+        "ram": "24 GB",
+        "disco": "480 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/s24",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/399.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/3990.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/4788.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "VPS Cloud PRO - S32",
+      "codigo": "S32",
+      "linea": "PRO",
+      "precio": "S/549.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "nota": "Activación inmediata",
+      "specs": {
+        "vcpu": "16 Núcleos",
+        "ram": "32 GB",
+        "disco": "640 GB NVMe",
+        "ancho_banda": "20 TB",
+        "ip_dedicada": "1"
+      },
+      "url_pedido": "https://buho.la/store/vps/s32",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/549.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/5490.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/6588.00 PEN"
+        }
+      ]
+    }
+  ],
+  "nota_precios": "Descuento disponible en plan anual. Línea ECO tiene stock limitado.",
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/vps",
+    "empresa": "Digital Buho SAC"
+  }
+}

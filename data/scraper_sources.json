@@ -1,0 +1,68 @@
+{
+  "sources": [
+    {
+      "id": "pro8",
+      "name": "Pro8 - FacturaloPerú",
+      "url": "https://facturaloperu.com/pro8/#prices",
+      "outputFile": "pro8_facturaloperu.json",
+      "enabled": true,
+      "description": "Sistema de facturación electrónica Pro8"
+    },
+    {
+      "id": "vendeya",
+      "name": "VendeYa.pe",
+      "url": "https://vendeya.pe/",
+      "outputFile": "vendeya.json",
+      "enabled": true,
+      "description": "Punto de venta rápido para negocios"
+    },
+    {
+      "id": "mozo",
+      "name": "Mozo",
+      "url": "https://mozo.pe/",
+      "outputFile": "mozo.json",
+      "enabled": true,
+      "description": "Gestión de restaurantes y puntos de venta"
+    },
+    {
+      "id": "pro7_manual",
+      "name": "Pro7 - Documentación oficial",
+      "url": "https://manual.uio.la/Pro7",
+      "outputFile": "pro7.json",
+      "enabled": true,
+      "description": "Base documental Pro7 para contexto de migración"
+    },
+    {
+      "id": "pro7_mozo_comparison",
+      "name": "Pro7 - Mozo comparison",
+      "url": "https://manual.uio.la/Pro7/mozo/mozo-comparison",
+      "outputFile": "pro7.json",
+      "enabled": true,
+      "description": "Comparación funcional de Mozo dentro del contexto Pro7"
+    },
+    {
+      "id": "prox_manual",
+      "name": "ProX - Documentación oficial",
+      "url": "https://manual.uio.la/ProX",
+      "outputFile": "prox.json",
+      "enabled": true,
+      "description": "Base documental ProX"
+    },
+    {
+      "id": "pro8_manual_mozo",
+      "name": "Manual Pro8 - Mozo introducción",
+      "url": "https://manual.pro8.uio.la/mozo/introduccion",
+      "outputFile": "mozo.json",
+      "enabled": true,
+      "description": "Documentación adicional de Mozo en entorno Pro8"
+    },
+    {
+      "id": "pro8_manual_vendeya",
+      "name": "Manual Pro8 - VendeYa introducción",
+      "url": "https://manual.pro8.uio.la/vendeya/introduccion",
+      "outputFile": "vendeya.json",
+      "enabled": true,
+      "description": "Documentación adicional de VendeYa en entorno Pro8"
+    }
+  ]
+}

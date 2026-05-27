@@ -1,0 +1,164 @@
+{
+  "sitio": "ProX - Plataforma de facturacion y gestion",
+  "url": "https://manual.uio.la/ProX",
+  "ultima_actualizacion": "2026-03-26T19:50:23.811Z",
+  "descripcion_general": "ProX es una linea moderna del ecosistema para facturacion y gestion comercial, con documentacion activa y modulos actualizados.",
+  "posicionamiento": {
+    "objetivo": "Ser la ruta recomendada para nuevas implementaciones y evolucion de clientes que vienen de versiones anteriores.",
+    "publico": [
+      "Nuevos proyectos",
+      "Clientes que requieren crecimiento modular",
+      "Operaciones que necesitan una base tecnologica vigente"
+    ]
+  },
+  "ventajas_clave": [
+    "Documentacion vigente y estructurada por modulos",
+    "Integracion con componentes del ecosistema comercial",
+    "Base orientada a crecimiento y actualizaciones continuas"
+  ],
+  "relacion_con_migracion": {
+    "desde_pro7": "ProX es una opcion valida de migracion cuando se busca una ruta mas moderna que la linea historica.",
+    "comparacion_rapida": "Pro8 suele ser continuidad natural de flujo Pro6/Pro7; ProX puede ser mejor para redisenos o nuevos despliegues."
+  },
+  "fuentes_publicas": [
+    {
+      "fuente": "Manual oficial ProX",
+      "url": "https://manual.uio.la/ProX",
+      "evidencia": "Portal principal de documentacion de ProX."
+    }
+  ],
+  "documentacion": {
+    "paginas": [
+      {
+        "url": "https://manual.uio.la/ProX",
+        "titulo": "Sistema de Facturación Pro X",
+        "resumen": "ProX es un sistema completo de facturación electrónica diseñado específicamente para cumplir con los requerimientos fiscales de SUNAT en Perú. Nuestra plataforma está orientada a la facturación avanzada con módulos específicos por rubro empresarial, y permite integración con Contaweb (exclusivo para empresas con área contable).",
+        "secciones": [
+          "Introducción​",
+          "Descripción General​",
+          "Funcionalidades Principales​",
+          "Enfoque en el Rendimiento​",
+          "Diseño Limpio, Simple y Funcional​",
+          "Optimizado para Web y Dispositivos Móviles​",
+          "Tecnologías​",
+          "Laravel y PHP​",
+          "MySQL​",
+          "Vue 2​",
+          "Node.js​",
+          "Compatibilidad con Ecosistema​",
+          "Licencia​"
+        ],
+        "puntos_clave": [
+          "Sistema de Facturación Pro X",
+          "ProX Devs",
+          "Facturación Electrónica: Emite comprobantes electrónicos cumpliendo con los requisitos de SUNAT.",
+          "Módulos Específicos por Rubro: Soluciones personalizadas para diferentes sectores empresariales.",
+          "Integración con Contaweb: Conectividad con sistemas contables para empresas que cuentan con área contable.",
+          "Gestión de Inventarios Avanzada: Control detallado de stock con funcionalidades ampliadas.",
+          "Reportes Empresariales: Sistema de informes completo para análisis financiero y operativo.",
+          "Introducción",
+          "Descripción General",
+          "Funcionalidades Principales",
+          "Enfoque en el Rendimiento",
+          "Diseño Limpio, Simple y FuncionalOptimizado para Web y Dispositivos Móviles",
+          "Optimizado para Web y Dispositivos Móviles",
+          "TecnologíasLaravel y PHPMySQLVue 2Node.js",
+          "Laravel y PHP",
+          "Compatibilidad con Ecosistema",
+          "Licencia"
+        ],
+        "extraido_en": "2026-03-26T19:50:23.810Z"
+      }
+    ]
+  },
+  "resumen_documentacion": [
+    "ChatBuho",
+    "Sistema de Facturación Pro X",
+    "Novedades y Nuevas Funciones en Pro X",
+    "ProX Devs",
+    "App Android",
+    "Admin Reseller",
+    "Actualizaciones",
+    "Guias adicionales",
+    "Facturación Electrónica: Emite comprobantes electrónicos cumpliendo con los requisitos de SUNAT.",
+    "Módulos Específicos por Rubro: Soluciones personalizadas para diferentes sectores empresariales.",
+    "Integración con Contaweb: Conectividad con sistemas contables para empresas que cuentan con área contable.",
+    "Gestión de Inventarios Avanzada: Control detallado de stock con funcionalidades ampliadas.",
+    "Reportes Empresariales: Sistema de informes completo para análisis financiero y operativo.",
+    "Introducción"
+  ],
+  "planes": [
+    {
+      "nombre": "ESSENTIAL 6",
+      "precio": "S/1600",
+      "ciclo": "6 Meses",
+      "descripcion": "Plan ESSENTIAL para 6 meses (ProX SE).",
+      "incluye": [
+        "6 meses acceso al código fuente Backend del ProX",
+        "Descuento especial en cotizaciones",
+        "6 meses de soporte esencial por tickets",
+        "(Para 1 instalación)",
+        "App 3.1 Acceso al APK de Android",
+        "6 meses acceso al repo Plugin woocommerce 2.0",
+        "1 licencia para 1 dominio",
+        "Empresas ilimitadas",
+        "Instalación en tu propio servidor"
+      ],
+      "url_pedido": "https://wa.me/51944999965?text=Hola,%20quiero%20m%C3%A1s%20info%20sobre%20el%20facturador%20PRO%20X"
+    },
+    {
+      "nombre": "ESSENTIAL 12",
+      "precio": "S/2800",
+      "ciclo": "12 Meses",
+      "descripcion": "Plan ESSENTIAL para 12 meses (ProX SE).",
+      "incluye": [
+        "1 año acceso al código fuente Backend del ProX",
+        "Descuento especial en cotizaciones",
+        "1 año de soporte esencial por tickets",
+        "(Para 1 instalación)",
+        "App 3.1 Acceso al APK de Android",
+        "1 año acceso al repo Plugin woocommerce 2.0",
+        "1 licencia para 1 dominio",
+        "Empresas ilimitadas",
+        "Instalación en tu propio servidor"
+      ],
+      "url_pedido": "https://wa.me/51944999965?text=Hola,%20quiero%20m%C3%A1s%20info%20sobre%20el%20facturador%20PRO%20X"
+    },
+    {
+      "nombre": "PRIORITY 6",
+      "precio": "S/3200",
+      "ciclo": "6 Meses",
+      "descripcion": "Plan PRIORITY para 6 meses (ProX SE).",
+      "incluye": [
+        "6 meses acceso al código fuente Backend del ProX + Plantilla Base",
+        "Descuento especial en cotizaciones",
+        "6 meses de soporte PRIORITARIO por WhatsApp",
+        "App 3.1 Acceso al APK de Android",
+        "6 meses acceso al repo Plugin woocommerce 2.0",
+        "1 licencia para 1 dominio",
+        "Empresas ilimitadas",
+        "Instalación en tu propio servidor"
+      ],
+      "url_pedido": "https://wa.me/51944999965?text=Hola,%20quiero%20m%C3%A1s%20info%20sobre%20el%20facturador%20PRO%20X"
+    },
+    {
+      "nombre": "PRIORITY 12",
+      "precio": "S/5600",
+      "ciclo": "12 Meses",
+      "descripcion": "Plan PRIORITY para 12 meses (ProX SE).",
+      "incluye": [
+        "1 año de acceso al código fuente Backend del ProX",
+        "Plantilla Base",
+        "Descuento especial en cotizaciones",
+        "1 año de soporte PRIORITARIO por WhatsApp",
+        "App 3.1 Acceso al APK de Android",
+        "1 año de acceso al repo Plugin woocommerce 2.0",
+        "1 licencia para 1 dominio",
+        "Empresas ilimitadas",
+        "Instalación en tu propio servidor"
+      ],
+      "url_pedido": "https://wa.me/51944999965?text=Hola,%20quiero%20m%C3%A1s%20info%20sobre%20el%20facturador%20PRO%20X"
+    }
+  ],
+  "nota_precios": "*Precios no incluyen IGV. Para requerir factura aumentar el 18% del IGV. Servicio autoadministrado."
+}

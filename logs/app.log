@@ -1,0 +1,67 @@
+2026-05-05 03:05:39 [INFO]: [SHUTDOWN] Señal SIGTERM recibida. Iniciando cierre limpio...
+2026-05-05 03:05:41 [INFO]: =======================================================
+2026-05-05 03:05:41 [INFO]: 🦉 Servidor ia-buho v2.0 iniciado en el puerto 8100 host fd00::7:33f8
+2026-05-05 03:05:41 [INFO]: ⚙️  Entorno: production
+2026-05-05 03:05:41 [INFO]: 🌐 Panel:   / (Dashboard de administración)
+2026-05-05 03:05:41 [INFO]: 🔗 Webhook: /webhook (GET verificación / POST eventos)
+2026-05-05 03:05:41 [INFO]: 📊 Health:  /health (Métricas y estado del sistema)
+2026-05-05 03:05:41 [INFO]: 🔧 API:     /api/config (GET / PUT configuración)
+2026-05-05 03:05:41 [INFO]: 🔐 Admin API auth: ACTIVADA (token configurado)
+2026-05-05 03:05:41 [INFO]: 🔑 API Keys Gemini configuradas: 6
+2026-05-05 03:05:41 [INFO]: 🛡️  Seguridad HMAC: DESACTIVADA (modo desarrollo)
+2026-05-05 03:05:41 [INFO]: ⚡ Rate Limiting: 15 msgs/60s
+2026-05-05 03:05:41 [INFO]: =======================================================
+2026-05-05 03:05:41 [INFO]: [MYSQL] Conexion establecida correctamente.
+2026-05-05 03:05:41 [INFO]: 🗄️  MySQL: CONECTADO
+2026-05-05 03:05:41 [INFO]: [USER SETTINGS] Inicializado desde MySQL. Usuarios cargados: 1
+2026-05-05 03:05:41 [INFO]: [BUHO_STORE_SCHEDULER] Activo: todos los dias a las 03:00 hora Peru.
+2026-05-05 03:05:44 [INFO]: [WEBHOOK] 📨 Mensaje de texto de 51986079838 (Julio): "holaa"
+2026-05-05 03:05:46 [INFO]: [GEMINI] ✓ Respuesta generada con key #1 en 987ms
+2026-05-05 03:05:46 [INFO]: [BOT] Contexto de memoria para 51986079838: 4 mensajes cargados.
+2026-05-05 03:05:46 [INFO]: [WHATSAPP] ✓ Mensaje texto enviado a 51986079838 (ID: wamid.HBgLNTE5ODYwNzk4MzgVAgARGBJFRTNBMUYzQzI4NTk0NDEzOEEA)
+2026-05-05 03:05:46 [INFO]: [BOT] ✓ Flujo completado para 51986079838 en 2164ms
+2026-05-05 03:29:23 [INFO]: [WEBHOOK] 📨 Mensaje de texto de 51986079838 (Julio): "Hola"
+2026-05-05 03:29:25 [INFO]: [GEMINI] ✓ Respuesta generada con key #1 en 1075ms
+2026-05-05 03:29:25 [INFO]: [BOT] Contexto de memoria para 51986079838: 6 mensajes cargados.
+2026-05-05 03:29:25 [INFO]: [WHATSAPP] ✓ Mensaje texto enviado a 51986079838 (ID: wamid.HBgLNTE5ODYwNzk4MzgVAgARGBI0REE5OTkxQkMxRUY5MjU5QzcA)
+2026-05-05 03:29:25 [INFO]: [BOT] ✓ Flujo completado para 51986079838 en 2167ms
+2026-05-05 03:59:48 [INFO]: [SHUTDOWN] Señal SIGTERM recibida. Iniciando cierre limpio...
+2026-05-05 04:13:22 [INFO]: =======================================================
+2026-05-05 04:13:22 [INFO]: 🦉 Servidor ia-buho v2.0 iniciado en el puerto 8100 host fd00::7:33f8
+2026-05-05 04:13:22 [INFO]: ⚙️  Entorno: production
+2026-05-05 04:13:22 [INFO]: 🌐 Panel:   / (Dashboard de administración)
+2026-05-05 04:13:22 [INFO]: 🔗 Webhook: /webhook (GET verificación / POST eventos)
+2026-05-05 04:13:22 [INFO]: 📊 Health:  /health (Métricas y estado del sistema)
+2026-05-05 04:13:22 [INFO]: 🔧 API:     /api/config (GET / PUT configuración)
+2026-05-05 04:13:22 [INFO]: 🔐 Admin API auth: ACTIVADA (token configurado)
+2026-05-05 04:13:22 [INFO]: 🔑 API Keys Gemini configuradas: 6
+2026-05-05 04:13:22 [INFO]: 🛡️  Seguridad HMAC: DESACTIVADA (modo desarrollo)
+2026-05-05 04:13:22 [INFO]: ⚡ Rate Limiting: 15 msgs/60s
+2026-05-05 04:13:22 [INFO]: =======================================================
+2026-05-05 04:13:22 [INFO]: [MYSQL] Conexion establecida correctamente.
+2026-05-05 04:13:22 [INFO]: 🗄️  MySQL: CONECTADO
+2026-05-05 04:13:22 [INFO]: [USER SETTINGS] Inicializado desde MySQL. Usuarios cargados: 1
+2026-05-05 04:13:22 [INFO]: [BUHO_STORE_SCHEDULER] Activo: todos los dias a las 03:00 hora Peru.
+2026-05-05 04:43:51 [INFO]: [SHUTDOWN] Señal SIGTERM recibida. Iniciando cierre limpio...
+2026-05-24 00:15:12 [INFO]: =======================================================
+2026-05-24 00:15:12 [INFO]: 🦉 Servidor ia-buho v2.0 iniciado en el puerto 8100 host fd00::7:33f8
+2026-05-24 00:15:12 [INFO]: ⚙️  Entorno: production
+2026-05-24 00:15:12 [INFO]: 🌐 Panel:   / (Dashboard de administración)
+2026-05-24 00:15:12 [INFO]: 🔗 Webhook: /webhook (GET verificación / POST eventos)
+2026-05-24 00:15:12 [INFO]: 📊 Health:  /health (Métricas y estado del sistema)
+2026-05-24 00:15:12 [INFO]: 🔧 API:     /api/config (GET / PUT configuración)
+2026-05-24 00:15:12 [INFO]: 🔐 Admin API auth: ACTIVADA (token configurado)
+2026-05-24 00:15:12 [INFO]: 🔑 API Keys Gemini configuradas: 6
+2026-05-24 00:15:12 [INFO]: 🛡️  Seguridad HMAC: DESACTIVADA (modo desarrollo)
+2026-05-24 00:15:12 [INFO]: ⚡ Rate Limiting: 15 msgs/60s
+2026-05-24 00:15:12 [INFO]: =======================================================
+2026-05-24 00:15:12 [INFO]: [MYSQL] Conexion establecida correctamente.
+2026-05-24 00:15:12 [INFO]: 🗄️  MySQL: CONECTADO
+2026-05-24 00:15:12 [INFO]: [WEBHOOK] 📨 Mensaje de texto de 51986079838 (Julio): "Hola"
+2026-05-24 00:15:12 [INFO]: [USER SETTINGS] Inicializado desde MySQL. Usuarios cargados: 1
+2026-05-24 00:15:12 [INFO]: [BUHO_STORE_SCHEDULER] Activo: todos los dias a las 03:00 hora Peru.
+2026-05-24 00:15:14 [INFO]: [GEMINI] ✓ Respuesta generada con key #1 en 961ms
+2026-05-24 00:15:14 [INFO]: [BOT] Contexto de memoria para 51986079838: 8 mensajes cargados.
+2026-05-24 00:15:14 [INFO]: [WHATSAPP] ✓ Mensaje texto enviado a 51986079838 (ID: wamid.HBgLNTE5ODYwNzk4MzgVAgARGBI5MDU0MUU0N0FERjc2RjQ5RkYA)
+2026-05-24 00:15:14 [INFO]: [BOT] ✓ Flujo completado para 51986079838 en 2776ms
+2026-05-24 00:45:21 [INFO]: [SHUTDOWN] Señal SIGTERM recibida. Iniciando cierre limpio...

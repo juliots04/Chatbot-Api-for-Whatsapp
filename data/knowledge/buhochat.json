@@ -1,0 +1,218 @@
+{
+  "sitio": "Chat Buho",
+  "url": "https://buho.la/store/chat",
+  "ultima_actualizacion": "2026-03-26T19:44:17.017Z",
+  "descripcion_general": "Chat Buho es un sistema de mensajería multicanal que permite alcanzar a todos los clientes desde una sola plataforma. Integra WhatsApp, Web, Facebook Messenger, Instagram, Telegram, Gmail, SMS y API. Incluye soporte en español por WhatsApp, Telegram o correo electrónico.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Mensajería Multicanal",
+      "descripcion": "Centraliza todas las conversaciones de WhatsApp, Facebook Messenger, Instagram, Telegram, Gmail, SMS y Web en una sola plataforma."
+    },
+    {
+      "titulo": "Integración WhatsApp",
+      "descripcion": "Integración nativa con WhatsApp para atención al cliente directa. Disponible en todos los planes."
+    },
+    {
+      "titulo": "Múltiples Agentes",
+      "descripcion": "Permite configurar múltiples agentes de atención según el plan contratado, desde 1 hasta ilimitados."
+    },
+    {
+      "titulo": "Múltiples Canales",
+      "descripcion": "Cada plan incluye un número de canales de comunicación, permitiendo conectar diferentes cuentas o plataformas."
+    },
+    {
+      "titulo": "Funciones Actuales y Futuras",
+      "descripcion": "Todos los planes incluyen acceso a todas las funciones y características actuales y futuras de la plataforma."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Gestión centralizada de conversaciones multicanal",
+    "Integración con WhatsApp Business",
+    "Integración con Facebook Messenger",
+    "Integración con Instagram Direct",
+    "Integración con Telegram",
+    "Integración con Gmail",
+    "Integración con SMS",
+    "API para integraciones personalizadas",
+    "Widget de chat para sitios web",
+    "Soporte en español por WhatsApp, Telegram o correo electrónico",
+    "Todas las funciones actuales y futuras incluidas en cada plan"
+  ],
+  "integraciones": [
+    "WhatsApp",
+    "Facebook Messenger",
+    "Instagram",
+    "Telegram",
+    "Gmail",
+    "SMS",
+    "API",
+    "Web Widget"
+  ],
+  "planes": [
+    {
+      "nombre": "Chat Buho - CH 1",
+      "codigo": "CH1",
+      "precio": "S/49.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "1 agente",
+        "1 canal",
+        "Integración WhatsApp",
+        "Integraciones Web, Facebook Messenger, Instagram, Telegram, Gmail, SMS, API",
+        "Incluye todas las funciones y características actuales y futuras"
+      ],
+      "url_pedido": "https://buho.la/store/chat/chat-buho-ch-1",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/49.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/490.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/588.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Chat Buho - CH 3",
+      "codigo": "CH3",
+      "precio": "S/99.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "3 agentes",
+        "3 canales",
+        "Integración WhatsApp",
+        "Integraciones Web, Facebook Messenger, Instagram, Telegram, Gmail, SMS, API",
+        "Incluye todas las funciones y características actuales y futuras"
+      ],
+      "url_pedido": "https://buho.la/store/chat/chat-buho-ch-3",
+      "detalles_compra": {
+        "ciclo_mensual": {
+          "precio_total": "S/99.00 PEN",
+          "subtotal": "S/83.90 PEN",
+          "igv_18": "S/15.10 PEN"
+        },
+        "ciclo_anual": {
+          "precio_total": "S/990.00 PEN",
+          "subtotal": "S/838.98 PEN",
+          "igv_18": "S/151.02 PEN",
+          "ahorro": "17% (precio original S/1,188.00)"
+        },
+        "costo_instalacion": "Ninguno"
+      },
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/99.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/990.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/1188.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Chat Buho - CH 5",
+      "codigo": "CH5",
+      "precio": "S/129.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "5 agentes",
+        "5 canales",
+        "Integración WhatsApp",
+        "Integraciones Web, Facebook Messenger, Instagram, Telegram, Gmail, SMS, API",
+        "Incluye todas las funciones y características actuales y futuras"
+      ],
+      "url_pedido": "https://buho.la/store/chat/plan-basico",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/129.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/1290.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/1548.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Chat Buho - CH 10",
+      "codigo": "CH10",
+      "precio": "S/239.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "10 agentes",
+        "10 canales",
+        "Integración WhatsApp",
+        "Integraciones Web, Facebook Messenger, Instagram, Telegram, Gmail, SMS, API",
+        "Incluye todas las funciones y características actuales y futuras"
+      ],
+      "url_pedido": "https://buho.la/store/chat/chat-buho-ch-10",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/239.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/2390.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/2868.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "Chat Buho - CH Ilimitado",
+      "codigo": "CH-ILIMITADO",
+      "precio": "S/399.00",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "Ilimitados agentes",
+        "Ilimitados canales",
+        "Integración WhatsApp",
+        "Integraciones Web, Facebook Messenger, Instagram, Telegram, Gmail, SMS, API",
+        "Incluye todas las funciones y características actuales y futuras"
+      ],
+      "url_pedido": "https://buho.la/store/chat/plan-ilimitado",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/399.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/3990.00 PEN",
+          "descuento": "17%",
+          "precio_original": "S/4788.00 PEN"
+        }
+      ]
+    }
+  ],
+  "nota_precios": "Precios incluyen IGV. Descuentos disponibles en ciclo anual (17% de ahorro).",
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/chat",
+    "empresa": "Digital Buho SAC"
+  }
+}

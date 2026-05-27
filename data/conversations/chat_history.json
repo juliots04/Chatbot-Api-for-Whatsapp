@@ -1,0 +1,42 @@
+{
+  "users": {
+    "51986079838": {
+      "lastActivity": 1779574514177,
+      "messageCount": 4,
+      "messages": [
+        {
+          "type": "human",
+          "content": "Hola Búho, esta es una prueba de audio para verificar transcripción y respuesta."
+        },
+        {
+          "type": "ai",
+          "content": "¡Hola! 👋 Me alegra que estés probando el audio. Recibí tu mensaje perfectamente.\n\n¿En qué puedo ayudarte hoy, Julio? Cuéntame qué servicio de Búho te interesa. 😊"
+        },
+        {
+          "type": "human",
+          "content": "holaa"
+        },
+        {
+          "type": "ai",
+          "content": "¡Hola, Julio! 👋\n\n¿En qué puedo ayudarte hoy? Estoy aquí para resolver tus dudas sobre nuestros productos y servicios."
+        },
+        {
+          "type": "human",
+          "content": "Hola"
+        },
+        {
+          "type": "ai",
+          "content": "¡Hola, Julio! 👋\n\n¿En qué puedo ayudarte hoy? Estoy aquí para resolver tus dudas sobre nuestros productos y servicios."
+        },
+        {
+          "type": "human",
+          "content": "Hola"
+        },
+        {
+          "type": "ai",
+          "content": "¡Hola, Julio! 👋\n\n¿En qué puedo ayudarte hoy? Estoy a tu disposición para cualquier consulta sobre nuestros productos."
+        }
+      ]
+    }
+  }
+}

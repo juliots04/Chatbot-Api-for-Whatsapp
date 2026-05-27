@@ -1,0 +1,123 @@
+{
+  "sitio": "Certificado Digital - SUNAT Perú",
+  "mercado": "Peru",
+  "entidad_fiscal": "SUNAT",
+  "pais_iso": "PE",
+  "keywords": ["sunat", "peru", "indecopi", "certificado peru", "facturacion peru", "certificado sunat"],
+  "url": "https://buho.la/store/certificado-sunat",
+  "ultima_actualizacion": "2026-03-26T19:49:31.839Z",
+  "descripcion_general": "Certificado Digital para facturación electrónica válido para SUNAT. Todo el proceso de validación es remoto. Acreditado por INDECOPI con vigencia anual, bianual o trianual. Emisión en menos de 24 horas. Incluye gestión de emisión ante la entidad certificadora.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Certificado para SUNAT",
+      "descripcion": "Certificado digital válido y acreditado para la emisión de comprobantes electrónicos ante SUNAT."
+    },
+    {
+      "titulo": "Proceso Remoto",
+      "descripcion": "Todo el proceso de validación es 100% remoto, sin necesidad de acudir presencialmente."
+    },
+    {
+      "titulo": "Acreditado por INDECOPI",
+      "descripcion": "Certificados emitidos por entidades certificadoras acreditadas por INDECOPI."
+    },
+    {
+      "titulo": "Emisión Rápida",
+      "descripcion": "Emisión del certificado digital en menos de 24 horas una vez completada la validación."
+    },
+    {
+      "titulo": "Cupón de Descuento",
+      "descripcion": "Usa el cupón CERTBUHO para obtener hasta S/50.00 de descuento adicional en cualquier plan."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Certificado digital para facturación electrónica SUNAT",
+    "Validación remota completa",
+    "Acreditación INDECOPI",
+    "Emisión en menos de 24 horas",
+    "Gestión de emisión ante la entidad certificadora incluida",
+    "Compatible con todos los sistemas de facturación electrónica (Pro8, Fastura, Factura Fácil, etc.)",
+    "Cupón CERTBUHO para descuento de hasta S/50.00"
+  ],
+  "planes": [
+    {
+      "nombre": "Certificado Digital - Anual",
+      "codigo": "CERT-ANUAL",
+      "precio": "S/249.00",
+      "moneda": "PEN",
+      "ciclo": "Anual",
+      "vigencia": "1 año",
+      "incluye": [
+        "Certificado digital para facturación electrónica SUNAT",
+        "Todo el proceso de validación es remoto",
+        "Gestión de emisión ante la entidad certificadora",
+        "Cupón CERTBUHO para descuento de hasta S/50.00"
+      ],
+      "url_pedido": "https://buho.la/store/certificado-sunat/certificado-digital-sunat-clientes",
+      "detalles_compra": {
+        "precio_total": "S/249.00 PEN",
+        "subtotal": "S/211.02 PEN",
+        "igv_18": "S/37.98 PEN",
+        "nota": "Incluye gestión de emisión ante la entidad certificadora"
+      },
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "S/249.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Certificado Digital - Bianual",
+      "codigo": "CERT-BIANUAL",
+      "precio": "S/449.00",
+      "moneda": "PEN",
+      "ciclo": "Bi-Anual",
+      "vigencia": "2 años",
+      "incluye": [
+        "Certificado digital para facturación electrónica SUNAT",
+        "Todo el proceso de validación es remoto",
+        "Gestión de emisión ante la entidad certificadora",
+        "Cupón CERTBUHO para descuento de hasta S/50.00"
+      ],
+      "url_pedido": "https://buho.la/store/certificado-sunat/certificado-digital-bianual",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "S/449.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Certificado Digital - Trianual",
+      "codigo": "CERT-TRIANUAL",
+      "precio": "S/499.00",
+      "moneda": "PEN",
+      "ciclo": "Trienalmente",
+      "vigencia": "3 años",
+      "incluye": [
+        "Certificado digital para facturación electrónica SUNAT",
+        "Todo el proceso de validación es remoto",
+        "Gestión de emisión ante la entidad certificadora",
+        "Cupón CERTBUHO para descuento de hasta S/50.00"
+      ],
+      "url_pedido": "https://buho.la/store/certificado-sunat/certificado-digital-trianual",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Trianual",
+          "precio": "S/499.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    }
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/certificado-sunat",
+    "empresa": "Digital Buho SAC"
+  }
+}

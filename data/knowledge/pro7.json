@@ -1,0 +1,166 @@
+{
+  "sitio": "Pro7 - Sistema de Facturacion",
+  "url": "https://manual.uio.la/Pro7",
+  "ultima_actualizacion": "2026-03-26T19:50:22.687Z",
+  "estado_producto": {
+    "estado": "Obsoleto",
+    "detalle": "Pro7 se considera una version anterior en transicion hacia plataformas mas recientes.",
+    "recomendacion": "No iniciar proyectos nuevos en Pro7; evaluar migracion a Pro8 o ProX."
+  },
+  "descripcion_general": "Pro7 fue una etapa importante del ecosistema de facturacion y modulos comerciales. Actualmente se recomienda migrar a soluciones mas nuevas para soporte, mejoras y continuidad.",
+  "opciones_migracion": [
+    {
+      "destino": "Pro8",
+      "cuando_conviene": "Si se busca continuidad del flujo Pro6/Pro7 con mejoras operativas y soporte vigente.",
+      "beneficios": [
+        "Mejoras de rendimiento y estabilidad",
+        "Actualizaciones mas recientes",
+        "Mayor compatibilidad con modulos del ecosistema"
+      ]
+    },
+    {
+      "destino": "ProX",
+      "cuando_conviene": "Si se requiere un enfoque mas moderno y especializado segun el tipo de operacion.",
+      "beneficios": [
+        "Arquitectura y modulos mas recientes",
+        "Mayor flexibilidad para escenarios nuevos",
+        "Ruta de crecimiento para nuevas implementaciones"
+      ]
+    }
+  ],
+  "guia_comercial": {
+    "mensaje_corto": "Pro7 es una version anterior. Lo recomendable es migrar a Pro8 o ProX segun el nivel de operacion que necesites.",
+    "mensaje_tecnico": "La migracion debe evaluarse por compatibilidad de datos, personalizaciones previas y alcance de modulos activos."
+  },
+  "fuentes_publicas": [
+    {
+      "fuente": "Manual oficial Pro7",
+      "url": "https://manual.uio.la/Pro7",
+      "evidencia": "Indice general de documentacion Pro7."
+    },
+    {
+      "fuente": "Comparativa Mozo en Pro7",
+      "url": "https://manual.uio.la/Pro7/mozo/mozo-comparison",
+      "evidencia": "Contenido de comparacion operativa vinculado al ecosistema Pro7."
+    }
+  ],
+  "documentacion": {
+    "paginas": [
+      {
+        "url": "https://manual.uio.la/Pro7",
+        "titulo": "Sistema de Facturación Pro 7",
+        "resumen": "Pro 7 es un sistema completo de facturación electrónica diseñado específicamente para cumplir con los requerimientos fiscales de SUNAT en Perú. Nuestra plataforma permite emitir comprobantes electrónicos de manera eficiente, gestionar inventarios, controlar ventas y administrar tu negocio desde cualquier dispositivo.",
+        "secciones": [
+          "Introducción​",
+          "Descripción General​",
+          "Funcionalidades Principales​",
+          "Enfoque en el Rendimiento​",
+          "Diseño Limpio, Simple y Funcional​",
+          "Optimizado para Web y Dispositivos Móviles​",
+          "Tecnologías​",
+          "Laravel y PHP​",
+          "MySQL​",
+          "Vue 2​",
+          "Node.js​",
+          "Compatibilidad con Ecosistema​",
+          "Comunidad​",
+          "Licencia​"
+        ],
+        "puntos_clave": [
+          "Sistema de Facturación Pro 7",
+          "Facturación Electrónica: Emite comprobantes electrónicos como facturas, boletas, notas de venta, etc. cumpliendo con los requisitos de SUNAT.",
+          "Gestión de Inventarios: Controla el stock de productos en tiempo real, con opciones avanzadas como búsqueda por serie y precios por almacén.",
+          "Punto de Venta (POS): Optimiza las ventas con funcionalidades como impresión automática de comprobantes y búsqueda con escáner de códigos de barras.",
+          "Reportes Financieros: Genera reportes detallados para analizar el rendimiento de tu negocio.",
+          "Gestión de Usuarios: Configura permisos y roles para cada usuario según las necesidades de tu empresa.",
+          "Introducción",
+          "Descripción General",
+          "Funcionalidades Principales",
+          "Enfoque en el Rendimiento",
+          "Diseño Limpio, Simple y FuncionalOptimizado para Web y Dispositivos Móviles",
+          "Optimizado para Web y Dispositivos Móviles",
+          "TecnologíasLaravel y PHPMySQLVue 2Node.js",
+          "Laravel y PHP",
+          "Compatibilidad con Ecosistema",
+          "Comunidad",
+          "Licencia"
+        ],
+        "extraido_en": "2026-03-26T19:50:21.510Z"
+      },
+      {
+        "url": "https://manual.uio.la/Pro7/mozo/mozo-comparison",
+        "titulo": "Mozo.pe vs Mozo Compilado",
+        "resumen": "El Sistema Mozo es una extensión del Sistema de Facturación Pro 8 diseñada específicamente para restaurantes, bares y cafeterías. Este sistema facilita la gestión de mesas, pedidos y comandas, integrándose directamente con el módulo de Punto de Venta (POS) para la facturación y cobro.",
+        "secciones": [
+          "Introducción​",
+          "📊 Tabla Comparativa​",
+          "Mozo.pe (Versión Web)​",
+          "🌐 Características Principales​",
+          "Mozo Compilado (Versión Instalable)​",
+          "📋 Funcionalidades Comunes​",
+          "🍽️ Gestión de Mesas​",
+          "📝 Gestión de Pedidos y Comandas​",
+          "💰 Módulo POS (Punto de Venta)​",
+          "👥 Gestión de Personal​",
+          "🚀 Guía de Instalación​",
+          "🤔 ¿Cuál Versión Elegir?​",
+          "Elige Mozo.pe (Web) si:​",
+          "Elige Mozo Compilado si:​",
+          "📚 Recursos Adicionales​",
+          "💡 Notas Importantes​"
+        ],
+        "puntos_clave": [
+          "Sistema de Facturación Pro 7",
+          "Mozo.peIntroducciónMozo.pe vs Mozo CompiladoMozo en cPanelMozo: Configuración PreviaIniciar Sesión en MozoMódulo POS (Punto de Venta)📋 Módulo Mesas",
+          "Introducción",
+          "Mozo.pe vs Mozo Compilado",
+          "Mozo en cPanel",
+          "Mozo: Configuración Previa",
+          "Iniciar Sesión en Mozo",
+          "Módulo POS (Punto de Venta)",
+          "📋 Módulo Mesas",
+          "Acceso Gratuito: Disponible sin costo desde la plataforma web",
+          "Sin Instalación: Funciona directamente desde el navegador",
+          "Inicio Rápido: Comienza a usar el sistema de inmediato",
+          "Configuración Requerida: Necesitas configurar la URL de conexión y otros parámetros",
+          "No Personalizable: La interfaz y el branding no se pueden modificar",
+          "Funcionalidad Limitada: Algunas características avanzadas no están disponibles",
+          "Sin Tipo de Usuario Mozo: No permite crear usuarios específicos con el rol \"Mozo\"",
+          "Restaurantes que quieren probar el sistema antes de invertir",
+          "Negocios pequeños con necesidades básicas",
+          "Uso temporal o como sistema de respaldo",
+          "Establecimientos que no requieren personalización",
+          "Totalmente Personalizable: Edita imágenes, logos, colores y branding",
+          "Sin Limitaciones: Acceso a todas las funcionalidades del sistema",
+          "Usuarios Mozo: Permite crear y gestionar usuarios con el rol específico de \"Mozo\"",
+          "Integración Completa: Se integra perfectamente con el Sistema Pro 8 del cliente",
+          "Control Total: El cliente tiene control completo sobre su instalación"
+        ],
+        "extraido_en": "2026-03-26T19:50:22.686Z"
+      }
+    ]
+  },
+  "resumen_documentacion": [
+    "ChatBuho",
+    "Sistema de Facturación Pro 7",
+    "App Android",
+    "Actualizaciones",
+    "Multi Empresa",
+    "Guias adicionales",
+    "Preguntas Comunes",
+    "Errores Sunat",
+    "Mozo.peIntroducciónMozo.pe vs Mozo CompiladoMozo en cPanelMozo: Configuración PreviaIniciar Sesión en MozoMódulo POS (Punto de Venta)📋 Módulo Mesas",
+    "Introducción",
+    "Mozo.pe vs Mozo Compilado",
+    "Mozo en cPanel",
+    "Mozo: Configuración Previa",
+    "Facturación Electrónica: Emite comprobantes electrónicos como facturas, boletas, notas de venta, etc. cumpliendo con los requisitos de SUNAT.",
+    "Gestión de Inventarios: Controla el stock de productos en tiempo real, con opciones avanzadas como búsqueda por serie y precios por almacén.",
+    "Punto de Venta (POS): Optimiza las ventas con funcionalidades como impresión automática de comprobantes y búsqueda con escáner de códigos de barras.",
+    "Reportes Financieros: Genera reportes detallados para analizar el rendimiento de tu negocio.",
+    "Gestión de Usuarios: Configura permisos y roles para cada usuario según las necesidades de tu empresa.",
+    "Descripción General",
+    "Iniciar Sesión en Mozo",
+    "Módulo POS (Punto de Venta)"
+  ]
+}

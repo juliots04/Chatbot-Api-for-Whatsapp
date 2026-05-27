@@ -1,0 +1,127 @@
+{
+  "sitio": "APP 3.1 Facturación - Perú",
+  "url": "https://buho.la/store/app",
+  "ultima_actualizacion": "2026-03-26T19:51:08.261Z",
+  "descripcion_general": "APP 3.1 es la aplicación móvil de facturación electrónica de Digital Buho para Perú. Compilada para Android e iOS, permite facturar desde el celular o tablet. Se ofrece como código fuente (Essential o Priority) o como compilación personalizada con logo y nombre propio.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Aplicación Móvil de Facturación",
+      "descripcion": "Aplicación nativa compilada para Android e iOS para facturación electrónica desde dispositivos móviles."
+    },
+    {
+      "titulo": "Interfaz Auto-ajustable",
+      "descripcion": "La interfaz se auto-ajusta automáticamente a celulares y tablets."
+    },
+    {
+      "titulo": "Código Fuente Disponible",
+      "descripcion": "Acceso al repositorio del código fuente con manuales de compilación y publicación."
+    },
+    {
+      "titulo": "Compilación Personalizada",
+      "descripcion": "APK personalizado con logo y nombre propio para Android, incluye 4 compilaciones con actualizaciones por un año."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Facturación electrónica desde dispositivos móviles",
+    "Compilación para Android e iOS",
+    "Interfaz adaptable a celulares y tablets",
+    "Acceso al código fuente (planes Essential y Priority)",
+    "Manuales de compilación y publicación",
+    "Soporte técnico por tickets o WhatsApp según plan",
+    "APK personalizado con logo y nombre (plan Compilación)",
+    "Actualizaciones incluidas durante 1 año"
+  ],
+  "planes": [
+    {
+      "nombre": "APP 3.1 - Código Fuente Essential",
+      "codigo": "APP-ESSENTIAL",
+      "precio_semianual": "S/900.00",
+      "precio_anual": "S/1,800.00",
+      "moneda": "PEN",
+      "ciclo": "Semi-Anual / Anual",
+      "incluye": [
+        "Acceso al repositorio de la App 3.1",
+        "Soporte por Tickets (para 1 dominio)",
+        "Manuales de compilación y publicación para Android e iOS"
+      ],
+      "nota": "Si eres cliente antiguo, comunícate directamente para obtener descuento exclusivo por renovación.",
+      "url_pedido": "https://buho.la/store/app/essential",
+      "detalles_compra": {
+        "ciclo_semianual": {
+          "precio_total": "S/900.00 PEN"
+        },
+        "ciclo_anual": {
+          "precio_total": "S/1,800.00 PEN"
+        }
+      },
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Semi-Anual",
+          "precio": "S/900.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/1600.00 PEN",
+          "descuento": "11%",
+          "precio_original": "S/1800.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "APP 3.1 - Código Fuente Priority",
+      "codigo": "APP-PRIORITY",
+      "precio_semianual": "S/1800.00",
+      "precio_anual": "S/3,600.00",
+      "moneda": "PEN",
+      "ciclo": "Semi-Anual / Anual",
+      "incluye": [
+        "Acceso al repositorio de la App 3.1",
+        "Soporte por WhatsApp (para 1 dominio)",
+        "Manuales de compilación y publicación para Android e iOS"
+      ],
+      "nota": "Si eres cliente antiguo, comunícate directamente para obtener descuento exclusivo por renovación.",
+      "url_pedido": "https://buho.la/store/app/priority",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Semi-Anual",
+          "precio": "S/1800.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        },
+        {
+          "ciclo": "Anual",
+          "precio": "S/3200.00 PEN",
+          "descuento": "11%",
+          "precio_original": "S/3600.00 PEN"
+        }
+      ]
+    },
+    {
+      "nombre": "App 3.1 - Compilación",
+      "codigo": "APP-COMPILACION",
+      "precio": "S/400.00",
+      "moneda": "PEN",
+      "ciclo": "Anual",
+      "incluye": [
+        "APK personalizado con logo y nombre para Android",
+        "4 compilaciones con actualizaciones por un año"
+      ],
+      "url_pedido": "https://buho.la/store/app/compilacion",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "S/400.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    }
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/app",
+    "empresa": "Digital Buho SAC"
+  }
+}

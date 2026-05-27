@@ -1,0 +1,28 @@
+{
+  "name": "ia-buho-whatsapp-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp AI Bot using Gemini and WhatsApp Cloud API for Pro8 system",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "scrape:store": "node scrape_buho_store.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@langchain/core": "^1.1.35",
+    "@langchain/google-genai": "^2.1.26",
+    "axios": "^1.6.8",
+    "cheerio": "^1.2.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "langchain": "^1.2.36",
+    "mysql2": "^3.20.0",
+    "node-cron": "^4.2.1",
+    "playwright": "^1.58.2",
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

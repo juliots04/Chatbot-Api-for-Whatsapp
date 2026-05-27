@@ -1,0 +1,123 @@
+{
+  "sitio": "Certificado Digital - DIAN Colombia",
+  "mercado": "Colombia",
+  "entidad_fiscal": "DIAN",
+  "pais_iso": "CO",
+  "keywords": ["dian", "colombia", "radian", "facturacion colombia", "certificado colombia", "certificado dian", "bancolombia"],
+  "url": "https://buho.la/store/certificados-dian",
+  "ultima_actualizacion": "2026-03-26T19:51:13.956Z",
+  "descripcion_general": "Certificado de firma digital para facturación electrónica en Colombia, válido ante la DIAN. El proceso de validación es 100% remoto e incluye acompañamiento comercial y operativo.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Certificado para DIAN",
+      "descripcion": "Certificado digital válido para firma electrónica y procesos exigidos por la DIAN."
+    },
+    {
+      "titulo": "Precios con IVA",
+      "descripcion": "Todos los precios incluyen IVA colombiano."
+    },
+    {
+      "titulo": "Validación remota",
+      "descripcion": "Todo el proceso de validación y gestión se realiza en modalidad remota."
+    },
+    {
+      "titulo": "Cobertura de uso",
+      "descripcion": "Permite firmar factura electrónica, nómina, POS, documentos soporte y eventos Radian."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Firma de factura electrónica DIAN",
+    "Firma de nómina electrónica",
+    "Firma para POS electrónico",
+    "Firma de documentos soporte",
+    "Firma de eventos Radian",
+    "Gestión asistida por el equipo comercial"
+  ],
+  "planes": [
+    {
+      "nombre": "Certificado Firma Digital - Anual",
+      "codigo": "DIAN-ANUAL",
+      "precio": "$139.000,00 COP",
+      "moneda": "COP",
+      "ciclo": "Anual",
+      "vigencia": "1 año",
+      "precio_regular": "$173.750,00 COP",
+      "descuento_primera_compra": "20%",
+      "incluye": [
+        "Certificado para firma electrónica DIAN",
+        "Validación 100% remota",
+        "Acompañamiento en el proceso"
+      ]
+    },
+    {
+      "nombre": "Certificado Firma Digital - Bi-anual",
+      "codigo": "DIAN-BIANUAL",
+      "precio": "$240.000,00 COP",
+      "moneda": "COP",
+      "ciclo": "Bi-anual",
+      "vigencia": "2 años",
+      "precio_regular": "$320.000,00 COP",
+      "descuento_primera_compra": "25%",
+      "incluye": [
+        "Certificado para firma electrónica DIAN",
+        "Validación 100% remota",
+        "Acompañamiento en el proceso"
+      ]
+    }
+  ],
+  "requisitos_documentales": [
+    "Ficha RUT de la empresa",
+    "Certificado de existencia de Cámara de Comercio (vigencia no mayor a 30 días, si aplica persona jurídica)",
+    "Cédula del representante legal"
+  ],
+  "tiempos_emision": {
+    "tiempo_objetivo": "Hasta 1 día hábil tras validación documental correcta",
+    "horario_operativo": "Lunes a viernes de 9:00 a.m. a 6:00 p.m.",
+    "reglas": [
+      "Si la documentación se envía fuera de horario, la gestión inicia el siguiente día hábil.",
+      "Si el trámite se realiza viernes, la entrega puede ser lunes hábil (o martes si lunes es festivo)."
+    ]
+  },
+  "flujo_comercial_recomendado": [
+    "Validar si el cliente requiere certificado anual o bi-anual.",
+    "Confirmar plan y precio con descuento de primera compra.",
+    "Compartir cuenta bancaria para pago.",
+    "Enviar requisitos documentales.",
+    "Solicitar datos de registro del cliente.",
+    "Indicar correo para envío de documentación.",
+    "Solicitar comprobante de pago por WhatsApp."
+  ],
+  "datos_registro_cliente": [
+    "Nombre completo",
+    "Correo electrónico (no corporativo)",
+    "NIT o CC",
+    "Dirección",
+    "Número de celular"
+  ],
+  "pagos": {
+    "titular": "DIGITAL BUHO S.A.S.",
+    "nit": "901846280",
+    "cuenta_ahorros_bancolombia": "253-000159-76",
+    "instruccion": "El comprobante de pago se envía por WhatsApp."
+  },
+  "canales_documentacion": {
+    "correo_documentos": "colombia@buho.la",
+    "nota": "La documentación debe enviarse por correo; el comprobante de pago por WhatsApp."
+  },
+  "nota": "Los precios publicados corresponden a primera compra e incluyen IVA.",
+  "productos_relacionados": [
+    {
+      "nombre": "Fastura - Colombia",
+      "url": "https://buho.la/store/fastura-colombia"
+    },
+    {
+      "nombre": "Certificado Digital - SUNAT Perú",
+      "url": "https://buho.la/store/certificado-sunat"
+    }
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/certificados-dian",
+    "empresa": "Digital Buho SAC"
+  }
+}

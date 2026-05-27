@@ -1,0 +1,126 @@
+{
+  "sitio": "Correos Corporativos: Zoho Mail",
+  "url": "https://buho.la/store/zoho-mail",
+  "ultima_actualizacion": "2026-03-26T19:43:20.598Z",
+  "descripcion_general": "Zoho Mail es una solución de correos corporativos ofrecida por Digital Buho. Permite a las empresas tener correos profesionales con su propio dominio. Ofrece planes desde gratuitos hasta mensuales con almacenamiento expandible. Compatible con Outlook y con soporte completo para configuración.",
+  "caracteristicas_clave": [
+    {
+      "titulo": "Correo Corporativo Profesional",
+      "descripcion": "Correos electrónicos profesionales con tu propio dominio para generar confianza con tus clientes."
+    },
+    {
+      "titulo": "Plan Gratuito Disponible",
+      "descripcion": "Plan gratuito con 5GB de espacio por cuenta para hasta 5 correos, sin costo de renovación."
+    },
+    {
+      "titulo": "Almacenamiento Expandible",
+      "descripcion": "Posibilidad de incrementar el almacenamiento con opciones adicionales de 25GB, 50GB o 100GB por cuenta."
+    },
+    {
+      "titulo": "Configuración en Outlook",
+      "descripcion": "Los planes de pago incluyen configuración e integración con Microsoft Outlook."
+    }
+  ],
+  "funcionalidades_detalladas": [
+    "Correo electrónico corporativo con dominio propio",
+    "Interfaz web de Zoho Mail",
+    "Configuración en Outlook (planes de pago)",
+    "Almacenamiento ampliable",
+    "Antispam y antivirus integrado",
+    "Panel de administración de correos",
+    "Soporte incluido en plan gratuito (coste de instalación S/99.00)"
+  ],
+  "planes": [
+    {
+      "nombre": "Zoho Mail Gratis",
+      "codigo": "Z5FREE",
+      "precio": "Gratis",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "costo_instalacion": "S/99.00 (Soporte incluido)",
+      "incluye": [
+        "5GB de espacio por cuenta",
+        "Hasta 5 correos o cuentas gratis",
+        "Sin costo de renovación",
+        "Gratis por siempre o hasta que aumente a 6 correos"
+      ],
+      "no_incluye": [
+        "Integración con Outlook"
+      ],
+      "nota": "Si aumenta a 6 correos, pasa automáticamente al siguiente plan",
+      "url_pedido": "https://buho.la/store/zoho-mail/zoho-mail-gratis-z5free",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "Gratis",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Zoho Mail Anual",
+      "codigo": "Z10",
+      "precio": "S/79.00",
+      "moneda": "PEN",
+      "ciclo": "Anual",
+      "incluye": [
+        "10 GB de espacio por cuenta",
+        "Configuración en Outlook",
+        "Incremento 25GB adicionales por S/25.00 por cuenta",
+        "Incremento 50GB adicionales por S/50.00 por cuenta",
+        "Incremento 100GB adicionales por S/100.00 por cuenta"
+      ],
+      "url_pedido": "https://buho.la/store/zoho-mail/zoho-mail-z5",
+      "detalles_compra": {
+        "ciclo_anual": {
+          "precio_total": "S/79.00 PEN",
+          "subtotal": "S/66.95 PEN",
+          "igv_18": "S/12.05 PEN"
+        },
+        "opciones_adicionales": {
+          "espacio_25gb": "S/25.00 por cuenta",
+          "espacio_50gb": "S/50.00 por cuenta",
+          "espacio_100gb": "S/100.00 por cuenta"
+        },
+        "costo_instalacion": "Ninguno"
+      },
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Anual",
+          "precio": "S/79.00 PEN",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Zoho Mail Mensual",
+      "codigo": "Z30",
+      "precio": "S/29.90",
+      "moneda": "PEN",
+      "ciclo": "Mensual",
+      "incluye": [
+        "30 GB de espacio por cuenta",
+        "Configuración en Outlook",
+        "Incremento 50GB adicionales por S/5.00 por cuenta",
+        "Incremento 100GB adicionales por S/10.00 por cuenta",
+        "Incremento 200GB adicionales por S/20.00 por cuenta"
+      ],
+      "url_pedido": "https://buho.la/store/zoho-mail/zoho-mail-z30",
+      "ciclos_facturacion": [
+        {
+          "ciclo": "Mensual",
+          "precio": "S/29.90 PEN",
+          "descuento": "",
+          "precio_original": ""
+        }
+      ]
+    }
+  ],
+  "contacto": {
+    "whatsapp": "+51 944 999 965",
+    "web": "https://buho.la/store/zoho-mail",
+    "empresa": "Digital Buho SAC"
+  }
+}
