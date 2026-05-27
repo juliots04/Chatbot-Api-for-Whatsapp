@@ -1,4 +1,3 @@
-# 🦉 ia-buho v.1
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Node.js-339933?logo=nodedotjs&logoColor=white&style=for-the-badge" alt="Node.js Badge" />
@@ -12,10 +11,10 @@
 
 ## 📋 Descripción
 
-**ia-buho** es un bot de WhatsApp potenciado con Inteligencia Artificial (Google Gemini) enfocado en la atención de productos y servicios de **Digital Buho**. Cuenta con un panel de administración web, persistencia relacional en MySQL y un módulo scraper automatizado para sincronizar el catálogo comercial.
+Proyecto acerca de un Chatbot para WhatsApp potenciado con Inteligencia Artificial (Google Gemini) enfocado en la atención de productos y servicios de una empresa o emprendimiento. Cuenta con un panel de administración web, persistencia relacional en MySQL y un módulo scraper automatizado para sincronizar el catálogo comercial.
 
 <p align="center">
-  <img width="1353" height="635" alt="{18AC72C0-63A6-46B8-B8B2-CBDE14C8A44D}" src="https://github.com/user-attachments/assets/1fbe130c-3888-4021-ab39-628f90a57a13" />
+  <img width="1356" height="632" alt="{715E7CF7-389C-4591-B9F7-BB54A4DD773C}" src="https://github.com/user-attachments/assets/ff4ddb1a-7afe-45a9-bbe1-cc2cc758ba71" />
 </p>
 
 ---
@@ -45,7 +44,8 @@ El servidor, base de datos y motor de IA están construidos utilizando:
 *   📈 **Módulo de Reportes & Analítica IA:** Clasifica automáticamente intenciones, valoraciones, estados de compra y embudos directamente desde las interacciones con IA.
 
 <p align="center">
-  <img width="883" height="512" alt="{CDBCF1E2-9715-483E-9FEF-26A9771A9D9B}" src="https://github.com/user-attachments/assets/a3789c76-ba31-4bbc-a194-a9754e093621" />
+  <img width="900" height="636" alt="{3E92E765-25E0-4486-8A79-EC5CE3F7D778}" src="https://github.com/user-attachments/assets/522ded31-0f37-47e3-9438-8ff96b4cad14" />
+
 </p>
 
 ---
@@ -60,8 +60,39 @@ El servidor, base de datos y motor de IA están construidos utilizando:
 6.  **Salida:** `whatsapp_service` despacha el mensaje formateado (o el audio correspondiente) al cliente final.
 7.  **Registro:** Se guardan las métricas de respuesta y el registro de la conversación en las tablas MySQL correspondientes.
 
+<p align="center">
+<img width="1359" height="635" alt="{88B1B590-5E4B-4F47-879E-78AEA5DF1809}" src="https://github.com/user-attachments/assets/fbce3c5b-18f6-4f0b-85a1-80ab7df0bfa1" />
+</p>
+
 ---
 
+## 📊 Módulo de Reportes y Analítica IA
+
+El sistema cuenta con un motor de clasificación y análisis automatizado post-conversación:
+1.  **Inserción de Insights:** Cada interacción del usuario es clasificada en tiempo real a nivel de base de datos en la tabla `conversation_insights` registrando:
+    *   **Intención (Intent):** Saludos, quejas, interés de compra, etc.
+    *   **Etapa Comercial:** Fase del embudo (Descubrimiento, Selección, Cierre).
+    *   **Producto Consultado:** Identificación del producto específico del catálogo.
+    *   **Resultado (Outcome):** Si compró, solo preguntó, o reportó problemas.
+    *   **Valoración (Sentiment):** Sentimiento del mensaje (positivo, neutro, negativo).
+2.  **Visualización:** El panel web consume estos datos para mostrar analíticas en la pestaña **Reportes**, incluyendo embudos comerciales gráficos, gráficos de sentimientos, y un buscador indexado de insights.
+
+<p align="center">
+<img width="1353" height="633" alt="{4C20D7DE-71D0-4148-9311-993F9B4D1B93}" src="https://github.com/user-attachments/assets/75b0d114-49f9-43f8-91ef-907cddcfcc2f" />
+</p>
+
+---
+
+## 🎙️ Soporte para Mensajes de Voz y Audios
+
+El sistema integra un canal de análisis de notas de voz recibidas por WhatsApp:
+1.  **Detección:** El webhook intercepta un payload multimedia de tipo `audio`.
+2.  **Descarga:** Descarga los bytes del archivo en formato nativo desde los servidores de Meta.
+3.  **Procesamiento IA:** Envía el audio (en formato base64) directamente a Gemini con un prompt del sistema para transcribir.
+4.  **Flujo conversacional:** La transcripción de texto se inyecta en el orquestador conversacional principal de igual manera que un mensaje regular, respondiendo con el contexto de catálogo.
+5.  **Formatos Compatibles:** `audio/ogg`, `audio/ogg; codecs=opus`, `audio/mpeg`, `audio/mp3`, `audio/wav`, `audio/webm`, `audio/mp4`, y `audio/aac`.
+
+---
 ## 📂 Módulos Clave del Proyecto
 
 *   [`server.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/server.js): Inicialización del servidor, middlewares globales, endpoints principales y manejo de apagado limpio.
@@ -186,67 +217,11 @@ $env:SCRAPE_ONLY='fastura_colombia'; node scrape_buho_store.js
 
 ---
 
-## 📊 Módulo de Reportes y Analítica IA
-
-El sistema cuenta con un motor de clasificación y análisis automatizado post-conversación:
-1.  **Inserción de Insights:** Cada interacción del usuario es clasificada en tiempo real a nivel de base de datos en la tabla `conversation_insights` registrando:
-    *   **Intención (Intent):** Saludos, quejas, interés de compra, etc.
-    *   **Etapa Comercial:** Fase del embudo (Descubrimiento, Selección, Cierre).
-    *   **Producto Consultado:** Identificación del producto específico del catálogo.
-    *   **Resultado (Outcome):** Si compró, solo preguntó, o reportó problemas.
-    *   **Valoración (Sentiment):** Sentimiento del mensaje (positivo, neutro, negativo).
-2.  **Visualización:** El panel web consume estos datos para mostrar analíticas en la pestaña **Reportes**, incluyendo embudos comerciales gráficos, gráficos de sentimientos, y un buscador indexado de insights.
-
----
-
-## 🎙️ Soporte para Mensajes de Voz y Audios
-
-El sistema integra un canal de análisis de notas de voz recibidas por WhatsApp:
-1.  **Detección:** El webhook intercepta un payload multimedia de tipo `audio`.
-2.  **Descarga:** Descarga los bytes del archivo en formato nativo desde los servidores de Meta.
-3.  **Procesamiento IA:** Envía el audio (en formato base64) directamente a Gemini con un prompt del sistema para transcribir.
-4.  **Flujo conversacional:** La transcripción de texto se inyecta en el orquestador conversacional principal de igual manera que un mensaje regular, respondiendo con el contexto de catálogo.
-5.  **Formatos Compatibles:** `audio/ogg`, `audio/ogg; codecs=opus`, `audio/mpeg`, `audio/mp3`, `audio/wav`, `audio/webm`, `audio/mp4`, y `audio/aac`.
-
----
-
-## 🔒 Seguridad
-
-*   **Validación de Webhooks:** El webhook rechaza payloads no firmados por Meta, validando el hash `X-Hub-Signature-256` utilizando la clave secreta de la aplicación.
-*   **Tokens Administrativos:** Toda la comunicación del panel de administración está protegida por un sistema de tokens configurado mediante `.env`.
-*   **Manejo Seguro de Errores:** Circuit breaker que remueve llaves de Gemini saturadas o baneadas temporalmente para evitar interrupciones de servicio.
-
----
-
-## 🖥️ Panel Administrativo Web
-
-El panel de administración permite supervisar el rendimiento en tiempo real y chatear directamente.
-
-<p align="center">
-  <img width="746" height="439" alt="image" src="https://github.com/user-attachments/assets/0bf957aa-6217-42eb-8895-5c9a7776de15" />
-</p>
-
-### Capturas de Pantalla Automatizadas
-El proyecto incluye un script utilitario para tomar screenshots programados del panel de administración mediante Playwright:
-```bash
-node scripts/capture_admin_chat_screenshot.js
-```
-
----
-
-## ⚠️ Notas de Operatividad
-
-*   **Modo Desconectado (Redundancia):** En caso de corte de conexión con MySQL, el bot conmuta automáticamente a almacenamiento local en archivos JSON (`data/conversations/`) garantizando que no se pierdan interacciones.
-*   **Modo Simulación:** Si no se configuran las credenciales del API de WhatsApp, las respuestas generadas se imprimirán en los logs en consola para pruebas de desarrollo local.
-*   **Comando de Reseteo:** Al enviar el comando `/newchatgg` (o el keyword parametrizado) por WhatsApp, se limpia la memoria activa del chat para reiniciar la conversación del usuario.
-
----
-
 ## 📄 Licencia
 
 Este software es propiedad exclusiva de **Digital Buho**. Todos los derechos reservados. Su uso, copia y distribución están regulados por los contratos corporativos de la empresa.
 
----
 
-Creado con ❤️ por [juliots04](https://github.com/juliots04)#   C h a t b o t - A p i - f o r - W h a t s a p p  
+Creado con ❤️ por [juliots04](https://github.com/juliots04) 
+ 
  
