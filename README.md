@@ -7,7 +7,6 @@
   <img src="https://img.shields.io/badge/API-WhatsApp%20Cloud-25D366?logo=whatsapp&logoColor=white&style=for-the-badge" alt="WhatsApp Badge" />
 </p>
 
----
 
 ## 📋 Descripción
 
