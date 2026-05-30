@@ -9,7 +9,7 @@
     "scrape:store": "node scrape_buho_store.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
+    "@google/generative-ai": "^0.24.1",
     "@langchain/core": "^1.1.35",
     "@langchain/google-genai": "^2.1.26",
     "axios": "^1.6.8",
