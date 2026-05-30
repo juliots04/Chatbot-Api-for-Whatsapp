@@ -1,5 +1,40 @@
-const express = require('express');
+const fs = require('fs');
 const path = require('path');
+
+// Capturar errores de inicio y escribirlos a un archivo de log de fallos de forma síncrona
+process.on('uncaughtException', (error) => {
+    try {
+        const logPath = path.join(__dirname, 'logs', 'crash.log');
+        fs.writeFileSync(logPath, `[${new Date().toISOString()}] CRITICAL CRASH:\n${error.stack || error}\n`);
+    } catch (e) {
+        console.error('Failed to write crash log:', e);
+    }
+    
+    if (typeof logger !== 'undefined' && logger.error) {
+        logger.error(`[CRITICAL] Excepción no capturada: ${error.stack || error}`);
+    }
+    
+    if (typeof gracefulShutdown === 'function') {
+        gracefulShutdown('uncaughtException');
+    } else {
+        process.exit(1);
+    }
+});
+
+process.on('unhandledRejection', (reason) => {
+    try {
+        const logPath = path.join(__dirname, 'logs', 'crash.log');
+        fs.writeFileSync(logPath, `[${new Date().toISOString()}] CRITICAL REJECTION:\n${reason?.stack || reason}\n`);
+    } catch (e) {
+        console.error('Failed to write crash log:', e);
+    }
+    
+    if (typeof logger !== 'undefined' && logger.error) {
+        logger.error(`[CRITICAL] Promesa rechazada no manejada: ${reason?.stack || reason}`);
+    }
+});
+
+const express = require('express');
 const config = require('./config');
 const logger = require('./src/utils/logger');
 const metrics = require('./src/utils/metrics');
@@ -171,12 +206,3 @@ function gracefulShutdown(signal) {
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
-process.on('uncaughtException', (error) => {
-    logger.error(`[CRITICAL] Excepción no capturada: ${error.stack}`);
-    gracefulShutdown('uncaughtException');
-});
-
-process.on('unhandledRejection', (reason) => {
-    logger.error(`[CRITICAL] Promesa rechazada no manejada: ${reason}`);
-    // No cerramos el proceso por rechazos no manejados transitorios; se registran para diagnóstico.
-});

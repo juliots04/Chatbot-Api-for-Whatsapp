@@ -88,7 +88,7 @@ class GeminiService {
 
     _buildModel(keyData, runtimeConfig) {
         return new ChatGoogleGenerativeAI({
-            model: config.gemini.model || 'gemini-1.5-flash',
+            model: config.gemini.model || 'gemini-2.0-flash',
             apiKey: keyData.apiKey,
             maxOutputTokens: runtimeConfig.generation.maxOutputTokens,
             temperature: runtimeConfig.generation.temperature,
@@ -1139,7 +1139,7 @@ class GeminiService {
 
             const genAI = new GoogleGenerativeAI(keyData.apiKey);
             const model = genAI.getGenerativeModel({
-                model: config.gemini.model || 'gemini-1.5-flash',
+                model: config.gemini.model || 'gemini-2.0-flash',
                 generationConfig: {
                     temperature: 0.2,
                     maxOutputTokens: Math.max(500, Math.min(runtimeConfig.generation.maxOutputTokens, 900)),
@@ -1252,7 +1252,7 @@ class GeminiService {
 
             const genAI = new GoogleGenerativeAI(keyData.apiKey);
             const model = genAI.getGenerativeModel({
-                model: config.gemini.model || 'gemini-1.5-flash',
+                model: config.gemini.model || 'gemini-2.0-flash',
                 generationConfig: {
                     temperature: 0.1,
                     maxOutputTokens: Math.max(700, Math.min(runtimeConfig.generation.maxOutputTokens, 1200)),

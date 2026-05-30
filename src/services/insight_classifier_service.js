@@ -74,7 +74,7 @@ IMPORTANTE: Prioriza siempre la categoría más específica. "hola", "hi", "hey"
         try {
             const genAI = new GoogleGenerativeAI(apiKeys[0]);
             const model = genAI.getGenerativeModel({
-                model: config.gemini.model || 'gemini-1.5-flash',
+                model: config.gemini.model || 'gemini-2.0-flash',
                 generationConfig: { temperature: 0.1, maxOutputTokens: 200, topP: 0.8 }
             });
 
