@@ -229,7 +229,7 @@ class ScraperService {
                 try {
                     logger.info(`[SCRAPER] Solicitando a Gemini extracción estructurada para ${source.name}...`);
                     const genAI = new GoogleGenerativeAI(config.gemini.apiKeys[0]);
-                    const model = genAI.getGenerativeModel({ model: config.gemini.model || 'gemini-2.0-flash' });
+                    const model = genAI.getGenerativeModel({ model: config.gemini.model || 'gemini-2.5-flash' });
                     
                     const prompt = `Analiza el siguiente contenido extraído de la web de ${source.name}.
 Extrae la información más importante y devuélvela estrictamente como un objeto JSON válido con la siguiente estructura (omite markdown y cualquier texto adicional, solo el JSON):
