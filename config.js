@@ -14,7 +14,7 @@ module.exports = {
             process.env.GEMINI_API_KEY_6
 
         ].filter(Boolean),
-        model: 'gemini-2.5-flash',
+        model: 'gemini-1.5-flash',
         generationConfig: {
             temperature: 0.3,
             topP: 0.9,

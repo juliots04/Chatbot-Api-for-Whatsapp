@@ -2187,6 +2187,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Auto-actualizaciones
     setInterval(refreshMetrics, 10000);
     setInterval(loadUsers, 15000);
+    setInterval(loadHistoricalData, 30000);
     startChatMirrorPolling();
 });
 

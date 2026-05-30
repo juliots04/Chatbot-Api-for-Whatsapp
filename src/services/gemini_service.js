@@ -1139,7 +1139,7 @@ class GeminiService {
 
             const genAI = new GoogleGenerativeAI(keyData.apiKey);
             const model = genAI.getGenerativeModel({
-                model: config.gemini.model || 'gemini-2.5-flash',
+                model: config.gemini.model || 'gemini-1.5-flash',
                 generationConfig: {
                     temperature: 0.2,
                     maxOutputTokens: Math.max(500, Math.min(runtimeConfig.generation.maxOutputTokens, 900)),
@@ -1252,7 +1252,7 @@ class GeminiService {
 
             const genAI = new GoogleGenerativeAI(keyData.apiKey);
             const model = genAI.getGenerativeModel({
-                model: config.gemini.model || 'gemini-2.5-flash',
+                model: config.gemini.model || 'gemini-1.5-flash',
                 generationConfig: {
                     temperature: 0.1,
                     maxOutputTokens: Math.max(700, Math.min(runtimeConfig.generation.maxOutputTokens, 1200)),

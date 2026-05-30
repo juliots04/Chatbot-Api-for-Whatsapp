@@ -74,7 +74,7 @@ IMPORTANTE: Prioriza siempre la categoría más específica. "hola", "hi", "hey"
         try {
             const genAI = new GoogleGenerativeAI(apiKeys[0]);
             const model = genAI.getGenerativeModel({
-                model: config.gemini.model || 'gemini-2.5-flash',
+                model: config.gemini.model || 'gemini-1.5-flash',
                 generationConfig: { temperature: 0.1, maxOutputTokens: 200, topP: 0.8 }
             });
 
@@ -94,13 +94,20 @@ IMPORTANTE: Prioriza siempre la categoría más específica. "hola", "hi", "hey"
             const sentiment = VALID_SENTIMENTS.includes(parsed.sentiment) ? parsed.sentiment : null;
             const outcome = VALID_OUTCOMES.includes(parsed.outcome) ? parsed.outcome : null;
             const topicSummary = parsed.topic_summary ? String(parsed.topic_summary).substring(0, 255) : null;
-            const product = parsed.product_consulted && parsed.product_consulted !== 'null'
-                ? String(parsed.product_consulted).substring(0, 120)
-                : null;
+            
+            // Fix parsing for product, allowing actual values but ignoring nulls and literal "null"
+            let product = null;
+            if (parsed.product_consulted && String(parsed.product_consulted).toLowerCase() !== 'null' && String(parsed.product_consulted).trim() !== '') {
+                product = String(parsed.product_consulted).substring(0, 120);
+            }
+
             const confidence = (typeof parsed.confidence === 'number' && parsed.confidence >= 0.5 && parsed.confidence <= 1.0)
                 ? parsed.confidence : 0.75;
 
-            if (!intent || !sentiment || !outcome) return null;
+            if (!intent || !sentiment || !outcome) {
+                logger.warn(`[INSIGHT] Invalid JSON structure from AI: ${raw}`);
+                return null;
+            }
 
             return { intent, sentiment, outcome, topicSummary, product, confidence };
         } catch (err) {

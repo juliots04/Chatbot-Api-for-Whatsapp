@@ -1,7 +1,7 @@
 const logger = require('../utils/logger');
 const metrics = require('../utils/metrics');
 
-const SNAPSHOT_INTERVAL_MS = 5 * 60 * 1000; // 5 minutos
+const SNAPSHOT_INTERVAL_MS = 1 * 60 * 1000; // 1 minuto
 const CLEANUP_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24 horas
 
 class MetricsSnapshotService {
