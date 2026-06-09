@@ -13,6 +13,8 @@ module.exports = {
             process.env.GEMINI_API_KEY_5,
             process.env.GEMINI_API_KEY_6,
             process.env.GEMINI_API_KEY_7
+
+
         ].filter(Boolean),
         model: 'gemini-2.5-flash',
         generationConfig: {
@@ -20,9 +22,9 @@ module.exports = {
             topP: 0.9,
             maxOutputTokens: 2000
         },
-        timeout: parseInt(process.env.GEMINI_TIMEOUT_MS || '18000', 10), // 18s per attempt (gemini-2.5-flash thinking model)
-        totalTimeoutMs: parseInt(process.env.GEMINI_TOTAL_TIMEOUT_MS || '35000', 10), // 35s max total budget
-        maxAttemptsPerMessage: parseInt(process.env.GEMINI_MAX_ATTEMPTS || '3', 10), // 3 keys max before failing
+        timeout: parseInt(process.env.GEMINI_TIMEOUT_MS || '25000', 10), // Aumentado de 12s a 25s para que no corte respuestas
+        totalTimeoutMs: parseInt(process.env.GEMINI_TOTAL_TIMEOUT_MS || '90000', 10), 
+        maxAttemptsPerMessage: parseInt(process.env.GEMINI_MAX_ATTEMPTS || '4', 10), // Reducido a 4 para no tardar una eternidad intentando
         retryKnowledgePromptChars: parseInt(process.env.GEMINI_RETRY_KNOWLEDGE_CHARS || '7000', 10),
         initialHistoryWindow: parseInt(process.env.GEMINI_INITIAL_HISTORY_WINDOW || '10', 10),
         retryHistoryWindow: parseInt(process.env.GEMINI_RETRY_HISTORY_WINDOW || '4', 10),

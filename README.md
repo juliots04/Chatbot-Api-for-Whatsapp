@@ -221,6 +221,4 @@ $env:SCRAPE_ONLY='fastura_colombia'; node scrape_buho_store.js
 Este software es propiedad exclusiva de **Digital Buho**. Todos los derechos reservados. Su uso, copia y distribución están regulados por los contratos corporativos de la empresa.
 
 
-Creado con ❤️ por [juliots04](https://github.com/juliots04) 
- 
- 
+Creado con ❤️ por [juliots04](https://github.com/juliots04)

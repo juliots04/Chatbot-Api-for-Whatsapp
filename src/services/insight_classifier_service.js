@@ -16,7 +16,6 @@ const VALID_OUTCOMES = ['purchased','just_asked','problem_reported','unresolved'
 class InsightClassifierService {
     constructor() {
         this._initialized = false;
-        this._classifyKeyIndex = 0; // Rotates through available keys
     }
 
     // =============================================
@@ -63,17 +62,14 @@ OUTCOME:
 - "redirected" → se redirigió a otro canal (humano, WhatsApp, web)
 - "ongoing" → conversación en curso sin resolución clara aún (saludos, mensajes cortos, confirmaciones)
 
-TOPIC_SUMMARY — Un resumen corto y GENÉRICO (máximo 5 palabras). PROHIBIDO copiar el mensaje del usuario:
-- Saludos → "Saludo inicial"
-- Despedidas → "Cierre de conversación"
-- Precios de producto → "Consulta precio [producto]"
-- Info sobre producto específico → "Consulta sobre [producto]"
-- Info catálogo/productos en general → "Consulta catálogo de productos"
-- Quejas → "Problema con [tema corto]"
-- Soporte técnico → "Soporte técnico"
-- Mensajes basura → "Mensaje no clasificable"
-- Confirmaciones (ok, sí, dale) → "Confirmación"
-- REGLA ABSOLUTA: topic_summary NO puede contener palabras del mensaje original reorganizadas. Debe ser una ETIQUETA descriptiva genérica.
+TOPIC_SUMMARY — Un resumen corto y descriptivo (NO repetir el mensaje literal):
+- Para saludos: "Saludo inicial"
+- Para despedidas: "Cierre de conversación"
+- Para precios: "Consulta precio [producto]"
+- Para info: "Información sobre [producto/servicio]"
+- Para quejas: "Problema con [descripción corta]"
+- Para mensajes basura: "Mensaje no clasificable"
+- NUNCA copies el mensaje textual del usuario como topic_summary
 
 PRODUCT_CONSULTED — Solo si el usuario menciona explícitamente uno de estos productos:
 ${knownProducts}
@@ -91,131 +87,69 @@ EJEMPLOS:
 - "ok" → {"intent":"other","sentiment":"neutral","outcome":"ongoing","topic_summary":"Confirmación","product_consulted":null,"confidence":0.8}
 - "el pro8 que tal es" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta sobre Pro 8","product_consulted":"Pro 8","confidence":0.9}
 - "y el hosting sirve?" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta sobre Hosting","product_consulted":"Hosting","confidence":0.9}
-- "en tus productos en que mas" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta catálogo de productos","product_consulted":null,"confidence":0.85}
-- "que mas ofrecen" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta catálogo de productos","product_consulted":null,"confidence":0.85}
 
 REGLAS:
 1. "hola", "hi", "hey", "buenas" SIEMPRE son "greeting", NUNCA "other"
 2. "ok gracias", "muchas gracias", "gracias eso es todo" son "farewell" (cierre), no "greeting"
 3. Mensajes sin sentido (aaaaa, jjj, emojis solos) SIEMPRE son "other"
-4. topic_summary PROHIBIDO copiar el mensaje del usuario. Usa SOLO estas etiquetas: "Saludo inicial", "Cierre de conversación", "Consulta catálogo de productos", "Consulta sobre [producto]", "Consulta precio [producto]", "Interés de compra", "Problema con [tema]", "Soporte técnico", "Mensaje no clasificable", "Confirmación"
+4. topic_summary NUNCA debe ser el mensaje literal del usuario — siempre debe ser un RESUMEN descriptivo
 5. Solo pon un product_consulted si el usuario menciona EXPLÍCITAMENTE un producto de la lista
 6. Prioriza la categoría más ESPECÍFICA sobre la genérica
 7. Si el mensaje menciona un PRODUCTO (de la lista), NUNCA puede ser "other" — clasifícalo como "info_request", "price_inquiry" o "purchase_interest" según el contexto
 8. Preguntas informales como "qué tal es", "cómo es", "es bueno", "sirve", "funciona", "qué onda con" sobre un producto = "info_request"`;
 
-        // Try up to 3 different keys (rotating) to handle rate limiting
-        const maxRetries = Math.min(3, apiKeys.length);
-        for (let attempt = 0; attempt < maxRetries; attempt++) {
-            const keyIndex = this._classifyKeyIndex % apiKeys.length;
-            this._classifyKeyIndex = (this._classifyKeyIndex + 1) % apiKeys.length;
-            const classifyKey = apiKeys[keyIndex];
+        try {
+            // Use last API key to avoid competing with main response generation
+            const classifyKey = apiKeys[apiKeys.length - 1];
+            const genAI = new GoogleGenerativeAI(classifyKey);
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.0-flash-lite',
+                generationConfig: { temperature: 0.1, maxOutputTokens: 256, topP: 0.8 }
+            });
 
-            try {
-                const genAI = new GoogleGenerativeAI(classifyKey);
-                const model = genAI.getGenerativeModel({
-                    model: config.gemini.model || 'gemini-2.5-flash',
-                    generationConfig: { temperature: 0.1, maxOutputTokens: 1024, topP: 0.8 }
-                });
+            const result = await Promise.race([
+                model.generateContent([{ text: prompt }]),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('AI classify timeout')), 8000))
+            ]);
 
-                const result = await Promise.race([
-                    model.generateContent([{ text: prompt }]),
-                    new Promise((_, reject) => setTimeout(() => reject(new Error('AI classify timeout')), 12000))
-                ]);
+            const raw = String(result?.response?.text?.() || '').trim();
+            const jsonMatch = raw.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) return null;
 
-                const raw = String(result?.response?.text?.() || '').trim();
-                const jsonMatch = raw.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) {
-                    logger.debug(`[INSIGHT] No JSON from key #${keyIndex + 1}, trying next...`);
-                    continue;
-                }
+            const parsed = JSON.parse(jsonMatch[0]);
 
-                const parsed = JSON.parse(jsonMatch[0]);
+            // Validate and sanitize
+            const intent = VALID_INTENTS.includes(parsed.intent) ? parsed.intent : null;
+            const sentiment = VALID_SENTIMENTS.includes(parsed.sentiment) ? parsed.sentiment : null;
+            const outcome = VALID_OUTCOMES.includes(parsed.outcome) ? parsed.outcome : null;
+            const topicSummary = parsed.topic_summary ? String(parsed.topic_summary).substring(0, 255) : null;
+            const product = parsed.product_consulted && parsed.product_consulted !== 'null'
+                ? String(parsed.product_consulted).substring(0, 120)
+                : null;
+            const confidence = (typeof parsed.confidence === 'number' && parsed.confidence >= 0.5 && parsed.confidence <= 1.0)
+                ? parsed.confidence : 0.75;
 
-                // Validate and sanitize
-                const intent = VALID_INTENTS.includes(parsed.intent) ? parsed.intent : null;
-                const sentiment = VALID_SENTIMENTS.includes(parsed.sentiment) ? parsed.sentiment : null;
-                const outcome = VALID_OUTCOMES.includes(parsed.outcome) ? parsed.outcome : null;
-                const topicSummary = parsed.topic_summary ? String(parsed.topic_summary).substring(0, 255) : null;
-                
-                // Fix parsing for product, allowing actual values but ignoring nulls and literal "null"
-                let product = null;
-                if (parsed.product_consulted && String(parsed.product_consulted).toLowerCase() !== 'null' && String(parsed.product_consulted).trim() !== '') {
-                    product = String(parsed.product_consulted).substring(0, 120);
-                }
+            if (!intent || !sentiment || !outcome) return null;
 
-                const confidence = (typeof parsed.confidence === 'number' && parsed.confidence >= 0.5 && parsed.confidence <= 1.0)
-                    ? parsed.confidence : 0.75;
-
-                if (!intent || !sentiment || !outcome) {
-                    logger.warn(`[INSIGHT] Invalid JSON structure from AI key #${keyIndex + 1}: ${raw}`);
-                    continue;
-                }
-
-                logger.debug(`[INSIGHT] AI classified with key #${keyIndex + 1}`);
-                return { intent, sentiment, outcome, topicSummary, product, confidence };
-            } catch (err) {
-                const isRateLimit = /429|resource.*(exhausted|has been)|rate.?limit|quota/i.test(err.message || '');
-                const isSuspended = /403|suspended|forbidden|permission denied/i.test(err.message || '');
-                if (isRateLimit || isSuspended) {
-                    logger.debug(`[INSIGHT] Key #${keyIndex + 1} ${isRateLimit ? 'rate-limited' : 'suspended'}, trying next...`);
-                    continue;
-                }
-                logger.debug(`[INSIGHT] AI classification failed on key #${keyIndex + 1}: ${err.message}`);
-                continue;
-            }
+            return { intent, sentiment, outcome, topicSummary, product, confidence };
+        } catch (err) {
+            logger.debug(`[INSIGHT] AI classification failed, using fallback: ${err.message}`);
+            return null;
         }
-        
-        logger.debug('[INSIGHT] All classification keys exhausted, using regex fallback');
-        return null;
     }
 
     // =============================================
     // REGEX FALLBACK — Used when AI is unavailable
     // =============================================
-
-    _detectProductRegex(userMessage) {
-        const msg = String(userMessage || '').trim().toLowerCase();
-        const products = [
-            { pattern: /\bpro\s*8\b/i, name: 'Pro 8' },
-            { pattern: /\bpro\s*7\b/i, name: 'Pro 7' },
-            { pattern: /\bprox\b/i, name: 'ProX' },
-            { pattern: /\bfastura\b/i, name: 'Fastura' },
-            { pattern: /\bfactura\s*f[aá]cil\b/i, name: 'Factura Fácil' },
-            { pattern: /\bhosting\b/i, name: 'Hosting' },
-            { pattern: /\bvps\b/i, name: 'VPS' },
-            { pattern: /\bcorreos?\s*(corporativ|empresarial)/i, name: 'Correos Corporativos' },
-            { pattern: /\bzoho\s*mail\b/i, name: 'Zoho Mail' },
-            { pattern: /\bbuho\s*chat\b/i, name: 'BuhoChat' },
-            { pattern: /\bbuhochat\b/i, name: 'BuhoChat' },
-            { pattern: /\bcertificad[oa]s?\s*dian\b/i, name: 'Certificados DIAN' },
-            { pattern: /\bcertificad[oa]s?\s*sunat\b/i, name: 'Certificado SUNAT' },
-            { pattern: /\bvendeya\b/i, name: 'VendeYa' },
-            { pattern: /\bvende\s*ya\b/i, name: 'VendeYa' },
-            { pattern: /\bapp\s*31\b/i, name: 'App31' },
-            { pattern: /\bapp31\b/i, name: 'App31' },
-            { pattern: /\bqr\s*buho\b/i, name: 'QR Buho' },
-            { pattern: /\bmozo\b/i, name: 'Mozo' },
-            { pattern: /\bwaya\b/i, name: 'Waya Empresa' },
-            { pattern: /\bvalidaci[oó]n\b/i, name: 'Validación' },
-        ];
-        for (const p of products) {
-            if (p.pattern.test(msg)) return p.name;
-        }
-        return null;
-    }
-
     _classifyIntentRegex(userMessage) {
         const msg = String(userMessage || '').trim().toLowerCase();
-        if (/^(hola|buenas?\s*(d[ií]as?|tardes?|noches?)?|buenos?\s*(d[ií]as?|tardes?|noches?)|hey|saludos|qu[eé]\s*tal|hi|hello)\b/.test(msg) && msg.length < 40) return { intent: 'greeting', confidence: 0.90 };
-        if (/\b(adi[oó]s|hasta\s*luego|chao|chau|bye|nos\s*vemos|gracias\s*por\s*todo|eso\s*(ser[ií]a|es)\s*todo|ok\s*gracias|muchas\s*gracias)\b/.test(msg)) return { intent: 'farewell', confidence: 0.85 };
-        if (/\b(comprar|adquirir|quiero\s*el|me\s*quedo\s*con|lo\s*quiero|activar|contratar|tomar\s*el|vamos\s*con|me\s*interesa\s*comprar|vendeme|v[eé]ndeme)\b/.test(msg)) return { intent: 'purchase_interest', confidence: 0.85 };
+        if (/^(hola|buenos?\s*(d[ií]as?|tardes?|noches?)|hey|saludos|qu[eé]\s*tal|hi|hello)\b/.test(msg) && msg.length < 40) return { intent: 'greeting', confidence: 0.90 };
+        if (/\b(adi[oó]s|hasta\s*luego|chao|chau|bye|nos\s*vemos|gracias\s*por\s*todo|eso\s*(ser[ií]a|es)\s*todo)\b/.test(msg)) return { intent: 'farewell', confidence: 0.85 };
+        if (/\b(comprar|adquirir|quiero\s*el|me\s*quedo\s*con|lo\s*quiero|activar|contratar|tomar\s*el|vamos\s*con|me\s*interesa\s*comprar)\b/.test(msg)) return { intent: 'purchase_interest', confidence: 0.85 };
         if (/\b(precio|precios|cu[aá]nto\s*(cuesta|vale|est[aá]|sale)|costo|costos|tarifa|valor|mensual|trimestral|semestral|anual)\b/.test(msg)) return { intent: 'price_inquiry', confidence: 0.80 };
         if (/\b(problema|no\s*funciona|error|falla|malo|p[eé]simo|queja|reclamo|insatisf|molest|no\s*sirve|lento|ca[ií]do|no\s*responde|deficiente)\b/.test(msg)) return { intent: 'complaint', confidence: 0.80 };
         if (/\b(ayuda|soporte|asistencia|no\s*puedo|c[oó]mo\s*(hago|puedo|configuro|instalo|activo)|necesito\s*ayuda|tengo\s*(un|una)\s*(duda|problema|consulta))\b/.test(msg)) return { intent: 'support', confidence: 0.75 };
-        // If a product is mentioned but no other intent matched, it's an info_request
-        if (this._detectProductRegex(msg)) return { intent: 'info_request', confidence: 0.80 };
-        if (/\b(informaci[oó]n|info|detalles|caracter[ií]sticas|incluye|qu[eé]\s*(es|ofrece|tiene|incluye|vende)|cu[aá]les?\s*(son|hay)|opciones|cat[aá]logo|servicios|productos|ofrecen|que\s*mas)\b/.test(msg)) return { intent: 'info_request', confidence: 0.75 };
+        if (/\b(informaci[oó]n|info|detalles|caracter[ií]sticas|incluye|qu[eé]\s*(es|ofrece|tiene|incluye|vende)|cu[aá]les?\s*(son|hay)|opciones|cat[aá]logo|servicios|productos)\b/.test(msg)) return { intent: 'info_request', confidence: 0.75 };
         if (/\?$/.test(msg.trim()) || /^(cu[aá]l|qu[eé]|c[oó]mo|d[oó]nde|cu[aá]ndo|por\s*qu[eé]|para\s*qu[eé]|tienen|hay|existe|es\s*posible)\b/.test(msg)) return { intent: 'question', confidence: 0.70 };
         return { intent: 'other', confidence: 0.40 };
     }
@@ -242,31 +176,14 @@ REGLAS:
     }
 
     _extractTopicRegex(userMessage, productConsulted, intent) {
-        // Use generic labels (same style as AI classification) — NEVER copy the user's message
+        const msg = String(userMessage || '').trim();
         if (productConsulted && productConsulted !== 'NINGUNO') {
-            const labelMap = {
-                'purchase_interest': 'Interés de compra',
-                'price_inquiry': 'Consulta precio',
-                'complaint': 'Problema con',
-                'support': 'Soporte técnico',
-                'info_request': 'Consulta sobre',
-                'question': 'Consulta sobre'
-            };
-            const label = labelMap[intent] || 'Consulta sobre';
-            return `${label} ${productConsulted}`.substring(0, 255);
+            const label = { 'purchase_interest': 'Compra', 'price_inquiry': 'Precios', 'complaint': 'Problema', 'support': 'Soporte', 'info_request': 'Información', 'question': 'Consulta' }[intent] || 'Consulta';
+            return `${label}: ${productConsulted}`.substring(0, 255);
         }
-        const topicMap = {
-            'greeting': 'Saludo inicial',
-            'farewell': 'Cierre de conversación',
-            'purchase_interest': 'Interés de compra',
-            'price_inquiry': 'Consulta de precios',
-            'complaint': 'Reporte de problema',
-            'support': 'Soporte técnico',
-            'info_request': 'Consulta catálogo de productos',
-            'question': 'Consulta general',
-            'other': 'Mensaje no clasificable'
-        };
-        return topicMap[intent] || 'Consulta general';
+        const cleaned = msg.replace(/\b(el|la|los|las|un|una|unos|unas|de|del|en|con|por|para|que|es|son|hay|tengo|quiero|necesito|me|mi|tu|su|hola|buenas?|d[ií]as?|tardes?|noches?)\b/gi, '').replace(/\s+/g, ' ').trim();
+        if (cleaned.length > 3) return cleaned.substring(0, 255);
+        return intent === 'greeting' ? 'Saludo' : 'Consulta general';
     }
 
     // =============================================
@@ -301,10 +218,9 @@ REGLAS:
                 confidence = intentResult.confidence;
                 sentiment = this._classifySentimentRegex(userMessage);
                 outcome = this._inferOutcomeRegex(commercialStage, intent, userMessage);
-                // Detect product from message text if not provided by flow
-                productConsulted = productFromFlow || this._detectProductRegex(userMessage);
-                topicSummary = this._extractTopicRegex(userMessage, productConsulted, intent);
-                logger.debug(`[INSIGHT] Regex fallback ${userPhone}: intent=${intent} outcome=${outcome} sentiment=${sentiment} product=${productConsulted || '-'}`);
+                topicSummary = this._extractTopicRegex(userMessage, productFromFlow, intent);
+                productConsulted = productFromFlow;
+                logger.debug(`[INSIGHT] Regex fallback ${userPhone}: intent=${intent} outcome=${outcome} sentiment=${sentiment}`);
             }
 
             await mysqlService.execute(
