@@ -10,14 +10,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=38">
+    <link rel="stylesheet" href="css/base.css?v=42">
+    <link rel="stylesheet" href="css/layout.css?v=42">
+    <link rel="stylesheet" href="css/components.css?v=42">
+    <link rel="stylesheet" href="css/dashboard.css?v=42">
+    <link rel="stylesheet" href="css/chat.css?v=42">
+    <link rel="stylesheet" href="css/pages.css?v=42">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-    <script src="script.js?v=38" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@4/dist/apexcharts.min.js"></script>
+    <script src="script.js?v=42" defer></script>
 </head>
 
 <body>
 
-    <div class="layout-wrapper" id="appRoot">
+    <!-- LOGIN SCREEN (full page, visible por defecto) -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-bg-gradient"></div>
+        <div class="login-container">
+            <div class="login-brand">
+                <span class="login-brand-text">Buho Digital</span>
+                <span class="login-brand-ai">AI</span>
+            </div>
+            <div class="login-card">
+                <div class="login-icon-wrap">
+                    <span class="material-symbols-outlined login-icon">lock</span>
+                </div>
+                <h2 class="login-title">Iniciar Sesión</h2>
+                <p class="login-subtitle">Ingresa tus credenciales de administrador</p>
+                <div id="loginError" class="login-error"></div>
+                <form id="loginForm" onsubmit="handleLogin(event)" autocomplete="on">
+                    <div class="login-field">
+                        <span class="material-symbols-outlined login-field-icon">person</span>
+                        <input type="text" id="loginUsername" placeholder="Usuario" autocomplete="username" required minlength="3">
+                    </div>
+                    <div class="login-field">
+                        <span class="material-symbols-outlined login-field-icon">lock</span>
+                        <input type="password" id="loginPassword" placeholder="Contraseña" autocomplete="current-password" required minlength="6">
+                    </div>
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span class="login-btn-text">Iniciar Sesión</span>
+                        <span class="material-symbols-outlined login-btn-icon">arrow_forward</span>
+                    </button>
+                </form>
+            </div>
+            <p class="login-footer">&copy; Buho Digital 2026</p>
+        </div>
+    </div>
+
+    <div class="layout-wrapper" id="appRoot" style="display:none;">
 
         <!-- LEYENDA IZQUIERDA: SIDEBAR -->
         <aside class="sidebar slide-in-left">
@@ -41,6 +81,11 @@
                     <span class="menu-icon material-symbols-outlined" style="font-size: 1.1rem;">folder_open</span>
                     Archivos
                 </a>
+                <div class="sidebar-separator"></div>
+                <a href="#account" class="nav-item">
+                    <span class="menu-icon material-symbols-outlined" style="font-size: 1.1rem;">manage_accounts</span>
+                    Mi Cuenta
+                </a>
             </nav>
 
             <div class="sidebar-bottom">
@@ -49,6 +94,10 @@
                     <span class="status-label" id="statusText">Conectando...</span>
                 </div>
                 <span class="sidebar-uptime" id="sUptime">-</span>
+                <button class="sidebar-logout-btn" onclick="logout()">
+                    <span class="material-symbols-outlined" style="font-size:1rem;">logout</span>
+                    Cerrar sesión
+                </button>
             </div>
         </aside>
 
@@ -95,33 +144,38 @@
                     </div>
                 </section>
 
-                <!-- KPI CARDS — 4 cards with sparklines -->
+                <!-- KPI CARDS — 4 modern ApexCharts cards (weekly) -->
                 <section class="kpi-grid fade-in-up delay-2">
-                    <div class="kpi-card kpi-card--chart kpi-card--clickable" onclick="openMphModal()" style="cursor:pointer;">
+                    <div class="kpi-card kpi-card--chart kpi-card--clickable" onclick="openMphModal()">
                         <div class="kpi-chart-header">
-                            <span class="kpi-label">Promedio / hora</span>
-                            <span class="kpi-value kpi-value--inline" id="mMph">0</span>
+                            <span class="kpi-label">Promedio de Mensajes / hora</span>
+                            <span class="kpi-badge">Semana</span>
                         </div>
-                        <div class="kpi-sparkline"><canvas id="chartMph"></canvas></div>
+                        <span class="kpi-value" id="kpiMph">0</span>
+                        <div class="kpi-apex-chart" id="apexMphChart"></div>
                     </div>
-                    <div class="kpi-card kpi-card--chart kpi-card--clickable" onclick="openMpmModal()" style="cursor:pointer;">
+                    <div class="kpi-card kpi-card--purple">
                         <div class="kpi-chart-header">
-                            <span class="kpi-label">Mensajes / min</span>
-                            <span class="kpi-value kpi-value--inline" id="mMpm">0</span>
+                            <span class="kpi-label">Usuarios activos</span>
+                            <span class="kpi-badge">Semana</span>
                         </div>
-                        <div class="kpi-sparkline"><canvas id="chartMpm"></canvas></div>
+                        <span class="kpi-value" id="kpiUsers">0</span>
                     </div>
-                    <div class="kpi-card kpi-card--chart kpi-card--clickable" onclick="openMemoryModal()" style="cursor:pointer;">
+                    <div class="kpi-card kpi-card--chart kpi-card--clickable" onclick="openProductTopModal()">
                         <div class="kpi-chart-header">
-                            <span class="kpi-label">Memoria</span>
-                            <span class="kpi-value kpi-value--inline" id="mHeap">-</span>
+                            <span class="kpi-label">Producto top</span>
+                            <span class="kpi-badge">Semana</span>
                         </div>
-                        <div class="kpi-sparkline"><canvas id="chartMemory"></canvas></div>
+                        <span class="kpi-value kpi-value--product" id="kpiProductName">-</span>
+                        <div class="kpi-apex-chart" id="apexProductChart"></div>
                     </div>
-                    <div class="kpi-card kpi-card--clickable" onclick="openErrorsModal()">
-                        <span class="kpi-label">Errores del sistema</span>
-                        <span class="kpi-value color-err" id="mTotalErrors">0</span>
-                        <span class="kpi-icon material-symbols-outlined">error</span>
+                    <div class="kpi-card kpi-card--chart kpi-card--clickable" onclick="openPurchaseIntentModal()">
+                        <div class="kpi-chart-header">
+                            <span class="kpi-label">Intención de compra</span>
+                            <span class="kpi-badge">Semana</span>
+                        </div>
+                        <span class="kpi-value" id="kpiPurchase">0</span>
+                        <div class="kpi-apex-chart" id="apexPurchaseChart"></div>
                     </div>
                 </section>
 
@@ -399,37 +453,6 @@
                     </div>
                 </section>
 
-                <!-- REPORTS KPI CARDS with sparklines -->
-                <section class="kpi-grid fade-in-up delay-1" style="grid-template-columns: repeat(4, 1fr);">
-                    <div class="kpi-card kpi-card--chart kpi-card--clickable kpi-card--ok" onclick="openOutcomesModal()">
-                        <div class="kpi-chart-header">
-                            <span class="kpi-label">Interacciones</span>
-                            <span class="kpi-value kpi-value--inline" id="rOutcomes">0</span>
-                        </div>
-                        <div class="kpi-sparkline"><canvas id="chartKpiOutcomes"></canvas></div>
-                    </div>
-                    <div class="kpi-card kpi-card--chart kpi-card--clickable kpi-card--err" onclick="openComplaintsModal()">
-                        <div class="kpi-chart-header">
-                            <span class="kpi-label">Quejas</span>
-                            <span class="kpi-value kpi-value--inline" id="rComplaints">0</span>
-                        </div>
-                        <div class="kpi-sparkline"><canvas id="chartKpiComplaints"></canvas></div>
-                    </div>
-                    <div class="kpi-card kpi-card--chart kpi-card--clickable kpi-card--purple" onclick="openResolutionPurchaseModal()">
-                        <div class="kpi-chart-header">
-                            <span class="kpi-label">Resolución y compra</span>
-                            <span class="kpi-value kpi-value--inline" id="rResolutionPurchase">0%</span>
-                        </div>
-                        <div class="kpi-sparkline"><canvas id="chartKpiResPurchase"></canvas></div>
-                    </div>
-                    <div class="kpi-card kpi-card--chart kpi-card--clickable kpi-card--warn" onclick="openUnresolvedModal()">
-                        <div class="kpi-chart-header">
-                            <span class="kpi-label">Sin resolver</span>
-                            <span class="kpi-value kpi-value--inline" id="rUnresolved">0</span>
-                        </div>
-                        <div class="kpi-sparkline"><canvas id="chartKpiUnresolved"></canvas></div>
-                    </div>
-                </section>
 
                 <!-- INSIGHTS TIMELINE TABLE (after KPIs) -->
                 <section class="fade-in-up delay-2" style="margin-bottom:1rem;">
@@ -503,9 +526,7 @@
                             <div class="panel-header">
                                 <h3 class="panel-title">Embudo Comercial</h3>
                             </div>
-                            <div class="chart-wrap" style="height:220px;">
-                                <canvas id="chartFunnel"></canvas>
-                            </div>
+                            <div class="chart-wrap" style="height:220px;" id="chartFunnel"></div>
                         </div>
 
                         <!-- Valoración por día (swapped from right column) -->
@@ -513,9 +534,7 @@
                             <div class="panel-header">
                                 <h3 class="panel-title">Valoración por día</h3>
                             </div>
-                            <div class="chart-wrap" style="height:180px;">
-                                <canvas id="chartSentiment"></canvas>
-                            </div>
+                            <div class="chart-wrap" style="height:180px;" id="chartSentiment"></div>
                         </div>
                     </div>
 
@@ -526,9 +545,7 @@
                             <div class="panel-header">
                                 <h3 class="panel-title">Intenciones</h3>
                             </div>
-                            <div class="chart-wrap" style="height:200px;">
-                                <canvas id="chartIntents"></canvas>
-                            </div>
+                            <div class="chart-wrap" style="height:200px;" id="chartIntents"></div>
                         </div>
 
                         <!-- Temas Frecuentes -->
@@ -556,13 +573,61 @@
                             <div class="panel-header">
                                 <h3 class="panel-title">Productos más consultados</h3>
                             </div>
-                            <div class="chart-wrap" style="height:220px;">
-                                <canvas id="chartProducts"></canvas>
-                            </div>
+                            <div class="chart-wrap" style="height:220px;" id="chartProducts"></div>
                         </div>
                     </div>
                 </section>
             </div> <!-- End VIEW REPORTS -->
+
+            <!-- VIEW: MI CUENTA -->
+            <div id="view-account" class="dashboard-view">
+                <section class="account-section">
+                    <h2 class="account-heading">Mi Cuenta</h2>
+
+                    <div class="account-card">
+                        <h3 class="account-card-title">Información del Perfil</h3>
+                        <div class="account-info-grid">
+                            <div class="account-info-item">
+                                <span class="account-info-label">Usuario</span>
+                                <span class="account-info-value" id="accountUsername">-</span>
+                            </div>
+                            <div class="account-info-item">
+                                <span class="account-info-label">Nombre</span>
+                                <span class="account-info-value" id="accountDisplayName">-</span>
+                            </div>
+                            <div class="account-info-item">
+                                <span class="account-info-label">Rol</span>
+                                <span class="account-info-value" id="accountRole">-</span>
+                            </div>
+                            <div class="account-info-item">
+                                <span class="account-info-label">Último acceso</span>
+                                <span class="account-info-value" id="accountLastLogin">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="account-card">
+                        <h3 class="account-card-title">Cambiar Contraseña</h3>
+                        <form id="changePasswordForm" onsubmit="handleChangePassword(event)">
+                            <div id="passwordChangeError" class="account-msg account-msg--error"></div>
+                            <div id="passwordChangeSuccess" class="account-msg account-msg--success"></div>
+                            <div class="account-field">
+                                <label class="account-field-label">Contraseña actual</label>
+                                <input type="password" id="currentPassword" class="account-input" required autocomplete="current-password">
+                            </div>
+                            <div class="account-field">
+                                <label class="account-field-label">Nueva contraseña</label>
+                                <input type="password" id="newPassword" class="account-input" required minlength="6" autocomplete="new-password">
+                            </div>
+                            <div class="account-field">
+                                <label class="account-field-label">Confirmar nueva contraseña</label>
+                                <input type="password" id="confirmPassword" class="account-input" required minlength="6" autocomplete="new-password">
+                            </div>
+                            <button type="submit" class="account-btn" id="changePasswordBtn">Actualizar contraseña</button>
+                        </form>
+                    </div>
+                </section>
+            </div> <!-- End VIEW ACCOUNT -->
 
         </main>
 
@@ -570,23 +635,7 @@
         <!-- TOASTS -->
         <div class="toast-wrap" id="toastWrap"></div>
 
-        <!-- ADMIN TOKEN OVERLAY -->
-        <div id="adminTokenOverlay" class="admin-token-overlay" style="display: none;">
-            <div class="admin-token-modal">
-                <div class="lock-icon-container">
-                    <span class="material-symbols-outlined neon-lock">lock</span>
-                </div>
-                <h2 class="neon-title">Acceso Restringido</h2>
-                <p class="neon-desc">Un <strong>ADMIN_TOKEN</strong> es necesario para ver los chats y la información
-                    del dashboard.</p>
-                <div class="neon-input-group">
-                    <input type="password" id="adminTokenInput" placeholder="Ingresa ADMIN_TOKEN" class="neon-input">
-                    <button class="btn-outline"
-                        style="padding: 6px 12px; font-size: 0.75rem; border-color: var(--primary); color: var(--primary);"
-                        onclick="saveAdminToken()">Guardar</button>
-                </div>
-            </div>
-        </div>
+        <!-- Old overlay removed — login is now full-page #loginScreen -->
     </div>
 
     <!-- USER STATS MODAL -->

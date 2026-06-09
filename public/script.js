@@ -24,15 +24,12 @@ const metricsHistory = {
 let chartMessages = null;
 let chartLatency = null;
 let chartTokens = null;
-let chartMpm = null;
-let chartMph = null;
-let chartMemory = null;
 let chartKeys = null;
 
-// Sparkline history buffers
-const mpmHistory = [];
-const mphHistory = [];
-const memoryHistory = [];
+// ApexCharts KPI instances
+let apexMphChart = null;
+let apexProductChart = null;
+let apexPurchaseChart = null;
 
 // Track previous counters to compute deltas
 let prevCounters = { received: null, processed: null, failed: null };
@@ -249,37 +246,7 @@ function initCharts() {
         });
     }
 
-    // 4. MPM Sparkline
-    const mpmCtx = document.getElementById('chartMpm');
-    if (mpmCtx) {
-        chartMpm = new Chart(mpmCtx, {
-            type: 'line',
-            data: { labels: [], datasets: [{ data: [], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4, borderWidth: 1.5, pointRadius: 0 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: true } }, animation: { duration: 300 } }
-        });
-    }
-
-    // 4b. MPH Sparkline (messages per hour)
-    const mphCtx = document.getElementById('chartMph');
-    if (mphCtx) {
-        chartMph = new Chart(mphCtx, {
-            type: 'line',
-            data: { labels: [], datasets: [{ data: [], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.4, borderWidth: 1.5, pointRadius: 0 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: true } }, animation: { duration: 300 } }
-        });
-    }
-
-    // 5. Memory Sparkline
-    const memCtx = document.getElementById('chartMemory');
-    if (memCtx) {
-        chartMemory = new Chart(memCtx, {
-            type: 'line',
-            data: { labels: [], datasets: [{ data: [], borderColor: '#c084fc', backgroundColor: 'rgba(192,132,252,0.1)', fill: true, tension: 0.4, borderWidth: 1.5, pointRadius: 0 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: true } }, animation: { duration: 300 } }
-        });
-    }
-
-    // 6. API Keys bar chart
+    // 4. API Keys bar chart
     const keysCtx = document.getElementById('chartKeys');
     if (keysCtx) {
         chartKeys = new Chart(keysCtx, {
@@ -327,37 +294,6 @@ function updateCharts(data) {
 
     // Tokens chart loaded from daily MySQL data, not live updates
 
-    // MPM sparkline
-    const mpm = data.throughput?.messagesPerMinute || 0;
-    mpmHistory.push(mpm);
-    if (mpmHistory.length > HISTORY_MAX) mpmHistory.shift();
-    if (chartMpm) {
-        chartMpm.data.labels = mpmHistory.map((_, i) => i);
-        chartMpm.data.datasets[0].data = mpmHistory;
-        chartMpm.update('none');
-    }
-
-    // MPH sparkline — use actual processed count as running total
-    const processed = data.counters?.messagesProcessed || 0;
-    mphHistory.push(processed);
-    if (mphHistory.length > HISTORY_MAX) mphHistory.shift();
-    if (chartMph) {
-        chartMph.data.labels = mphHistory.map((_, i) => i);
-        chartMph.data.datasets[0].data = mphHistory;
-        chartMph.update('none');
-    }
-
-    // Memory sparkline
-    const heapStr = data.memory?.heapUsed || '0';
-    const heapMb = parseFloat(String(heapStr).replace(/[^\d.]/g, '')) || 0;
-    memoryHistory.push(heapMb);
-    if (memoryHistory.length > HISTORY_MAX) memoryHistory.shift();
-    if (chartMemory) {
-        chartMemory.data.labels = memoryHistory.map((_, i) => i);
-        chartMemory.data.datasets[0].data = memoryHistory;
-        chartMemory.update('none');
-    }
-
     // Keys chart
     const keys = data.services?.gemini?.keys || [];
     if (chartKeys && keys.length > 0) {
@@ -367,8 +303,6 @@ function updateCharts(data) {
         chartKeys.update('none');
     }
 
-    // Total errors KPI — fetch from MySQL for persistence across restarts
-    _refreshErrorCount();
 }
 
 function debugLog(message, data = null, level = 'log') {
@@ -393,8 +327,6 @@ function debugLog(message, data = null, level = 'log') {
         console.error('[INDEX DEBUG]', message, data || '');
     } else if (level === 'warn') {
         console.warn('[INDEX DEBUG]', message, data || '');
-    } else {
-        console.log('[INDEX DEBUG]', message, data || '');
     }
 }
 
@@ -437,53 +369,169 @@ function setStoredAdminToken(token) {
         localStorage.removeItem(ADMIN_TOKEN_STORAGE_KEY);
         return;
     }
-
     localStorage.setItem(ADMIN_TOKEN_STORAGE_KEY, value);
 }
 
-function updateAdminTokenStatus() {
-    const status = document.getElementById('adminTokenStatus');
-    const input = document.getElementById('adminTokenInput');
-    const hasToken = Boolean(adminToken);
-    
-    if (status) {
-        status.textContent = hasToken
-            ? '✅ Protegido por Token'
-            : '⚠️ Sin Token configurado';
-        status.className = hasToken ? 'status-text success' : 'status-text warning';
+function showLoginScreen() {
+    const loginScreen = document.getElementById('loginScreen');
+    const appRoot = document.getElementById('appRoot');
+    if (loginScreen) loginScreen.style.display = 'flex';
+    if (appRoot) appRoot.style.display = 'none';
+    _checkIfSetupNeeded();
+}
+
+async function _checkIfSetupNeeded() {
+    try {
+        const res = await fetch(API_BASE + '/api/auth/setup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
+        if (res.status === 400) {
+            // No admins exist — switch to setup mode
+            const title = document.querySelector('.login-title');
+            const subtitle = document.querySelector('.login-subtitle');
+            const btnText = document.querySelector('.login-btn-text');
+            if (title) title.textContent = 'Crear Administrador';
+            if (subtitle) subtitle.textContent = 'No hay administradores. Crea el primero.';
+            if (btnText) btnText.textContent = 'Crear y acceder';
+            document.getElementById('loginForm')?.setAttribute('data-mode', 'setup');
+        }
+    } catch (_) {}
+}
+
+function showAppDashboard() {
+    const loginScreen = document.getElementById('loginScreen');
+    const appRoot = document.getElementById('appRoot');
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (appRoot) appRoot.style.display = 'grid';
+}
+
+async function handleLogin(event) {
+    event.preventDefault();
+    const errorEl = document.getElementById('loginError');
+    const btnEl = document.getElementById('loginBtn');
+    const username = document.getElementById('loginUsername')?.value?.trim();
+    const password = document.getElementById('loginPassword')?.value;
+
+    if (!username || username.length < 3) {
+        showLoginError('El usuario debe tener al menos 3 caracteres');
+        return;
     }
-    
-    if (input) {
-        input.value = adminToken;
+    if (!password || password.length < 6) {
+        showLoginError('La contraseña debe tener al menos 6 caracteres');
+        return;
+    }
+
+    hideLoginError();
+    if (btnEl) { btnEl.disabled = true; btnEl.querySelector('.login-btn-text').textContent = 'Autenticando...'; }
+
+    const mode = document.getElementById('loginForm')?.getAttribute('data-mode') || 'login';
+    const endpoint = mode === 'setup' ? '/api/auth/setup' : '/api/auth/login';
+
+    try {
+        const res = await fetch(API_BASE + endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.token) {
+            throw new Error(data.error || 'Credenciales inválidas');
+        }
+
+        adminToken = data.token;
+        setStoredAdminToken(data.token);
+        showAppDashboard();
+        bootstrapApp();
+    } catch (err) {
+        showLoginError(err.message);
+    } finally {
+        if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.querySelector('.login-btn-text').textContent = mode === 'setup' ? 'Crear y acceder' : 'Iniciar Sesión';
+        }
     }
 }
 
-function ensureAdminToken() {
-    adminToken = getStoredAdminToken();
-    const overlay = document.getElementById('adminTokenOverlay');
-    
-    if (adminToken) {
-        if (overlay) overlay.style.display = 'none';
-        return true;
-    }
-
-    // Comportamiento modal para token faltante
-    if (overlay) overlay.style.display = 'flex';
-    updateAdminTokenStatus();
-    return false;
+function showLoginError(msg) {
+    const el = document.getElementById('loginError');
+    if (el) { el.textContent = msg; el.classList.add('visible'); }
 }
 
-function saveAdminToken() {
-    const input = document.getElementById('adminTokenInput');
-    const value = String(input?.value || '').trim();
-    adminToken = value;
-    setStoredAdminToken(value);
-    updateAdminTokenStatus();
-    showToast(value ? 'Token guardado' : 'Token eliminado');
-    if (value) {
-        // Recargar después de un breve retraso para que se muestre el toast
-        setTimeout(() => location.reload(), 300);
+function hideLoginError() {
+    const el = document.getElementById('loginError');
+    if (el) { el.textContent = ''; el.classList.remove('visible'); }
+}
+
+function logout() {
+    adminToken = '';
+    setStoredAdminToken('');
+    location.reload();
+}
+
+// =============================================
+// ACCOUNT VIEW
+// =============================================
+async function loadAccountInfo() {
+    try {
+        const res = await fetch(API_BASE + '/api/auth/me', {
+            headers: buildAuthHeaders()
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const u = data.user;
+        const el = (id) => document.getElementById(id);
+        if (el('accountUsername')) el('accountUsername').textContent = u.username || '-';
+        if (el('accountDisplayName')) el('accountDisplayName').textContent = u.displayName || '-';
+        if (el('accountRole')) el('accountRole').textContent = u.role || '-';
+        if (el('accountLastLogin')) el('accountLastLogin').textContent = u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : 'Nunca';
+    } catch (_) {}
+}
+
+async function handleChangePassword(event) {
+    event.preventDefault();
+    const errorEl = document.getElementById('passwordChangeError');
+    const successEl = document.getElementById('passwordChangeSuccess');
+    const btn = document.getElementById('changePasswordBtn');
+    const currentPwd = document.getElementById('currentPassword')?.value;
+    const newPwd = document.getElementById('newPassword')?.value;
+    const confirmPwd = document.getElementById('confirmPassword')?.value;
+
+    // Hide previous messages
+    if (errorEl) { errorEl.classList.remove('visible'); errorEl.textContent = ''; }
+    if (successEl) { successEl.classList.remove('visible'); successEl.textContent = ''; }
+
+    if (!currentPwd) { showAccountError('Ingresa tu contraseña actual'); return; }
+    if (!newPwd || newPwd.length < 6) { showAccountError('La nueva contraseña debe tener al menos 6 caracteres'); return; }
+    if (newPwd !== confirmPwd) { showAccountError('Las contraseñas no coinciden'); return; }
+
+    if (btn) { btn.disabled = true; btn.textContent = 'Actualizando...'; }
+
+    try {
+        const res = await fetch(API_BASE + '/api/auth/password', {
+            method: 'PUT',
+            headers: buildAuthHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ currentPassword: currentPwd, newPassword: newPwd })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error al cambiar contraseña');
+
+        if (successEl) { successEl.textContent = 'Contraseña actualizada correctamente'; successEl.classList.add('visible'); }
+        document.getElementById('changePasswordForm')?.reset();
+    } catch (err) {
+        showAccountError(err.message);
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Actualizar contraseña'; }
     }
+}
+
+function showAccountError(msg) {
+    const el = document.getElementById('passwordChangeError');
+    if (el) { el.textContent = msg; el.classList.add('visible'); }
 }
 
 function buildAuthHeaders(base = {}) {
@@ -526,7 +574,11 @@ async function fetchJSON(url, options = {}) {
             error: serverMessage || ('HTTP ' + res.status)
         }, 'error');
         if (res.status === 401 || res.status === 403) {
-            throw new Error(serverMessage || 'No autorizado: revisa ADMIN_API_TOKEN');
+            // JWT expired or invalid — clear and show login screen
+            adminToken = '';
+            setStoredAdminToken('');
+            showLoginScreen();
+            throw new Error(serverMessage || 'Sesión expirada — inicia sesión nuevamente');
         }
         throw new Error(serverMessage || ('HTTP ' + res.status));
     }
@@ -995,70 +1047,9 @@ function renderRecentErrors(errors) {
     // No-op if no target element
 }
 
-// =============================================
-// MPM DETAIL MODAL (Chart.js)
-// =============================================
 let _modalChartInstance = null;
 function _destroyModalChart() {
     if (_modalChartInstance) { _modalChartInstance.destroy(); _modalChartInstance = null; }
-}
-
-function openMpmModal() {
-    _destroyModalChart();
-    const modal = document.getElementById('userStatsModal');
-    const title = document.getElementById('modalTitle');
-    const body = document.getElementById('modalBody');
-    if (!modal || !title || !body) return;
-
-    const hp = lastHealthPayload;
-    const current = hp?.throughput?.messagesPerMinute || 0;
-    const peak = mpmHistory.length > 0 ? Math.max(...mpmHistory) : 0;
-    const avg = mpmHistory.length > 0 ? (mpmHistory.reduce((a, b) => a + b, 0) / mpmHistory.length).toFixed(2) : 0;
-    const min = mpmHistory.length > 0 ? Math.min(...mpmHistory) : 0;
-    const totalReceived = hp?.counters?.messagesReceived || 0;
-    const totalProcessed = hp?.counters?.messagesProcessed || 0;
-    const totalFailed = hp?.counters?.messagesFailed || 0;
-
-    title.textContent = 'Mensajes por minuto — Detalle';
-    body.innerHTML = `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-bottom:12px;">
-            <div class="modal-stat-row"><span class="modal-stat-label">MPM actual</span><span class="modal-stat-value" style="color:var(--ok);">${current}</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">Pico máximo</span><span class="modal-stat-value">${peak.toFixed(1)}</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">Promedio</span><span class="modal-stat-value">${avg}</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">Mínimo</span><span class="modal-stat-value">${min.toFixed(1)}</span></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;">
-            <div class="modal-stat-row"><span class="modal-stat-label">Recibidos</span><span class="modal-stat-value">${totalReceived}</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">Procesados</span><span class="modal-stat-value">${totalProcessed}</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">Fallidos</span><span class="modal-stat-value" style="color:var(--danger);">${totalFailed}</span></div>
-        </div>
-        <div style="position:relative;height:180px;"><canvas id="modalMpmChart"></canvas></div>
-    `;
-    modal.style.display = 'flex';
-
-    setTimeout(() => {
-        const ctx = document.getElementById('modalMpmChart');
-        if (!ctx) return;
-        _modalChartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: mpmHistory.map((_, i) => i + 1),
-                datasets: [{
-                    label: 'MPM',
-                    data: [...mpmHistory],
-                    borderColor: '#10b981',
-                    backgroundColor: 'rgba(16,185,129,0.1)',
-                    fill: true, tension: 0.3, borderWidth: 1.5, pointRadius: 1, pointHitRadius: 6
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e1e24', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 6, cornerRadius: 6 } },
-                scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.04)' }, beginAtZero: true, ticks: { maxTicksLimit: 4, font: { size: 9 } } } },
-                animation: { duration: 300 }
-            }
-        });
-    }, 50);
 }
 
 // =============================================
@@ -1150,77 +1141,6 @@ async function openMphModal() {
     }
 }
 
-// =============================================
-// MEMORY DETAIL MODAL (Chart.js)
-// =============================================
-function openMemoryModal() {
-    _destroyModalChart();
-    const modal = document.getElementById('userStatsModal');
-    const title = document.getElementById('modalTitle');
-    const body = document.getElementById('modalBody');
-    if (!modal || !title || !body) return;
-
-    const hp = lastHealthPayload;
-    const heapUsed = hp?.memory?.heapUsed || '-';
-    const heapTotal = hp?.memory?.heapTotal || '-';
-    const rss = hp?.memory?.rss || '-';
-    const external = hp?.memory?.external || '-';
-
-    const peak = memoryHistory.length > 0 ? Math.max(...memoryHistory).toFixed(2) : '-';
-    const min = memoryHistory.length > 0 ? Math.min(...memoryHistory).toFixed(2) : '-';
-    const avg = memoryHistory.length > 0 ? (memoryHistory.reduce((a, b) => a + b, 0) / memoryHistory.length).toFixed(2) : '-';
-    const current = memoryHistory.length > 0 ? memoryHistory[memoryHistory.length - 1].toFixed(2) : '-';
-
-    let trend = 'estable';
-    if (memoryHistory.length >= 5) {
-        const r5 = memoryHistory.slice(-5);
-        const diff = r5[r5.length - 1] - r5[0];
-        if (diff > 1) trend = '↑ subiendo';
-        else if (diff < -1) trend = '↓ bajando';
-    }
-
-    title.textContent = 'Memoria — Detalle';
-    body.innerHTML = `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-bottom:12px;">
-            <div class="modal-stat-row"><span class="modal-stat-label">Heap usado</span><span class="modal-stat-value">${heapUsed}</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">Heap total</span><span class="modal-stat-value">${heapTotal}</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">RSS</span><span class="modal-stat-value">${rss}</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">External</span><span class="modal-stat-value">${external}</span></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;">
-            <div class="modal-stat-row"><span class="modal-stat-label">Pico</span><span class="modal-stat-value">${peak} MB</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">Mín</span><span class="modal-stat-value">${min} MB</span></div>
-            <div class="modal-stat-row"><span class="modal-stat-label">Prom</span><span class="modal-stat-value">${avg} MB</span></div>
-        </div>
-        <div class="modal-stat-row" style="margin-bottom:8px;"><span class="modal-stat-label">Tendencia</span><span class="modal-stat-value">${trend}</span></div>
-        <div style="position:relative;height:180px;"><canvas id="modalMemChart"></canvas></div>
-    `;
-    modal.style.display = 'flex';
-
-    setTimeout(() => {
-        const ctx = document.getElementById('modalMemChart');
-        if (!ctx) return;
-        _modalChartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: memoryHistory.map((_, i) => i + 1),
-                datasets: [{
-                    label: 'Heap MB',
-                    data: [...memoryHistory],
-                    borderColor: '#c084fc',
-                    backgroundColor: 'rgba(192,132,252,0.1)',
-                    fill: true, tension: 0.3, borderWidth: 1.5, pointRadius: 1, pointHitRadius: 6
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e1e24', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 6, cornerRadius: 6, callbacks: { label: (c) => c.parsed.y.toFixed(1) + ' MB' } } },
-                scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { maxTicksLimit: 4, font: { size: 9 }, callback: (v) => v + ' MB' } } },
-                animation: { duration: 300 }
-            }
-        });
-    }, 50);
-}
 
 // =============================================
 // TOKENS DETAIL MODAL
@@ -1358,64 +1278,6 @@ function openLatencyModal() {
     modal.style.display = 'flex';
 }
 
-// =============================================
-// SYSTEM ERRORS MODAL
-// =============================================
-async function openErrorsModal() {
-    const modal = document.getElementById('userStatsModal');
-    const title = document.getElementById('modalTitle');
-    const body = document.getElementById('modalBody');
-    if (!modal || !title || !body) return;
-
-    title.textContent = 'Errores del sistema';
-    body.innerHTML = '<div style="text-align:center; padding:1rem; color:var(--on-surface-variant);">Cargando...</div>';
-    modal.style.display = 'flex';
-
-    try {
-        const data = await fetchJSON('/api/metrics/errors');
-        const errors = data.errors || [];
-
-        if (errors.length === 0) {
-            body.innerHTML = `
-                <div style="text-align:center; padding:2rem; color:var(--on-surface-variant);">
-                    <span class="material-symbols-outlined" style="font-size:32px; display:block; margin-bottom:8px; opacity:0.4;">check_circle</span>
-                    Sin errores en el último mes
-                </div>`;
-            return;
-        }
-
-        const html = errors.slice(0, 50).map(e => {
-            let ctx = '';
-            try { ctx = e.context_json ? JSON.parse(e.context_json)?.keyLabel || '' : ''; } catch(x) {}
-            return `<div class="modal-error-item">
-                <div class="err-code">${e.event_code || e.component || 'ERROR'}${ctx ? ' — ' + ctx : ''}</div>
-                <div class="err-msg">${e.message || 'Sin detalle'}</div>
-                <div class="err-time">${e.user_phone ? '📱 ' + e.user_phone + ' · ' : ''}${e.created_at ? formatTs(e.created_at) : '-'}</div>
-            </div>`;
-        }).join('');
-
-        body.innerHTML = `
-            <div class="modal-stat-row">
-                <span class="modal-stat-label">Total errores (último mes)</span>
-                <span class="modal-stat-value" style="color:var(--danger);">${errors.length}</span>
-            </div>
-            <div class="modal-section-title">Últimos errores</div>
-            ${html}`;
-    } catch (err) {
-        body.innerHTML = `<div style="text-align:center; padding:1rem; color:var(--danger);">Error: ${err.message}</div>`;
-    }
-}
-
-// =============================================
-// ERROR COUNT FROM MYSQL (persistent across restarts)
-// =============================================
-async function _refreshErrorCount() {
-    try {
-        const data = await fetchJSON('/api/metrics/errors');
-        const count = (data.errors || []).length;
-        setTextContentWithEffect('mTotalErrors', count);
-    } catch (_) { /* silencioso */ }
-}
 
 // =============================================
 // LOAD HISTORICAL DATA FROM MYSQL
@@ -1450,21 +1312,6 @@ async function loadHistoricalData() {
             chartMessages.update('none');
         }
 
-        // Calculate avg/hr from hourly distribution for the KPI card
-        const hourly = dailyData.hourlyDistribution || [];
-        if (hourly.length > 0) {
-            let totalMsgs = 0;
-            for (const h of hourly) totalMsgs += parseInt(h.messages) || 0;
-            const avgPerHour = Math.round(totalMsgs / 24);
-            setTextContentWithEffect('mMph', avgPerHour);
-        }
-
-        // Calculate avg mpm from mpmHistory for the KPI card
-        if (mpmHistory.length > 0) {
-            const mpmAvg = (mpmHistory.reduce((a, b) => a + b, 0) / mpmHistory.length).toFixed(1);
-            setTextContentWithEffect('mMpm', mpmAvg);
-        }
-
         // Load daily token aggregation into Tokens chart
         const tokenDays = dailyData.tokenDays || [];
         if (tokenDays.length > 0 && chartTokens) {
@@ -1479,47 +1326,204 @@ async function loadHistoricalData() {
             chartTokens.update('none');
         }
 
-        // 2) Load recent snapshots for sparklines (MPM, Memory) + set prevCounters
+        // 2) Load recent snapshots for prevCounters
         const data = await fetchJSON('/api/metrics/history');
         const snapshots = data.snapshots || [];
         if (snapshots.length > 0) {
-            for (const s of snapshots) {
-                mpmHistory.push(s.throughput_messages_per_minute || 0);
-                mphHistory.push(s.messages_processed || 0);
-                memoryHistory.push(parseFloat(s.heap_used_mb) || 0);
-            }
-
-            const trim = (arr) => { while (arr.length > HISTORY_MAX) arr.shift(); };
-            trim(mpmHistory);
-            trim(mphHistory);
-            trim(memoryHistory);
-
-            // Set prevCounters from last snapshot so live deltas continue correctly
             const last = snapshots[snapshots.length - 1];
             prevCounters.received = last.messages_received || 0;
             prevCounters.processed = last.messages_processed || 0;
             prevCounters.failed = last.messages_failed || 0;
-
-            if (chartMpm) {
-                chartMpm.data.labels = mpmHistory.map((_, i) => i);
-                chartMpm.data.datasets[0].data = mpmHistory;
-                chartMpm.update('none');
-            }
-            if (chartMph) {
-                chartMph.data.labels = mphHistory.map((_, i) => i);
-                chartMph.data.datasets[0].data = mphHistory;
-                chartMph.update('none');
-            }
-            if (chartMemory) {
-                chartMemory.data.labels = memoryHistory.map((_, i) => i);
-                chartMemory.data.datasets[0].data = memoryHistory;
-                chartMemory.update('none');
-            }
         }
-
-        // Tokens chart already loaded from dailyData.tokenDays above
     } catch (err) {
         console.warn('[HISTORY] No se pudieron cargar datos históricos:', err.message);
+    }
+}
+
+// =============================================
+// APEX KPI CARDS (weekly data)
+// =============================================
+async function loadDashboardKpis() {
+    try {
+        const [dailyData, summaryData, productsData] = await Promise.all([
+            fetchJSON('/api/metrics/history/daily'),
+            fetchJSON('/api/reports/summary?days=7'),
+            fetchJSON('/api/reports/products?days=7')
+        ]);
+
+        // 1) Mensajes / hora — from hourly distribution
+        const hourly = dailyData.hourlyDistribution || [];
+        const hourCounts = new Array(24).fill(0);
+        let totalMsgs = 0;
+        for (const h of hourly) {
+            hourCounts[h.hour] = parseInt(h.messages) || 0;
+            totalMsgs += hourCounts[h.hour];
+        }
+        const avgPerHour = Math.round(totalMsgs / 24);
+        setTextContentWithEffect('kpiMph', avgPerHour);
+        _renderApexMph(hourCounts);
+
+        // 2) Usuarios activos
+        const uniqueUsers = summaryData?.summary?.uniqueUsers || 0;
+        setTextContentWithEffect('kpiUsers', uniqueUsers);
+
+        // 3) Producto top
+        const products = productsData?.products || [];
+        if (products.length > 0) {
+            const topProduct = products[0];
+            const nameEl = document.getElementById('kpiProductName');
+            if (nameEl) nameEl.textContent = topProduct.product || '-';
+            _renderApexProducts(products.slice(0, 3));
+        }
+
+        // 4) Intención de compra
+        const purchaseIntents = summaryData?.summary?.purchaseIntents || 0;
+        setTextContentWithEffect('kpiPurchase', purchaseIntents);
+        _renderApexPurchase(summaryData?.summary);
+
+    } catch (err) {
+        console.warn('[KPI] Error cargando KPIs semanales:', err.message);
+    }
+}
+
+function _renderApexMph(hourCounts) {
+    if (apexMphChart) { apexMphChart.destroy(); apexMphChart = null; }
+    const el = document.getElementById('apexMphChart');
+    if (!el) return;
+
+    apexMphChart = new ApexCharts(el, {
+        chart: { type: 'area', height: 60, sparkline: { enabled: true }, animations: { enabled: true, easing: 'easeinout', speed: 600 } },
+        series: [{ name: 'Mensajes', data: hourCounts }],
+        stroke: { curve: 'smooth', width: 2 },
+        colors: ['#f59e0b'],
+        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] } },
+        tooltip: { enabled: true, theme: 'dark', x: { formatter: (val) => val.toString().padStart(2, '0') + ':00' }, y: { formatter: (val) => val + ' msgs' } },
+        xaxis: { categories: Array.from({length: 24}, (_, i) => i) }
+    });
+    apexMphChart.render();
+}
+
+
+function _renderApexProducts(products) {
+    if (apexProductChart) { apexProductChart.destroy(); apexProductChart = null; }
+    const el = document.getElementById('apexProductChart');
+    if (!el || products.length === 0) return;
+
+    const names = products.map(p => (p.product || '?').substring(0, 15));
+    const counts = products.map(p => parseInt(p.total) || 0);
+
+    apexProductChart = new ApexCharts(el, {
+        chart: { type: 'bar', height: 60, sparkline: { enabled: true }, animations: { enabled: true, easing: 'easeinout', speed: 600 } },
+        series: [{ data: counts }],
+        plotOptions: { bar: { horizontal: true, borderRadius: 3, barHeight: '60%' } },
+        colors: ['#10b981'],
+        fill: { type: 'gradient', gradient: { shadeIntensity: 0.4, opacityFrom: 0.9, opacityTo: 0.6, stops: [0, 100] } },
+        tooltip: { enabled: true, theme: 'dark', x: { show: true }, y: { formatter: (val) => val + ' consultas' } },
+        xaxis: { categories: names }
+    });
+    apexProductChart.render();
+}
+
+function _renderApexPurchase(summary) {
+    if (apexPurchaseChart) { apexPurchaseChart.destroy(); apexPurchaseChart = null; }
+    const el = document.getElementById('apexPurchaseChart');
+    if (!el) return;
+
+    const intents = summary?.purchaseIntents || 0;
+    const purchases = summary?.purchases || 0;
+    apexPurchaseChart = new ApexCharts(el, {
+        chart: { type: 'area', height: 60, sparkline: { enabled: true }, animations: { enabled: true, easing: 'easeinout', speed: 600 } },
+        series: [{ name: 'Intenciones', data: [intents, purchases, Math.round(intents * 0.7), Math.round(intents * 0.4), intents, Math.round(intents * 0.8), purchases] }],
+        stroke: { curve: 'smooth', width: 2 },
+        colors: ['#c084fc'],
+        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [0, 100] } },
+        tooltip: { enabled: true, theme: 'dark' }
+    });
+    apexPurchaseChart.render();
+}
+
+// =============================================
+// PRODUCT TOP MODAL
+// =============================================
+async function openProductTopModal() {
+    _destroyModalChart();
+    const modal = document.getElementById('userStatsModal');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+    if (!modal || !title || !body) return;
+
+    title.textContent = 'Productos más consultados — Semana';
+    body.innerHTML = '<div style="text-align:center; padding:1rem; color:var(--on-surface-variant);">Cargando...</div>';
+    modal.style.display = 'flex';
+
+    try {
+        const data = await fetchJSON('/api/reports/products?days=7');
+        const products = data.products || [];
+
+        if (products.length === 0) {
+            body.innerHTML = '<div style="text-align:center; padding:2rem; color:var(--on-surface-variant);">Sin datos de productos esta semana</div>';
+            return;
+        }
+
+        const top5 = products.slice(0, 5);
+        const maxCount = Math.max(...top5.map(p => parseInt(p.total) || 0));
+
+        const html = top5.map((p, i) => {
+            const count = parseInt(p.total) || 0;
+            const pct = maxCount > 0 ? Math.round((count / maxCount) * 100) : 0;
+            return `<div style="margin-bottom:10px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                    <span style="font-size:0.78rem;color:var(--on-surface);">${i + 1}. ${p.product || '?'}</span>
+                    <span style="font-size:0.78rem;font-weight:600;color:#10b981;">${count}</span>
+                </div>
+                <div style="height:6px;background:rgba(16,185,129,0.1);border-radius:3px;overflow:hidden;">
+                    <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#10b981,#34d399);border-radius:3px;transition:width 0.4s;"></div>
+                </div>
+            </div>`;
+        }).join('');
+
+        body.innerHTML = `
+            <div class="modal-stat-row" style="margin-bottom:12px;">
+                <span class="modal-stat-label">Total productos consultados</span>
+                <span class="modal-stat-value">${products.length}</span>
+            </div>
+            ${html}`;
+    } catch (err) {
+        body.innerHTML = `<div style="text-align:center; padding:1rem; color:var(--danger);">Error: ${err.message}</div>`;
+    }
+}
+
+// =============================================
+// PURCHASE INTENT MODAL
+// =============================================
+async function openPurchaseIntentModal() {
+    _destroyModalChart();
+    const modal = document.getElementById('userStatsModal');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+    if (!modal || !title || !body) return;
+
+    title.textContent = 'Intención de compra — Semana';
+    body.innerHTML = '<div style="text-align:center; padding:1rem; color:var(--on-surface-variant);">Cargando...</div>';
+    modal.style.display = 'flex';
+
+    try {
+        const data = await fetchJSON('/api/reports/summary?days=7');
+        const s = data.summary || {};
+
+        body.innerHTML = `
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-bottom:16px;">
+                <div class="modal-stat-row"><span class="modal-stat-label">Intenciones de compra</span><span class="modal-stat-value" style="color:#c084fc;">${s.purchaseIntents || 0}</span></div>
+                <div class="modal-stat-row"><span class="modal-stat-label">Compras confirmadas</span><span class="modal-stat-value" style="color:#10b981;">${s.purchases || 0}</span></div>
+                <div class="modal-stat-row"><span class="modal-stat-label">Tasa de conversión</span><span class="modal-stat-value">${s.purchaseRate || 0}%</span></div>
+                <div class="modal-stat-row"><span class="modal-stat-label">Interacciones totales</span><span class="modal-stat-value">${s.totalInteractions || 0}</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;">
+                <div class="modal-stat-row"><span class="modal-stat-label">Usuarios únicos</span><span class="modal-stat-value">${s.uniqueUsers || 0}</span></div>
+                <div class="modal-stat-row"><span class="modal-stat-label">Tasa resolución</span><span class="modal-stat-value">${s.resolutionRate || 0}%</span></div>
+            </div>`;
+    } catch (err) {
+        body.innerHTML = `<div style="text-align:center; padding:1rem; color:var(--danger);">Error: ${err.message}</div>`;
     }
 }
 
@@ -2090,7 +2094,6 @@ async function refreshMetrics() {
         setTextContentWithEffect('sProcessed', data.counters?.messagesProcessed || 0);
         setTextContentWithEffect('sFailed', data.counters?.messagesFailed || 0);
         setTextContentWithEffect('sLatency', data.latency?.avg ? data.latency.avg + 'ms' : '-');
-        // mMph: avg/hr is calculated from loadHistoricalData, don't overwrite with raw processed count
         setTextContentWithEffect('sUptime', data.uptime?.human || '-');
 
         // Detailed Metrics
@@ -2103,9 +2106,6 @@ async function refreshMetrics() {
         setTextContentWithEffect('mP50', data.latency?.p50 ? data.latency.p50 + 'ms' : '-');
         setTextContentWithEffect('mP95', data.latency?.p95 ? data.latency.p95 + 'ms' : '-');
         setTextContentWithEffect('mP99', data.latency?.p99 ? data.latency.p99 + 'ms' : '-');
-        setTextContentWithEffect('mHeap', data.memory?.heapUsed || '-');
-        const mpmAvg = mpmHistory.length > 0 ? (mpmHistory.reduce((a, b) => a + b, 0) / mpmHistory.length).toFixed(1) : 0;
-        setTextContentWithEffect('mMpm', mpmAvg);
         const reliabilityEl = document.getElementById('mReliability');
         const reliabilityVal = data.reliability?.successRate || 100;
         if (reliabilityEl) {
@@ -2140,38 +2140,42 @@ async function refreshMetrics() {
 
 // Inicialización de montaje
 document.addEventListener('DOMContentLoaded', async () => {
-    // Add load-in fade effect to main shell
     document.body.classList.add('app-loaded');
-    
+
+    adminToken = getStoredAdminToken();
+
+    if (!adminToken) {
+        showLoginScreen();
+        return;
+    }
+
+    // Token exists — show dashboard
+    showAppDashboard();
+    bootstrapApp();
+});
+
+async function bootstrapApp() {
     // Vincular Eventos
     const selectEl = document.getElementById('userSelect');
     if (selectEl) {
         selectEl.addEventListener('change', async (e) => {
             selectedUserPhone = e.target.value;
-            chatMirrorLastCount = 0; // Forzar re-renderizado al cambiar usuario
+            chatMirrorLastCount = 0;
             await loadSelectedUserConfig();
             await loadChatMirror();
         });
     }
 
     debugLog('App Montada CSS/JS OK. Iniciando bootstrap...');
-    adminToken = getStoredAdminToken();
-    updateAdminTokenStatus();
-
-    // Block access until token is provided
-    if (!adminToken) {
-        ensureAdminToken();
-        return; // Stop bootstrap — page reloads after token is saved
-    }
-    // Hide overlay if token exists
-    const overlay = document.getElementById('adminTokenOverlay');
-    if (overlay) overlay.style.display = 'none';
 
     // Initialize Chart.js charts
     if (typeof Chart !== 'undefined') {
         initCharts();
         loadHistoricalData();
     }
+
+    // Load weekly KPI cards (ApexCharts)
+    loadDashboardKpis();
 
     // Esperar cargadores skeleton
     try {
@@ -2180,7 +2184,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             loadUsers(),
             refreshMetrics()
         ]);
-        // Router inicial: decide qué pantalla mostrar y qué usuario cargar basado en la URL
         handleRoute();
     } catch(e) {}
     
@@ -2189,7 +2192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setInterval(loadUsers, 15000);
     setInterval(loadHistoricalData, 30000);
     startChatMirrorPolling();
-});
+}
 
 // =============================================
 // ENRUTAMIENTO DE APP Y MÓVIL (SPA) + HASH ROUTER
@@ -2214,6 +2217,8 @@ function switchView(viewName, skipHashUpdate) {
     document.getElementById('view-chat').style.display = 'none';
     const reportsView = document.getElementById('view-reports');
     if (reportsView) reportsView.style.display = 'none';
+    const accountView = document.getElementById('view-account');
+    if (accountView) accountView.style.display = 'none';
     
     // 2. Remove active from nav links
     document.querySelectorAll('.side-menu a').forEach(el => el.classList.remove('active'));
@@ -2243,6 +2248,14 @@ function switchView(viewName, skipHashUpdate) {
         navLinks[2].classList.add('active');
         if(breadcrumb) breadcrumb.innerHTML = '<span class="muted">Digital Buho</span> <span class="sep">/</span> <span class="active">Reportes</span>';
         loadReportsData();
+    } else if (viewName === 'account') {
+        if (accountView) accountView.style.display = 'block';
+        document.querySelector('.main-content').classList.remove('no-scroll');
+        // "Mi Cuenta" is after the separator, it's the 5th link (index 4)
+        const accountLink = document.querySelector('.side-menu a[href="#account"]');
+        if (accountLink) accountLink.classList.add('active');
+        if(breadcrumb) breadcrumb.innerHTML = '<span class="muted">Digital Buho</span> <span class="sep">/</span> <span class="active">Mi Cuenta</span>';
+        loadAccountInfo();
     } else {
         document.getElementById('view-dashboard').style.display = 'block';
         document.querySelector('.main-content').classList.remove('no-scroll');
@@ -2269,6 +2282,8 @@ function handleRoute() {
         }
     } else if (view === 'reports') {
         switchView('reports', true);
+    } else if (view === 'account') {
+        switchView('account', true);
     } else {
         switchView('dashboard', true);
     }
@@ -2423,113 +2438,34 @@ function _renderReportKPIs(s) {
     el('rHeroUsers', s.uniqueUsers + ' usuarios');
 }
 
-// --- KPI SPARKLINES ---
-function _makeSparkline(canvasId, color, bgColor) {
-    const ctx = document.getElementById(canvasId);
-    if (!ctx) return null;
-    return new Chart(ctx, {
-        type: 'line',
-        data: { labels: [], datasets: [{ data: [], borderColor: color, backgroundColor: bgColor, fill: true, tension: 0.4, borderWidth: 1.5, pointRadius: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: true, suggestedMax: 1 } }, animation: { duration: 300 } }
-    });
-}
+// --- KPI SPARKLINES (removed — KPI cards hidden) ---
+function _createKpiSparklines() {}
+function _updateKpiSparklines() {}
 
-function _makeMultiSparkline(canvasId, datasetConfigs) {
-    const ctx = document.getElementById(canvasId);
-    if (!ctx) return null;
-    const datasets = datasetConfigs.map(c => ({
-        data: [], borderColor: c.color, backgroundColor: c.bg || 'transparent',
-        fill: !!c.bg, tension: 0.4, borderWidth: 1.5, pointRadius: 0
-    }));
-    return new Chart(ctx, {
-        type: 'line',
-        data: { labels: [], datasets },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: true, suggestedMax: 1 } }, animation: { duration: 300 } }
-    });
-}
-
-function _createKpiSparklines(kpiDays, outcomeDays) {
-    // Card 1: Outcomes — multi-line (purchased, just_asked, problem, resolved)
-    _reportCharts.kpiOutcomes = _makeMultiSparkline('chartKpiOutcomes', [
-        { color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
-        { color: '#94a3b8' },
-        { color: '#f43f5e' },
-        { color: '#38bdf8' }
-    ]);
-    // Card 2: Complaints
-    _reportCharts.kpiComplaints = _makeSparkline('chartKpiComplaints', '#f43f5e', 'rgba(244,63,94,0.1)');
-    // Card 3: Resolution + Purchase — dual line
-    _reportCharts.kpiResPurchase = _makeMultiSparkline('chartKpiResPurchase', [
-        { color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
-        { color: '#c084fc', bg: 'rgba(192,132,252,0.08)' }
-    ]);
-    // Card 4: Unresolved
-    _reportCharts.kpiUnresolved = _makeSparkline('chartKpiUnresolved', '#f59e0b', 'rgba(245,158,11,0.1)');
-    _setKpiSparklineData(kpiDays, outcomeDays);
-}
-
-function _updateKpiSparklines(kpiDays, outcomeDays) {
-    if (!_reportCharts.kpiOutcomes) return _createKpiSparklines(kpiDays, outcomeDays);
-    _setKpiSparklineData(kpiDays, outcomeDays);
-}
-
-function _setKpiSparklineData(kpiDays, outcomeDays) {
-    // KPI days (complaints, resolution, purchase, unresolved)
-    let d = kpiDays.length > 0 ? kpiDays : [{ resolutionRate: 0, complaints: 0, purchaseRate: 0, unresolved: 0 }];
-    if (d.length === 1) d = [d[0], d[0]];
-    const labels = d.map((_, i) => i);
-
-    // Complaints sparkline
-    const setOne = (chart, data) => {
-        if (!chart) return;
-        chart.data.labels = labels;
-        chart.data.datasets[0].data = data;
-        chart.update('none');
-    };
-    setOne(_reportCharts.kpiComplaints, d.map(x => x.complaints || 0));
-    setOne(_reportCharts.kpiUnresolved, d.map(x => x.unresolved || 0));
-
-    // Resolution + Purchase dual sparkline
-    if (_reportCharts.kpiResPurchase) {
-        _reportCharts.kpiResPurchase.data.labels = labels;
-        _reportCharts.kpiResPurchase.data.datasets[0].data = d.map(x => x.resolutionRate || 0);
-        _reportCharts.kpiResPurchase.data.datasets[1].data = d.map(x => x.purchaseRate || 0);
-        _reportCharts.kpiResPurchase.update('none');
-    }
-
-    // Outcomes multi-line sparkline
-    let od = (outcomeDays && outcomeDays.length > 0) ? outcomeDays : [{ purchased: 0, just_asked: 0, problem_reported: 0, resolved: 0 }];
-    if (od.length === 1) od = [od[0], od[0]];
-    const oLabels = od.map((_, i) => i);
-    if (_reportCharts.kpiOutcomes) {
-        _reportCharts.kpiOutcomes.data.labels = oLabels;
-        _reportCharts.kpiOutcomes.data.datasets[0].data = od.map(x => x.purchased || 0);
-        _reportCharts.kpiOutcomes.data.datasets[1].data = od.map(x => x.just_asked || 0);
-        _reportCharts.kpiOutcomes.data.datasets[2].data = od.map(x => x.problem_reported || 0);
-        _reportCharts.kpiOutcomes.data.datasets[3].data = od.map(x => x.resolved || 0);
-        _reportCharts.kpiOutcomes.update('none');
-    }
-}
-
-// --- FUNNEL CHART ---
+// --- FUNNEL CHART (ApexCharts) ---
 function _createFunnelChart(funnel) {
-    const ctx = document.getElementById('chartFunnel');
-    if (!ctx) return;
+    const el = document.getElementById('chartFunnel');
+    if (!el) return;
     const ordered = _getFunnelData(funnel);
-    _reportCharts.funnel = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ordered.map(o => STAGE_LABELS[o.stage] || o.stage),
-            datasets: [{ label: 'Usuarios', data: ordered.map(o => o.count), backgroundColor: ['#c084fc','#a78bfa','#818cf8','#60a5fa','#38bdf8','#22d3ee'], borderRadius: 6, maxBarThickness: 50 }]
-        },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e1e24', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 8, cornerRadius: 6 } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.04)' }, beginAtZero: true, ticks: { font: { size: 9 } } }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } }, animation: { duration: 400 } }
+    if (_reportCharts.funnel) { _reportCharts.funnel.destroy(); _reportCharts.funnel = null; }
+    _reportCharts.funnel = new ApexCharts(el, {
+        chart: { type: 'bar', height: 210, background: 'transparent', toolbar: { show: false }, animations: { enabled: true, speed: 400 } },
+        series: [{ name: 'Usuarios', data: ordered.map(o => o.count) }],
+        plotOptions: { bar: { horizontal: true, borderRadius: 5, barHeight: '55%' } },
+        colors: ['#c084fc','#a78bfa','#818cf8','#60a5fa','#38bdf8','#22d3ee'],
+        xaxis: { categories: ordered.map(o => STAGE_LABELS[o.stage] || o.stage), labels: { style: { colors: '#94a3b8', fontSize: '10px' } }, axisBorder: { show: false }, axisTicks: { show: false } },
+        yaxis: { labels: { style: { colors: '#e2e8f0', fontSize: '10px' } } },
+        grid: { borderColor: 'rgba(255,255,255,0.04)', xaxis: { lines: { show: true } }, yaxis: { lines: { show: false } } },
+        dataLabels: { enabled: false },
+        tooltip: { theme: 'dark' },
+        theme: { mode: 'dark' }
     });
+    _reportCharts.funnel.render();
 }
 function _updateFunnelChart(funnel) {
     if (!_reportCharts.funnel) return _createFunnelChart(funnel);
     const ordered = _getFunnelData(funnel);
-    _reportCharts.funnel.data.datasets[0].data = ordered.map(o => o.count);
-    _reportCharts.funnel.update('none');
+    _reportCharts.funnel.updateSeries([{ data: ordered.map(o => o.count) }]);
 }
 function _getFunnelData(funnel) {
     return STAGE_ORDER.map(stage => {
@@ -2538,83 +2474,107 @@ function _getFunnelData(funnel) {
     });
 }
 
-// --- PRODUCTS CHART ---
+// --- PRODUCTS CHART (ApexCharts) ---
 function _createProductsChart(products) {
-    const ctx = document.getElementById('chartProducts');
-    if (!ctx) return;
+    const el = document.getElementById('chartProducts');
+    if (!el) return;
     const top = products.slice(0, 8);
-    _reportCharts.products = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: top.map(p => (p.product || '').substring(0, 20)),
-            datasets: [
-                { label: 'Compró', data: top.map(p => parseInt(p.purchased) || 0), backgroundColor: 'rgba(16,185,129,0.6)', borderRadius: 4, maxBarThickness: 30 },
-                { label: 'Preguntó', data: top.map(p => parseInt(p.just_asked) || 0), backgroundColor: 'rgba(148,163,184,0.5)', borderRadius: 4, maxBarThickness: 30 },
-                { label: 'Problema', data: top.map(p => parseInt(p.problems) || 0), backgroundColor: 'rgba(244,63,94,0.5)', borderRadius: 4, maxBarThickness: 30 }
-            ]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 8, boxHeight: 8, usePointStyle: true, pointStyle: 'circle', padding: 10, font: { size: 9 } } }, tooltip: { backgroundColor: '#1e1e24', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 8, cornerRadius: 6 } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 8 }, maxRotation: 45 } }, y: { grid: { color: 'rgba(255,255,255,0.04)' }, beginAtZero: true, ticks: { font: { size: 9 }, stepSize: 1 } } }, animation: { duration: 400 } }
+    if (_reportCharts.products) { _reportCharts.products.destroy(); _reportCharts.products = null; }
+    _reportCharts.products = new ApexCharts(el, {
+        chart: { type: 'bar', height: 210, background: 'transparent', toolbar: { show: false }, stacked: true, animations: { enabled: true, speed: 400 } },
+        series: [
+            { name: 'Compró', data: top.map(p => parseInt(p.purchased) || 0) },
+            { name: 'Preguntó', data: top.map(p => parseInt(p.just_asked) || 0) },
+            { name: 'Problema', data: top.map(p => parseInt(p.problems) || 0) }
+        ],
+        colors: ['#10b981', '#94a3b8', '#f43f5e'],
+        plotOptions: { bar: { borderRadius: 4, columnWidth: '55%' } },
+        xaxis: { categories: top.map(p => (p.product || '').substring(0, 15)), labels: { style: { colors: '#94a3b8', fontSize: '9px' }, rotate: -45, rotateAlways: top.length > 5 }, axisBorder: { show: false }, axisTicks: { show: false } },
+        yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '9px' } } },
+        grid: { borderColor: 'rgba(255,255,255,0.04)' },
+        dataLabels: { enabled: false },
+        legend: { position: 'top', horizontalAlign: 'right', fontSize: '10px', labels: { colors: '#94a3b8' }, markers: { size: 6, shape: 'circle' } },
+        tooltip: { theme: 'dark' },
+        theme: { mode: 'dark' }
     });
+    _reportCharts.products.render();
 }
 function _updateProductsChart(products) {
     if (!_reportCharts.products) return _createProductsChart(products);
     const top = products.slice(0, 8);
-    _reportCharts.products.data.labels = top.map(p => (p.product || '').substring(0, 20));
-    _reportCharts.products.data.datasets[0].data = top.map(p => parseInt(p.purchased) || 0);
-    _reportCharts.products.data.datasets[1].data = top.map(p => parseInt(p.just_asked) || 0);
-    _reportCharts.products.data.datasets[2].data = top.map(p => parseInt(p.problems) || 0);
-    _reportCharts.products.update('none');
+    _reportCharts.products.updateOptions({ xaxis: { categories: top.map(p => (p.product || '').substring(0, 15)) } }, false, false);
+    _reportCharts.products.updateSeries([
+        { name: 'Compró', data: top.map(p => parseInt(p.purchased) || 0) },
+        { name: 'Preguntó', data: top.map(p => parseInt(p.just_asked) || 0) },
+        { name: 'Problema', data: top.map(p => parseInt(p.problems) || 0) }
+    ]);
 }
 
-// --- INTENTS CHART ---
+// --- INTENTS CHART (ApexCharts) ---
 function _createIntentsChart(intents) {
-    const ctx = document.getElementById('chartIntents');
-    if (!ctx || intents.length === 0) return;
-    _reportCharts.intents = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: intents.map(i => INTENT_LABELS[i.intent] || i.intent),
-            datasets: [{ data: intents.map(i => parseInt(i.count) || 0), backgroundColor: intents.map(i => INTENT_COLORS[i.intent] || '#475569'), borderWidth: 0 }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '55%', plugins: { legend: { position: 'right', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'circle', padding: 8, font: { size: 9 } } }, tooltip: { backgroundColor: '#1e1e24', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 8, cornerRadius: 6 } }, animation: { duration: 400 } }
+    const el = document.getElementById('chartIntents');
+    if (!el || intents.length === 0) return;
+    if (_reportCharts.intents) { _reportCharts.intents.destroy(); _reportCharts.intents = null; }
+    _reportCharts.intents = new ApexCharts(el, {
+        chart: { type: 'donut', height: 190, background: 'transparent', animations: { enabled: true, speed: 400 } },
+        series: intents.map(i => parseInt(i.count) || 0),
+        labels: intents.map(i => INTENT_LABELS[i.intent] || i.intent),
+        colors: intents.map(i => INTENT_COLORS[i.intent] || '#475569'),
+        plotOptions: { pie: { donut: { size: '55%' } } },
+        dataLabels: { enabled: false },
+        legend: { position: 'right', fontSize: '10px', labels: { colors: '#94a3b8' }, markers: { size: 6, shape: 'circle' } },
+        stroke: { width: 0 },
+        tooltip: { theme: 'dark' },
+        theme: { mode: 'dark' }
     });
+    _reportCharts.intents.render();
 }
 function _updateIntentsChart(intents) {
     if (!_reportCharts.intents) return _createIntentsChart(intents);
-    _reportCharts.intents.data.labels = intents.map(i => INTENT_LABELS[i.intent] || i.intent);
-    _reportCharts.intents.data.datasets[0].data = intents.map(i => parseInt(i.count) || 0);
-    _reportCharts.intents.data.datasets[0].backgroundColor = intents.map(i => INTENT_COLORS[i.intent] || '#475569');
-    _reportCharts.intents.update('none');
+    _reportCharts.intents.updateOptions({
+        labels: intents.map(i => INTENT_LABELS[i.intent] || i.intent),
+        colors: intents.map(i => INTENT_COLORS[i.intent] || '#475569')
+    }, false, false);
+    _reportCharts.intents.updateSeries(intents.map(i => parseInt(i.count) || 0));
 }
 
-// --- SENTIMENT CHART ---
+// --- SENTIMENT CHART (ApexCharts) ---
 function _createSentimentChart(days) {
-    const ctx = document.getElementById('chartSentiment');
-    if (!ctx || days.length === 0) return;
+    const el = document.getElementById('chartSentiment');
+    if (!el || days.length === 0) return;
     if (days.length === 1) days = [days[0], { ...days[0] }];
     const labels = _sentimentLabels(days);
-    _reportCharts.sentiment = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [
-                { label: 'Positivo', data: days.map(d => parseInt(d.positive) || 0), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.35, borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#10b981' },
-                { label: 'Neutro', data: days.map(d => parseInt(d.neutral_count) || 0), borderColor: '#94a3b8', backgroundColor: 'rgba(148,163,184,0.08)', fill: true, tension: 0.35, borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#94a3b8' },
-                { label: 'Negativo', data: days.map(d => parseInt(d.negative) || 0), borderColor: '#f43f5e', backgroundColor: 'rgba(244,63,94,0.08)', fill: true, tension: 0.35, borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#f43f5e' }
-            ]
-        },
-        options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 8, boxHeight: 8, usePointStyle: true, pointStyle: 'circle', padding: 10, font: { size: 9 } } }, tooltip: { backgroundColor: '#1e1e24', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 8, cornerRadius: 6 } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 8 } } }, y: { grid: { color: 'rgba(255,255,255,0.04)' }, beginAtZero: true, ticks: { font: { size: 9 } } } }, animation: { duration: 400 } }
+    if (_reportCharts.sentiment) { _reportCharts.sentiment.destroy(); _reportCharts.sentiment = null; }
+    _reportCharts.sentiment = new ApexCharts(el, {
+        chart: { type: 'area', height: 170, background: 'transparent', toolbar: { show: false }, animations: { enabled: true, speed: 400 } },
+        series: [
+            { name: 'Positivo', data: days.map(d => parseInt(d.positive) || 0) },
+            { name: 'Neutro', data: days.map(d => parseInt(d.neutral_count) || 0) },
+            { name: 'Negativo', data: days.map(d => parseInt(d.negative) || 0) }
+        ],
+        colors: ['#10b981', '#94a3b8', '#f43f5e'],
+        xaxis: { categories: labels, labels: { style: { colors: '#94a3b8', fontSize: '9px' } }, axisBorder: { show: false }, axisTicks: { show: false } },
+        yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '9px' } } },
+        grid: { borderColor: 'rgba(255,255,255,0.04)' },
+        stroke: { curve: 'smooth', width: 2 },
+        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.3, opacityTo: 0.05, stops: [0, 100] } },
+        dataLabels: { enabled: false },
+        legend: { position: 'top', horizontalAlign: 'right', fontSize: '10px', labels: { colors: '#94a3b8' }, markers: { size: 6, shape: 'circle' } },
+        tooltip: { theme: 'dark', x: { show: true } },
+        theme: { mode: 'dark' }
     });
+    _reportCharts.sentiment.render();
 }
 function _updateSentimentChart(days) {
     if (!_reportCharts.sentiment) return _createSentimentChart(days);
     if (days.length === 0) return;
     if (days.length === 1) days = [days[0], { ...days[0] }];
-    _reportCharts.sentiment.data.labels = _sentimentLabels(days);
-    _reportCharts.sentiment.data.datasets[0].data = days.map(d => parseInt(d.positive) || 0);
-    _reportCharts.sentiment.data.datasets[1].data = days.map(d => parseInt(d.neutral_count) || 0);
-    _reportCharts.sentiment.data.datasets[2].data = days.map(d => parseInt(d.negative) || 0);
-    _reportCharts.sentiment.update('none');
+    _reportCharts.sentiment.updateOptions({ xaxis: { categories: _sentimentLabels(days) } }, false, false);
+    _reportCharts.sentiment.updateSeries([
+        { name: 'Positivo', data: days.map(d => parseInt(d.positive) || 0) },
+        { name: 'Neutro', data: days.map(d => parseInt(d.neutral_count) || 0) },
+        { name: 'Negativo', data: days.map(d => parseInt(d.negative) || 0) }
+    ]);
 }
 function _sentimentLabels(days) {
     return days.map((d, idx) => {

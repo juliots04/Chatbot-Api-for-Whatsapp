@@ -4,6 +4,7 @@ const config = require('../../config');
 const logger = require('../utils/logger');
 const botHandler = require('./bot_handler');
 const userSettingsService = require('../services/user_settings_service');
+const authService = require('../services/auth_service');
 
 /**
  * GET /api/config — Devuelve la configuración actual (sin datos sensibles)
@@ -1101,6 +1102,62 @@ router.get('/reports/outcome-daily', async (req, res) => {
     } catch (error) {
         logger.error(`[ADMIN API] Error reports/outcome-daily: ${error.message}`);
         res.status(500).json({ error: 'Error obteniendo outcomes diarios' });
+    }
+});
+
+/**
+ * GET /api/auth/me — Devuelve info del usuario autenticado (valida JWT)
+ */
+router.get('/auth/me', (req, res) => {
+    if (!req.adminUser) {
+        return res.status(401).json({ error: 'No autenticado' });
+    }
+    res.json({
+        user: {
+            id: req.adminUser.sub,
+            username: req.adminUser.username,
+            role: req.adminUser.role
+        }
+    });
+});
+
+/**
+ * POST /api/auth/setup — Crea el primer admin (solo si no existe ninguno)
+ * IMPORTANTE: Solo funciona cuando la tabla admin_users está vacía.
+ */
+router.post('/auth/setup', async (req, res) => {
+    try {
+        const mysqlService = require('../services/mysql_service');
+        if (!mysqlService.isConfigured()) {
+            return res.status(503).json({ error: 'MySQL no configurado' });
+        }
+
+        // Verificar que no existan admins
+        const existing = await mysqlService.query('SELECT COUNT(*) AS cnt FROM admin_users');
+        if (existing[0]?.cnt > 0) {
+            return res.status(409).json({ error: 'Ya existe al menos un administrador. Usa el panel para gestionar usuarios.' });
+        }
+
+        const { username, password, displayName } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Se requiere username y password' });
+        }
+        if (String(password).length < 6) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+        }
+
+        const user = await authService.createAdminUser(username, password, displayName || username, 'superadmin');
+        const token = authService.generateToken({ id: 1, ...user });
+
+        res.json({
+            success: true,
+            message: 'Administrador creado exitosamente',
+            user,
+            token
+        });
+    } catch (error) {
+        logger.error(`[AUTH] Error en setup: ${error.message}`);
+        res.status(500).json({ error: 'Error creando administrador' });
     }
 });
 

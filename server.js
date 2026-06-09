@@ -109,6 +109,106 @@ app.get('/health', (req, res) => {
     }
 });
 
+// Auth endpoints (no requieren token previo)
+const authService = require('./src/services/auth_service');
+
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Se requiere username y password' });
+        }
+
+        const user = await authService.verifyCredentials(username, password);
+        if (!user) {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
+        }
+
+        const token = authService.generateToken(user);
+        const config = require('./config');
+        res.json({
+            success: true,
+            token,
+            expiresIn: config.jwt.expiresIn,
+            user: { username: user.username, displayName: user.displayName, role: user.role }
+        });
+    } catch (error) {
+        logger.error(`[AUTH] Error en login: ${error.message}`);
+        res.status(500).json({ error: 'Error interno de autenticación' });
+    }
+});
+
+app.post('/api/auth/setup', async (req, res) => {
+    try {
+        const mysqlSvc = require('./src/services/mysql_service');
+        if (!mysqlSvc.isConfigured()) {
+            return res.status(503).json({ error: 'MySQL no configurado' });
+        }
+
+        const existing = await mysqlSvc.query('SELECT COUNT(*) AS cnt FROM admin_users');
+        if (existing[0]?.cnt > 0) {
+            return res.status(409).json({ error: 'Ya existe al menos un administrador' });
+        }
+
+        const { username, password, displayName } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Se requiere username y password' });
+        }
+        if (String(password).length < 6) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+        }
+
+        const user = await authService.createAdminUser(username, password, displayName || username, 'superadmin');
+        const token = authService.generateToken({ id: 1, ...user });
+
+        res.json({ success: true, token, user, message: 'Administrador creado exitosamente' });
+    } catch (error) {
+        logger.error(`[AUTH] Error en setup: ${error.message}`);
+        res.status(500).json({ error: 'Error creando administrador' });
+    }
+});
+
+// Auth endpoints that require JWT (validated inline)
+app.get('/api/auth/me', validateAdminApiToken, async (req, res) => {
+    try {
+        const user = await authService.getAdminUserById(req.adminUser.sub);
+        if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+        res.json({
+            user: {
+                id: user.id,
+                username: user.username,
+                displayName: user.display_name,
+                role: user.role,
+                lastLoginAt: user.last_login_at,
+                createdAt: user.created_at
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error obteniendo perfil' });
+    }
+});
+
+app.put('/api/auth/password', validateAdminApiToken, async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ error: 'Se requiere contraseña actual y nueva' });
+        }
+        if (String(newPassword).length < 6) {
+            return res.status(400).json({ error: 'La nueva contraseña debe tener al menos 6 caracteres' });
+        }
+
+        await authService.changePassword(req.adminUser.sub, currentPassword, newPassword);
+        res.json({ success: true, message: 'Contraseña actualizada correctamente' });
+    } catch (error) {
+        if (error.message === 'Contraseña actual incorrecta') {
+            return res.status(403).json({ error: error.message });
+        }
+        logger.error(`[AUTH] Error cambiando password: ${error.message}`);
+        res.status(500).json({ error: 'Error actualizando contraseña' });
+    }
+});
+
 // API de administración (configuración en caliente)
 app.use('/api', validateAdminApiToken, adminApiRoutes);
 

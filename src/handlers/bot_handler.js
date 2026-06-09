@@ -236,16 +236,18 @@ class BotHandler {
             conversationStoreService.appendAuditMessage(userPhone, 'outbound', 'bot', responseText, null, latency)
                 .catch(err => logger.error(`[BOT] Error logging outbound to MySQL: ${err.message}`));
 
-            // Classify interaction for Reports module (async, fire-and-forget)
-            const reqDebug = geminiService.lastRequestDebug;
-            insightClassifier.classifyMessage(
-                userPhone, messageText, responseText,
-                reqDebug?.commercialFlow || null,
-                reqDebug?.activeProduct || null,
-                userName
-            ).catch(err => logger.error(`[BOT] Error en insight classifier: ${err.message}`));
-
             logger.info(`[BOT] ✓ Flujo completado para ${userPhone} en ${latency}ms`);
+
+            // Classify interaction for Reports module (deferred, fire-and-forget)
+            const reqDebug = geminiService.lastRequestDebug;
+            setTimeout(() => {
+                insightClassifier.classifyMessage(
+                    userPhone, messageText, responseText,
+                    reqDebug?.commercialFlow || null,
+                    reqDebug?.activeProduct || null,
+                    userName
+                ).catch(err => logger.error(`[BOT] Error en insight classifier: ${err.message}`));
+            }, 2000);
 
         } catch (error) {
             const errorText = [
@@ -384,16 +386,18 @@ class BotHandler {
             conversationStoreService.appendAuditMessage(userPhone, 'outbound', 'bot', responseText, null, latency)
                 .catch(err => logger.error(`[BOT_CHATWOOT] Error logging outbound to MySQL: ${err.message}`));
 
-            // Classify interaction for Reports module (async, fire-and-forget)
-            const reqDebugCw = geminiService.lastRequestDebug;
-            insightClassifier.classifyMessage(
-                userPhone, messageText, responseText,
-                reqDebugCw?.commercialFlow || null,
-                reqDebugCw?.activeProduct || null,
-                userName
-            ).catch(err => logger.error(`[BOT_CHATWOOT] Error en insight classifier: ${err.message}`));
-
             logger.info(`[BOT_CHATWOOT] ✓ Flujo completado para ${userPhone} en ${latency}ms`);
+
+            // Classify interaction for Reports module (deferred, fire-and-forget)
+            const reqDebugCw = geminiService.lastRequestDebug;
+            setTimeout(() => {
+                insightClassifier.classifyMessage(
+                    userPhone, messageText, responseText,
+                    reqDebugCw?.commercialFlow || null,
+                    reqDebugCw?.activeProduct || null,
+                    userName
+                ).catch(err => logger.error(`[BOT_CHATWOOT] Error en insight classifier: ${err.message}`));
+            }, 2000);
 
         } catch (error) {
             const errorText = [

@@ -94,19 +94,19 @@ El sistema integra un canal de análisis de notas de voz recibidas por WhatsApp:
 ---
 ## 📂 Módulos Clave del Proyecto
 
-*   [`server.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/server.js): Inicialización del servidor, middlewares globales, endpoints principales y manejo de apagado limpio.
-*   [`config.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/config.js): Archivo centralizador de configuración de variables de entorno y defaults operativos.
-*   [`scrape_buho_store.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/scrape_buho_store.js): Script scraper independiente para extraer la estructura de planes comerciales de Digital Buho.
+*   [`server.js`](./server.js): Inicialización del servidor, middlewares globales, endpoints principales y manejo de apagado limpio.
+*   [`config.js`](./config.js): Archivo centralizador de configuración de variables de entorno y defaults operativos.
+*   [`scrape_buho_store.js`](./scrape_buho_store.js): Script scraper independiente para extraer la estructura de planes comerciales de Digital Buho.
 *   **`src/handlers/`**
-    *   [`webhook.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/src/handlers/webhook.js): Recepción de webhooks de Meta y validación del token de suscripción.
-    *   [`bot_handler.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/src/handlers/bot_handler.js): Lógica del ciclo de vida del mensaje (recepción de textos, imágenes, voz y delegaciones).
+    *   [`webhook.js`](./src/handlers/webhook.js): Recepción de webhooks de Meta y validación del token de suscripción.
+    *   [`bot_handler.js`](./src/handlers/bot_handler.js): Lógica del ciclo de vida del mensaje (recepción de textos, imágenes, voz y delegaciones).
 *   **`src/services/`**
-    *   [`gemini_service.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/src/services/gemini_service.js): Comunicación con Google Gemini, rotación balanceada de llaves y control de timeouts.
-    *   [`whatsapp_service.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/src/services/whatsapp_service.js): Cliente HTTP de WhatsApp Cloud API, descargas multimedia y control de reintentos.
-    *   [`mysql_service.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/src/services/mysql_service.js): Pool de conexiones relacionales y funciones de verificación de estado.
-    *   [`knowledge_loader.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/src/services/knowledge_loader.js): Indexación y carga de la información de catálogo en JSON local.
-    *   [`conversation_store_service.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/src/services/conversation_store_service.js): Guardado híbrido de chats en local y réplica transaccional en MySQL.
-    *   [`buho_store_scheduler.js`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/src/services/buho_store_scheduler.js): Planificador (cron) para ejecutar el scraping de catálogo de manera automática.
+    *   [`gemini_service.js`](./src/services/gemini_service.js): Comunicación con Google Gemini, rotación balanceada de llaves y control de timeouts.
+    *   [`whatsapp_service.js`](./src/services/whatsapp_service.js): Cliente HTTP de WhatsApp Cloud API, descargas multimedia y control de reintentos.
+    *   [`mysql_service.js`](./src/services/mysql_service.js): Pool de conexiones relacionales y funciones de verificación de estado.
+    *   [`knowledge_loader.js`](./src/services/knowledge_loader.js): Indexación y carga de la información de catálogo en JSON local.
+    *   [`conversation_store_service.js`](./src/services/conversation_store_service.js): Guardado híbrido de chats en local y réplica transaccional en MySQL.
+    *   [`buho_store_scheduler.js`](./src/services/buho_store_scheduler.js): Planificador (cron) para ejecutar el scraping de catálogo de manera automática.
 
 ---
 
@@ -167,7 +167,7 @@ BUHO_STORE_SCRAPER_TZ=America/Lima
 
 ### 3. Preparación de la Base de Datos
 Importa el esquema SQL inicial para estructurar las tablas de auditoría y configuración:
-*   Ubicación: [`db/mysql/schema.sql`](file:///c:/Users/julio/OneDrive/Pictures/Proyectos%20Visual%20Studio/BuhoDigitalGemini/db/mysql/schema.sql)
+*   Ubicación: [`db/mysql/schema.sql`](./db/mysql/schema.sql)
 ```bash
 # Puedes importarlo desde tu consola de comandos de MySQL o herramienta gráfica:
 # mysql -u root -p ia_buho < db/mysql/schema.sql

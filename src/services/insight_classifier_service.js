@@ -16,6 +16,7 @@ const VALID_OUTCOMES = ['purchased','just_asked','problem_reported','unresolved'
 class InsightClassifierService {
     constructor() {
         this._initialized = false;
+        this._classifyKeyIndex = 0; // Rotates through available keys
     }
 
     // =============================================
@@ -24,6 +25,8 @@ class InsightClassifierService {
     async _classifyWithAI(userMessage, responseText, commercialStage, activeProduct) {
         const apiKeys = config.gemini?.apiKeys || [];
         if (apiKeys.length === 0) return null;
+
+        const knownProducts = 'Pro 8, Pro 7, ProX, Factura Fácil, Fastura, Fastura Colombia, Hosting, VPS, Correos Corporativos, Zoho Mail, BuhoChat, Certificados DIAN, Certificado SUNAT, VendeYa, App31, QR Buho, Mozo, Waya Empresa, Waya Reseller, Validación';
 
         const prompt = `Eres un clasificador de mensajes para un chatbot comercial de WhatsApp. Tu trabajo es clasificar CADA mensaje del usuario en las categorías correctas.
 
@@ -37,97 +40,182 @@ Responde SOLO con un JSON válido (sin markdown, sin backticks, sin texto extra)
 
 INTENT — clasifica la INTENCIÓN del mensaje del usuario:
 - "greeting" → saludos: hola, hi, hello, hey, buenas, buenos días, buenas tardes, buenas noches, qué tal, saludos, ey, ola, wena
-- "farewell" → despedidas: adiós, chao, chau, bye, hasta luego, nos vemos, gracias por todo, eso sería todo
-- "purchase_interest" → quiere comprar: comprar, adquirir, lo quiero, me quedo con, contratar, activar, tomar el plan
-- "price_inquiry" → pregunta precios: cuánto cuesta, precio, costo, tarifa, valor, cuánto sale, cuánto vale
-- "complaint" → queja/reclamo: no funciona, problema, error, falla, pésimo, malo, reclamo, no sirve, estafa
-- "support" → pide ayuda: ayuda, no puedo, cómo hago, cómo configuro, necesito asistencia, soporte
-- "info_request" → pide información: qué es, qué ofrece, qué incluye, información, detalles, catálogo, productos, servicios
-- "question" → pregunta general que no encaja arriba
-- "other" → SOLO si realmente no encaja en NINGUNA categoría (muy raro, casi nunca uses esto)
+- "farewell" → despedidas: adiós, chao, chau, bye, hasta luego, nos vemos, gracias por todo, eso sería todo, ok gracias, muchas gracias (cuando es cierre de conversación)
+- "purchase_interest" → quiere comprar: comprar, adquirir, lo quiero, me quedo con, contratar, activar, tomar el plan, me interesa comprar, vamos con
+- "price_inquiry" → pregunta precios: cuánto cuesta, precio, costo, tarifa, valor, cuánto sale, cuánto vale, precios
+- "complaint" → queja/reclamo: no funciona, problema, error, falla, pésimo, malo, reclamo, no sirve, estafa, llevo días sin
+- "support" → pide ayuda técnica: ayuda, no puedo, cómo hago, cómo configuro, necesito asistencia, soporte, no puedo ingresar
+- "info_request" → pide información sobre productos/servicios: qué es, qué ofrece, qué incluye, información, detalles, catálogo, productos, servicios, qué tienen, cuáles son
+- "question" → pregunta general que no encaja en las anteriores categorías
+- "other" → mensajes sin sentido claro, emojis solos, risas (jajaja), letras random (aaaaa), confirmaciones mínimas (ok, sí, dale), o cualquier cosa que NO sea una intención real
 
 SENTIMENT:
-- "positive" → agradecimiento, satisfacción, entusiasmo: gracias, genial, perfecto, excelente, me encanta
-- "negative" → frustración, molestia, queja: problema, horrible, no sirve, estafa, molesto
-- "neutral" → sin emoción clara, saludos simples, preguntas informativas
+- "positive" → agradecimiento, satisfacción, entusiasmo, interés de compra: gracias, genial, perfecto, excelente, me encanta, quiero comprar, me interesa
+- "negative" → frustración, molestia, queja: problema, horrible, no sirve, estafa, molesto, pésimo
+- "neutral" → sin emoción clara, saludos simples, preguntas informativas, mensajes cortos
 
 OUTCOME:
-- "purchased" → confirmó compra o envió comprobante
+- "purchased" → confirmó compra o envió comprobante de pago
 - "resolved" → el bot resolvió su duda/problema satisfactoriamente
-- "just_asked" → solo pidió información sin comprar
-- "problem_reported" → reportó problema o queja
-- "unresolved" → el bot no pudo resolver
-- "redirected" → se redirigió a otro canal
-- "ongoing" → saludo inicial, conversación en curso, sin resolución aún
+- "just_asked" → pidió información específica sin intención de comprar aún
+- "problem_reported" → reportó un problema técnico o queja formal
+- "unresolved" → el bot no pudo resolver su problema
+- "redirected" → se redirigió a otro canal (humano, WhatsApp, web)
+- "ongoing" → conversación en curso sin resolución clara aún (saludos, mensajes cortos, confirmaciones)
+
+TOPIC_SUMMARY — Un resumen corto y GENÉRICO (máximo 5 palabras). PROHIBIDO copiar el mensaje del usuario:
+- Saludos → "Saludo inicial"
+- Despedidas → "Cierre de conversación"
+- Precios de producto → "Consulta precio [producto]"
+- Info sobre producto específico → "Consulta sobre [producto]"
+- Info catálogo/productos en general → "Consulta catálogo de productos"
+- Quejas → "Problema con [tema corto]"
+- Soporte técnico → "Soporte técnico"
+- Mensajes basura → "Mensaje no clasificable"
+- Confirmaciones (ok, sí, dale) → "Confirmación"
+- REGLA ABSOLUTA: topic_summary NO puede contener palabras del mensaje original reorganizadas. Debe ser una ETIQUETA descriptiva genérica.
+
+PRODUCT_CONSULTED — Solo si el usuario menciona explícitamente uno de estos productos:
+${knownProducts}
+Si no menciona ningún producto específico, pon null.
 
 EJEMPLOS:
-- "hola" → {"intent":"greeting","sentiment":"neutral","outcome":"ongoing","topic_summary":"Saludo","product_consulted":null,"confidence":0.95}
-- "hi" → {"intent":"greeting","sentiment":"neutral","outcome":"ongoing","topic_summary":"Saludo","product_consulted":null,"confidence":0.95}
-- "buenas tardes" → {"intent":"greeting","sentiment":"neutral","outcome":"ongoing","topic_summary":"Saludo","product_consulted":null,"confidence":0.95}
-- "cuánto cuesta el plan básico" → {"intent":"price_inquiry","sentiment":"neutral","outcome":"just_asked","topic_summary":"Precio plan básico","product_consulted":"Plan básico","confidence":0.9}
-- "no me sirve esta porquería" → {"intent":"complaint","sentiment":"negative","outcome":"problem_reported","topic_summary":"Queja servicio","product_consulted":null,"confidence":0.9}
+- "hola" → {"intent":"greeting","sentiment":"neutral","outcome":"ongoing","topic_summary":"Saludo inicial","product_consulted":null,"confidence":0.95}
+- "qué productos tiene" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta catálogo de productos","product_consulted":null,"confidence":0.9}
+- "cuánto cuesta el Pro 8" → {"intent":"price_inquiry","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta precio Pro 8","product_consulted":"Pro 8","confidence":0.95}
+- "no me sirve esta porquería" → {"intent":"complaint","sentiment":"negative","outcome":"problem_reported","topic_summary":"Queja por mal funcionamiento","product_consulted":null,"confidence":0.9}
 - "quiero comprarlo" → {"intent":"purchase_interest","sentiment":"positive","outcome":"ongoing","topic_summary":"Interés de compra","product_consulted":null,"confidence":0.9}
-- "gracias, eso era todo" → {"intent":"farewell","sentiment":"positive","outcome":"resolved","topic_summary":"Despedida","product_consulted":null,"confidence":0.9}
+- "gracias, eso era todo" → {"intent":"farewell","sentiment":"positive","outcome":"resolved","topic_summary":"Cierre de conversación","product_consulted":null,"confidence":0.95}
+- "aaaaa" → {"intent":"other","sentiment":"neutral","outcome":"ongoing","topic_summary":"Mensaje no clasificable","product_consulted":null,"confidence":0.8}
+- "jajaja" → {"intent":"other","sentiment":"positive","outcome":"ongoing","topic_summary":"Mensaje no clasificable","product_consulted":null,"confidence":0.8}
+- "ok" → {"intent":"other","sentiment":"neutral","outcome":"ongoing","topic_summary":"Confirmación","product_consulted":null,"confidence":0.8}
+- "el pro8 que tal es" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta sobre Pro 8","product_consulted":"Pro 8","confidence":0.9}
+- "y el hosting sirve?" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta sobre Hosting","product_consulted":"Hosting","confidence":0.9}
+- "en tus productos en que mas" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta catálogo de productos","product_consulted":null,"confidence":0.85}
+- "que mas ofrecen" → {"intent":"info_request","sentiment":"neutral","outcome":"just_asked","topic_summary":"Consulta catálogo de productos","product_consulted":null,"confidence":0.85}
 
-IMPORTANTE: Prioriza siempre la categoría más específica. "hola", "hi", "hey", "buenas" SIEMPRE son "greeting", nunca "other".`;
+REGLAS:
+1. "hola", "hi", "hey", "buenas" SIEMPRE son "greeting", NUNCA "other"
+2. "ok gracias", "muchas gracias", "gracias eso es todo" son "farewell" (cierre), no "greeting"
+3. Mensajes sin sentido (aaaaa, jjj, emojis solos) SIEMPRE son "other"
+4. topic_summary PROHIBIDO copiar el mensaje del usuario. Usa SOLO estas etiquetas: "Saludo inicial", "Cierre de conversación", "Consulta catálogo de productos", "Consulta sobre [producto]", "Consulta precio [producto]", "Interés de compra", "Problema con [tema]", "Soporte técnico", "Mensaje no clasificable", "Confirmación"
+5. Solo pon un product_consulted si el usuario menciona EXPLÍCITAMENTE un producto de la lista
+6. Prioriza la categoría más ESPECÍFICA sobre la genérica
+7. Si el mensaje menciona un PRODUCTO (de la lista), NUNCA puede ser "other" — clasifícalo como "info_request", "price_inquiry" o "purchase_interest" según el contexto
+8. Preguntas informales como "qué tal es", "cómo es", "es bueno", "sirve", "funciona", "qué onda con" sobre un producto = "info_request"`;
 
-        try {
-            const genAI = new GoogleGenerativeAI(apiKeys[0]);
-            const model = genAI.getGenerativeModel({
-                model: config.gemini.model || 'gemini-2.5-flash',
-                generationConfig: { temperature: 0.1, maxOutputTokens: 200, topP: 0.8 }
-            });
+        // Try up to 3 different keys (rotating) to handle rate limiting
+        const maxRetries = Math.min(3, apiKeys.length);
+        for (let attempt = 0; attempt < maxRetries; attempt++) {
+            const keyIndex = this._classifyKeyIndex % apiKeys.length;
+            this._classifyKeyIndex = (this._classifyKeyIndex + 1) % apiKeys.length;
+            const classifyKey = apiKeys[keyIndex];
 
-            const result = await Promise.race([
-                model.generateContent([{ text: prompt }]),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('AI classify timeout')), 5000))
-            ]);
+            try {
+                const genAI = new GoogleGenerativeAI(classifyKey);
+                const model = genAI.getGenerativeModel({
+                    model: config.gemini.model || 'gemini-2.5-flash',
+                    generationConfig: { temperature: 0.1, maxOutputTokens: 1024, topP: 0.8 }
+                });
 
-            const raw = String(result?.response?.text?.() || '').trim();
-            const jsonMatch = raw.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) return null;
+                const result = await Promise.race([
+                    model.generateContent([{ text: prompt }]),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('AI classify timeout')), 12000))
+                ]);
 
-            const parsed = JSON.parse(jsonMatch[0]);
+                const raw = String(result?.response?.text?.() || '').trim();
+                const jsonMatch = raw.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) {
+                    logger.debug(`[INSIGHT] No JSON from key #${keyIndex + 1}, trying next...`);
+                    continue;
+                }
 
-            // Validate and sanitize
-            const intent = VALID_INTENTS.includes(parsed.intent) ? parsed.intent : null;
-            const sentiment = VALID_SENTIMENTS.includes(parsed.sentiment) ? parsed.sentiment : null;
-            const outcome = VALID_OUTCOMES.includes(parsed.outcome) ? parsed.outcome : null;
-            const topicSummary = parsed.topic_summary ? String(parsed.topic_summary).substring(0, 255) : null;
-            
-            // Fix parsing for product, allowing actual values but ignoring nulls and literal "null"
-            let product = null;
-            if (parsed.product_consulted && String(parsed.product_consulted).toLowerCase() !== 'null' && String(parsed.product_consulted).trim() !== '') {
-                product = String(parsed.product_consulted).substring(0, 120);
+                const parsed = JSON.parse(jsonMatch[0]);
+
+                // Validate and sanitize
+                const intent = VALID_INTENTS.includes(parsed.intent) ? parsed.intent : null;
+                const sentiment = VALID_SENTIMENTS.includes(parsed.sentiment) ? parsed.sentiment : null;
+                const outcome = VALID_OUTCOMES.includes(parsed.outcome) ? parsed.outcome : null;
+                const topicSummary = parsed.topic_summary ? String(parsed.topic_summary).substring(0, 255) : null;
+                
+                // Fix parsing for product, allowing actual values but ignoring nulls and literal "null"
+                let product = null;
+                if (parsed.product_consulted && String(parsed.product_consulted).toLowerCase() !== 'null' && String(parsed.product_consulted).trim() !== '') {
+                    product = String(parsed.product_consulted).substring(0, 120);
+                }
+
+                const confidence = (typeof parsed.confidence === 'number' && parsed.confidence >= 0.5 && parsed.confidence <= 1.0)
+                    ? parsed.confidence : 0.75;
+
+                if (!intent || !sentiment || !outcome) {
+                    logger.warn(`[INSIGHT] Invalid JSON structure from AI key #${keyIndex + 1}: ${raw}`);
+                    continue;
+                }
+
+                logger.debug(`[INSIGHT] AI classified with key #${keyIndex + 1}`);
+                return { intent, sentiment, outcome, topicSummary, product, confidence };
+            } catch (err) {
+                const isRateLimit = /429|resource.*(exhausted|has been)|rate.?limit|quota/i.test(err.message || '');
+                const isSuspended = /403|suspended|forbidden|permission denied/i.test(err.message || '');
+                if (isRateLimit || isSuspended) {
+                    logger.debug(`[INSIGHT] Key #${keyIndex + 1} ${isRateLimit ? 'rate-limited' : 'suspended'}, trying next...`);
+                    continue;
+                }
+                logger.debug(`[INSIGHT] AI classification failed on key #${keyIndex + 1}: ${err.message}`);
+                continue;
             }
-
-            const confidence = (typeof parsed.confidence === 'number' && parsed.confidence >= 0.5 && parsed.confidence <= 1.0)
-                ? parsed.confidence : 0.75;
-
-            if (!intent || !sentiment || !outcome) {
-                logger.warn(`[INSIGHT] Invalid JSON structure from AI: ${raw}`);
-                return null;
-            }
-
-            return { intent, sentiment, outcome, topicSummary, product, confidence };
-        } catch (err) {
-            logger.debug(`[INSIGHT] AI classification failed, using fallback: ${err.message}`);
-            return null;
         }
+        
+        logger.debug('[INSIGHT] All classification keys exhausted, using regex fallback');
+        return null;
     }
 
     // =============================================
     // REGEX FALLBACK — Used when AI is unavailable
     // =============================================
+
+    _detectProductRegex(userMessage) {
+        const msg = String(userMessage || '').trim().toLowerCase();
+        const products = [
+            { pattern: /\bpro\s*8\b/i, name: 'Pro 8' },
+            { pattern: /\bpro\s*7\b/i, name: 'Pro 7' },
+            { pattern: /\bprox\b/i, name: 'ProX' },
+            { pattern: /\bfastura\b/i, name: 'Fastura' },
+            { pattern: /\bfactura\s*f[aá]cil\b/i, name: 'Factura Fácil' },
+            { pattern: /\bhosting\b/i, name: 'Hosting' },
+            { pattern: /\bvps\b/i, name: 'VPS' },
+            { pattern: /\bcorreos?\s*(corporativ|empresarial)/i, name: 'Correos Corporativos' },
+            { pattern: /\bzoho\s*mail\b/i, name: 'Zoho Mail' },
+            { pattern: /\bbuho\s*chat\b/i, name: 'BuhoChat' },
+            { pattern: /\bbuhochat\b/i, name: 'BuhoChat' },
+            { pattern: /\bcertificad[oa]s?\s*dian\b/i, name: 'Certificados DIAN' },
+            { pattern: /\bcertificad[oa]s?\s*sunat\b/i, name: 'Certificado SUNAT' },
+            { pattern: /\bvendeya\b/i, name: 'VendeYa' },
+            { pattern: /\bvende\s*ya\b/i, name: 'VendeYa' },
+            { pattern: /\bapp\s*31\b/i, name: 'App31' },
+            { pattern: /\bapp31\b/i, name: 'App31' },
+            { pattern: /\bqr\s*buho\b/i, name: 'QR Buho' },
+            { pattern: /\bmozo\b/i, name: 'Mozo' },
+            { pattern: /\bwaya\b/i, name: 'Waya Empresa' },
+            { pattern: /\bvalidaci[oó]n\b/i, name: 'Validación' },
+        ];
+        for (const p of products) {
+            if (p.pattern.test(msg)) return p.name;
+        }
+        return null;
+    }
+
     _classifyIntentRegex(userMessage) {
         const msg = String(userMessage || '').trim().toLowerCase();
-        if (/^(hola|buenos?\s*(d[ií]as?|tardes?|noches?)|hey|saludos|qu[eé]\s*tal|hi|hello)\b/.test(msg) && msg.length < 40) return { intent: 'greeting', confidence: 0.90 };
-        if (/\b(adi[oó]s|hasta\s*luego|chao|chau|bye|nos\s*vemos|gracias\s*por\s*todo|eso\s*(ser[ií]a|es)\s*todo)\b/.test(msg)) return { intent: 'farewell', confidence: 0.85 };
-        if (/\b(comprar|adquirir|quiero\s*el|me\s*quedo\s*con|lo\s*quiero|activar|contratar|tomar\s*el|vamos\s*con|me\s*interesa\s*comprar)\b/.test(msg)) return { intent: 'purchase_interest', confidence: 0.85 };
+        if (/^(hola|buenas?\s*(d[ií]as?|tardes?|noches?)?|buenos?\s*(d[ií]as?|tardes?|noches?)|hey|saludos|qu[eé]\s*tal|hi|hello)\b/.test(msg) && msg.length < 40) return { intent: 'greeting', confidence: 0.90 };
+        if (/\b(adi[oó]s|hasta\s*luego|chao|chau|bye|nos\s*vemos|gracias\s*por\s*todo|eso\s*(ser[ií]a|es)\s*todo|ok\s*gracias|muchas\s*gracias)\b/.test(msg)) return { intent: 'farewell', confidence: 0.85 };
+        if (/\b(comprar|adquirir|quiero\s*el|me\s*quedo\s*con|lo\s*quiero|activar|contratar|tomar\s*el|vamos\s*con|me\s*interesa\s*comprar|vendeme|v[eé]ndeme)\b/.test(msg)) return { intent: 'purchase_interest', confidence: 0.85 };
         if (/\b(precio|precios|cu[aá]nto\s*(cuesta|vale|est[aá]|sale)|costo|costos|tarifa|valor|mensual|trimestral|semestral|anual)\b/.test(msg)) return { intent: 'price_inquiry', confidence: 0.80 };
         if (/\b(problema|no\s*funciona|error|falla|malo|p[eé]simo|queja|reclamo|insatisf|molest|no\s*sirve|lento|ca[ií]do|no\s*responde|deficiente)\b/.test(msg)) return { intent: 'complaint', confidence: 0.80 };
         if (/\b(ayuda|soporte|asistencia|no\s*puedo|c[oó]mo\s*(hago|puedo|configuro|instalo|activo)|necesito\s*ayuda|tengo\s*(un|una)\s*(duda|problema|consulta))\b/.test(msg)) return { intent: 'support', confidence: 0.75 };
-        if (/\b(informaci[oó]n|info|detalles|caracter[ií]sticas|incluye|qu[eé]\s*(es|ofrece|tiene|incluye|vende)|cu[aá]les?\s*(son|hay)|opciones|cat[aá]logo|servicios|productos)\b/.test(msg)) return { intent: 'info_request', confidence: 0.75 };
+        // If a product is mentioned but no other intent matched, it's an info_request
+        if (this._detectProductRegex(msg)) return { intent: 'info_request', confidence: 0.80 };
+        if (/\b(informaci[oó]n|info|detalles|caracter[ií]sticas|incluye|qu[eé]\s*(es|ofrece|tiene|incluye|vende)|cu[aá]les?\s*(son|hay)|opciones|cat[aá]logo|servicios|productos|ofrecen|que\s*mas)\b/.test(msg)) return { intent: 'info_request', confidence: 0.75 };
         if (/\?$/.test(msg.trim()) || /^(cu[aá]l|qu[eé]|c[oó]mo|d[oó]nde|cu[aá]ndo|por\s*qu[eé]|para\s*qu[eé]|tienen|hay|existe|es\s*posible)\b/.test(msg)) return { intent: 'question', confidence: 0.70 };
         return { intent: 'other', confidence: 0.40 };
     }
@@ -154,14 +242,31 @@ IMPORTANTE: Prioriza siempre la categoría más específica. "hola", "hi", "hey"
     }
 
     _extractTopicRegex(userMessage, productConsulted, intent) {
-        const msg = String(userMessage || '').trim();
+        // Use generic labels (same style as AI classification) — NEVER copy the user's message
         if (productConsulted && productConsulted !== 'NINGUNO') {
-            const label = { 'purchase_interest': 'Compra', 'price_inquiry': 'Precios', 'complaint': 'Problema', 'support': 'Soporte', 'info_request': 'Información', 'question': 'Consulta' }[intent] || 'Consulta';
-            return `${label}: ${productConsulted}`.substring(0, 255);
+            const labelMap = {
+                'purchase_interest': 'Interés de compra',
+                'price_inquiry': 'Consulta precio',
+                'complaint': 'Problema con',
+                'support': 'Soporte técnico',
+                'info_request': 'Consulta sobre',
+                'question': 'Consulta sobre'
+            };
+            const label = labelMap[intent] || 'Consulta sobre';
+            return `${label} ${productConsulted}`.substring(0, 255);
         }
-        const cleaned = msg.replace(/\b(el|la|los|las|un|una|unos|unas|de|del|en|con|por|para|que|es|son|hay|tengo|quiero|necesito|me|mi|tu|su|hola|buenas?|d[ií]as?|tardes?|noches?)\b/gi, '').replace(/\s+/g, ' ').trim();
-        if (cleaned.length > 3) return cleaned.substring(0, 255);
-        return intent === 'greeting' ? 'Saludo' : 'Consulta general';
+        const topicMap = {
+            'greeting': 'Saludo inicial',
+            'farewell': 'Cierre de conversación',
+            'purchase_interest': 'Interés de compra',
+            'price_inquiry': 'Consulta de precios',
+            'complaint': 'Reporte de problema',
+            'support': 'Soporte técnico',
+            'info_request': 'Consulta catálogo de productos',
+            'question': 'Consulta general',
+            'other': 'Mensaje no clasificable'
+        };
+        return topicMap[intent] || 'Consulta general';
     }
 
     // =============================================
@@ -196,9 +301,10 @@ IMPORTANTE: Prioriza siempre la categoría más específica. "hola", "hi", "hey"
                 confidence = intentResult.confidence;
                 sentiment = this._classifySentimentRegex(userMessage);
                 outcome = this._inferOutcomeRegex(commercialStage, intent, userMessage);
-                topicSummary = this._extractTopicRegex(userMessage, productFromFlow, intent);
-                productConsulted = productFromFlow;
-                logger.debug(`[INSIGHT] Regex fallback ${userPhone}: intent=${intent} outcome=${outcome} sentiment=${sentiment}`);
+                // Detect product from message text if not provided by flow
+                productConsulted = productFromFlow || this._detectProductRegex(userMessage);
+                topicSummary = this._extractTopicRegex(userMessage, productConsulted, intent);
+                logger.debug(`[INSIGHT] Regex fallback ${userPhone}: intent=${intent} outcome=${outcome} sentiment=${sentiment} product=${productConsulted || '-'}`);
             }
 
             await mysqlService.execute(

@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const config = require('../../config');
 const logger = require('../utils/logger');
+const authService = require('../services/auth_service');
 
 const DEV_FALLBACK_TOKEN = 'dev-admin-token';
 
@@ -20,16 +21,16 @@ function _resolveExpectedToken() {
 function getAdminAuthMode() {
     const configured = String(config.admin?.apiToken || '').trim();
     if (configured) {
-        return { enabled: true, usingDevFallback: false };
+        return { enabled: true, usingDevFallback: false, method: 'jwt+legacy' };
     }
 
     const isProd = String(config.nodeEnv || '').toLowerCase() === 'production';
     const allowFallback = Boolean(config.admin?.allowDevFallbackToken);
     if (!isProd && allowFallback) {
-        return { enabled: true, usingDevFallback: true, fallbackToken: DEV_FALLBACK_TOKEN };
+        return { enabled: true, usingDevFallback: true, fallbackToken: DEV_FALLBACK_TOKEN, method: 'jwt+legacy' };
     }
 
-    return { enabled: false, usingDevFallback: false };
+    return { enabled: true, usingDevFallback: false, method: 'jwt' };
 }
 
 function _extractToken(req) {
@@ -52,23 +53,27 @@ function _safeEqual(a = '', b = '') {
 }
 
 function validateAdminApiToken(req, res, next) {
-    const expectedToken = _resolveExpectedToken();
-
-    if (!expectedToken) {
-        logger.error('[ADMIN AUTH] API administrativa deshabilitada: falta ADMIN_API_TOKEN en produccion o fallback no permitido.');
-        return res.status(503).json({ error: 'API administrativa temporalmente no disponible' });
-    }
-
     const providedToken = _extractToken(req);
+
     if (!providedToken) {
-        return res.status(401).json({ error: 'No autorizado: token de administrador requerido' });
+        return res.status(401).json({ error: 'No autorizado: token requerido' });
     }
 
-    if (!_safeEqual(providedToken, expectedToken)) {
-        return res.status(403).json({ error: 'No autorizado: token de administrador invalido' });
+    // 1) Try JWT verification first
+    const jwtPayload = authService.verifyToken(providedToken);
+    if (jwtPayload) {
+        req.adminUser = jwtPayload;
+        return next();
     }
 
-    next();
+    // 2) Fallback: legacy static token (ADMIN_API_TOKEN / dev-admin-token)
+    const expectedToken = _resolveExpectedToken();
+    if (expectedToken && _safeEqual(providedToken, expectedToken)) {
+        req.adminUser = { sub: 0, username: '_legacy_token', role: 'superadmin' };
+        return next();
+    }
+
+    return res.status(403).json({ error: 'No autorizado: token inválido o expirado' });
 }
 
 module.exports = {

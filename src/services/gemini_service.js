@@ -13,7 +13,7 @@ class GeminiService {
         this.apiKeys = config.gemini.apiKeys;
         this.defaultGenerationConfig = config.gemini.generationConfig;
         this.defaultTimeout = config.gemini.timeout;
-        this.totalTimeoutMs = Math.max(Number(config.gemini.totalTimeoutMs || 70000), 60000);
+        this.totalTimeoutMs = Math.max(Number(config.gemini.totalTimeoutMs || 35000), 20000);
         this.maxAttemptsPerMessage = Math.max(Number(config.gemini.maxAttemptsPerMessage || 2), 1);
         this.maxKnowledgePromptChars = Number.isFinite(config.gemini.maxKnowledgePromptChars)
             ? config.gemini.maxKnowledgePromptChars
@@ -1337,7 +1337,7 @@ class GeminiService {
             ? `\n\nNombre del usuario: "${userName}". Puedes mencionarlo de forma ocasional y natural, sin repetirlo en cada mensaje.`
             : '';
         let attempts = 0;
-        const maxAttempts = this.keys.length; // Probar todas las keys disponibles antes de rendirse
+        const maxAttempts = Math.min(this.maxAttemptsPerMessage, this.keys.length);
         const requestStart = Date.now();
         const attemptFailures = [];
         const initialMessages = (chatHistory && typeof chatHistory.getMessages === 'function')
@@ -1431,7 +1431,7 @@ class GeminiService {
             const behaviorPrompt = [
                 "Eres el asesor comercial oficial de Buho Digital por WhatsApp. Usa un lenguaje corporativo, claro y directo.",
                 "Tienes acceso a un 'SUPER CATÁLOGO' general y, a veces, a 'INFO DETALLADA' del producto consultado.",
-                "Si el usuario SOLO saluda (ej: 'hola', 'buenos días', 'buenas tardes'), responde ÚNICAMENTE con un saludo cordial y pregúntale en qué le puedes ayudar. NO envíes listas de productos ni el catálogo en un simple saludo.",
+                "Si el usuario SOLO saluda (ej: 'hola', 'buenos días', 'buenas tardes'), responde con un saludo cordial y breve, y luego invítalo a consultar sobre los productos o servicios disponibles. Ejemplo de tono: 'Hola [nombre]! ¿En qué producto o servicio puedo orientarte hoy?' o '¡Buenas! Estoy aquí para ayudarte con cualquier consulta sobre nuestros productos y servicios.' Varía tu respuesta, no repitas siempre lo mismo. NO envíes listas de productos ni el catálogo en un simple saludo.",
                 "Si el usuario hace una pregunta general pidiendo opciones (ej: '¿qué vendes?', 'qué servicios ofrecen'), revisa el SUPER CATÁLOGO y ofrécele un resumen útil y categorizado de las opciones.",
                 "REGLA CLAVE DE INFORMACIÓN COMPLETA: Cuando el usuario pregunta por un producto específico, SIEMPRE entrega la información COMPLETA de todos los planes disponibles. Para CADA plan, lista TODOS los ciclos de facturación (1 mes, 3 meses, 6 meses, 12 meses, etc.) con su precio real, descuento si aplica y precio original tachado. Organiza la información de forma clara con viñetas. NO omitas planes ni ciclos.",
                 "FORMATO DE PLANES: Usa este formato para cada producto:\n*[Nombre del Plan]*\n- 1 Mes: precio\n- 3 Meses: precio (X% desc)\n- 6 Meses: precio (antes precio_original, X% desc)\n- 12 Meses: precio (antes precio_original, X% desc)\nIncluye: [resumen breve de lo que incluye en 1 línea]",

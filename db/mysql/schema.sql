@@ -213,6 +213,25 @@ CREATE TABLE IF NOT EXISTS system_events (
 ) ENGINE=InnoDB;
 
 -- =============================================
+-- ADMIN AUTHENTICATION: Login with bcrypt + JWT
+-- =============================================
+
+CREATE TABLE IF NOT EXISTS admin_users (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  username VARCHAR(80) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  display_name VARCHAR(120) NULL,
+  role ENUM('superadmin', 'admin', 'viewer') NOT NULL DEFAULT 'admin',
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  last_login_at DATETIME NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_admin_users_username (username),
+  KEY idx_admin_users_active (is_active)
+) ENGINE=InnoDB;
+
+-- =============================================
 -- REPORTS MODULE: Automatic conversation insights
 -- =============================================
 

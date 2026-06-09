@@ -1,0 +1,49 @@
+/* =============================================
+   BASE — Variables, Reset, Typography, Scrollbar
+   ============================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* No-Line "Nocturnal Intelligence" System */
+    --surface-void: #000000;     
+    --surface-desk: #0a0a0c;     /* Main background area */
+    --surface-card: #121216;     
+    --surface-card-hi: #1a1a20;
+    --surface-active: #222228;   
+
+    --primary: #c084fc;          
+    --secondary: #a78bfa;        
+    --tertiary: #9333ea;
+    
+    --on-surface: #ffffff;       
+    --on-surface-variant: #94a3b8; 
+    
+    --ghost-border: rgba(255, 255, 255, 0.05);
+    
+    --ok: #10b981;
+    --warn: #fbbf24;
+    --danger: #f43f5e;
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--surface-desk);
+    color: var(--on-surface-variant);
+    height: 100vh;
+    overflow: hidden;
+    
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.app-loaded {
+    opacity: 1;
+}
+
+::-webkit-scrollbar { display: none; width: 0; height: 0; }
+* { -ms-overflow-style: none; scrollbar-width: none; }
